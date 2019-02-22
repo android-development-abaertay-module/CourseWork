@@ -1,68 +1,77 @@
 package com.example.coursework.model;
 
-import java.time.LocalDateTime;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
+@Entity(tableName = "User")
 public class User
 {
     //----------------------------------------------------Attributes
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    @ColumnInfo(name = "userName")
+    private String userName;
+    @Ignore
+    private Logbook logBook;
+    @Ignore
+    private GoalWeekly weeklyGoal;
+    @Ignore
+    private GoalSeasonal seasonalGoal;
+    @Ignore
+    private GoalAnnual annualGoal;
 
-    private int _IDUser;
-    private String _userName;
-    private Logbook _logBook;
-    private GoalWeekly _weeklyGoal;
-    private GoalSeasonal _seasonalGoal;
-    private GoalAnnual _annualGoal;
-
-    public int get_IDUser() {
-        return _IDUser;
+    public int getId() {
+        return id;
     }
-    public void set_IDUser(int _IDUser) {
-        this._IDUser = _IDUser;
-    }
-
-    public String get_userName() {
-        return _userName;
-    }
-    public void set_userName(String _userName) {
-        this._userName = _userName;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Logbook get_logBook() {
-        return _logBook;
+    public String getUserName() {
+        return userName;
     }
-    public void set_logBook(Logbook _logBook) {
-        this._logBook = _logBook;
-    }
-
-    public GoalWeekly get_weeklyGoal() {
-        return _weeklyGoal;
-    }
-    public void set_weeklyGoal(GoalWeekly _weeklyGoal) {
-        this._weeklyGoal = _weeklyGoal;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public GoalSeasonal get_seasonalGoal() {
-        return _seasonalGoal;
+    public Logbook getLogBook() {
+        return logBook;
     }
-    public void set_seasonalGoal(GoalSeasonal _seasonalGoal) {
-        this._seasonalGoal = _seasonalGoal;
+    public void setLogBook(Logbook logBook) {
+        this.logBook = logBook;
     }
 
-    public GoalAnnual get_annualGoal() {
-        return _annualGoal;
+    public GoalWeekly getWeeklyGoal() {
+        return weeklyGoal;
     }
-    public void set_annualGoal(GoalAnnual _annualGoal) {
-        this._annualGoal = _annualGoal;
+    public void setWeeklyGoal(GoalWeekly weeklyGoal) {
+        this.weeklyGoal = weeklyGoal;
+    }
+
+    public GoalSeasonal getSeasonalGoal() {
+        return seasonalGoal;
+    }
+    public void setSeasonalGoal(GoalSeasonal seasonalGoal) {
+        this.seasonalGoal = seasonalGoal;
+    }
+
+    public GoalAnnual getAnnualGoal() {
+        return annualGoal;
+    }
+    public void setAnnualGoal(GoalAnnual annualGoal) {
+        this.annualGoal = annualGoal;
     }
 
     //-----Constructor
     public User(String  userName)
     {
-        _userName = userName;
-        _logBook = new Logbook(_IDUser);
-        _weeklyGoal = new GoalWeekly();
-        _seasonalGoal = new GoalSeasonal();
-        _annualGoal = new GoalAnnual();
+        this.userName = userName;
+        logBook = new Logbook(id);
+        weeklyGoal = new GoalWeekly();
+        seasonalGoal = new GoalSeasonal();
+        annualGoal = new GoalAnnual();
     }
 
     public User()

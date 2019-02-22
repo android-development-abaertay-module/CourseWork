@@ -1,14 +1,25 @@
 package com.example.coursework.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+
 import com.example.coursework.model.enums.Grades;
 
 import java.time.LocalDateTime;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "GoalSeasonal",foreignKeys = @ForeignKey(entity = User.class,parentColumns = "id",childColumns = "userId", onDelete = CASCADE))
 public class GoalSeasonal extends Goal {
     //-------------------------------------------------------------------------------------Attributes----------------------------------------------------
+    @ColumnInfo(name = "highestBoulderOnsight")
     private Grades _highestBoulderOnsight;
+    @ColumnInfo(name = "highestSportOnsight")
     private Grades _highestSportOnsight;
+    @ColumnInfo(name = "highestBoulderWorked")
     private Grades _highestBoulderWorked;
+    @ColumnInfo(name = "highestSportWorked")
     private Grades _highestSportWorked;
 
     public Grades get_highestBoulderOnsight() {
@@ -43,11 +54,11 @@ public class GoalSeasonal extends Goal {
 public GoalSeasonal(int iDUserFK, Grades highestBoulderOnsight, Grades highestSportOnsight, Grades highestBoulderWorked, Grades highestSportWorked, LocalDateTime dateCreated)//6 Months
     {
         super(iDUserFK);
-        this._goalDruation = 6;// 6 Months
+        this.goalDuration = 6;// 6 Months
 
-        _dateExpires = dateCreated.plusMonths(_goalDruation);
-        _goalAcheaved = false;
-        _dateCreated = dateCreated;
+        dateExpires = dateCreated.plusMonths(goalDuration);
+        goalAchieved = false;
+        this.dateCreated = dateCreated;
 
         _highestBoulderOnsight = highestBoulderOnsight;
         _highestSportOnsight = highestSportOnsight;

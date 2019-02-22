@@ -1,66 +1,73 @@
 package com.example.coursework.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+
 import com.example.coursework.model.enums.Grades;
 
 import java.time.LocalDateTime;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "GoalAnnual",foreignKeys = @ForeignKey(entity = User.class,parentColumns = "id",childColumns = "userId", onDelete = CASCADE))
 public class GoalAnnual extends Goal{
-        //------------------------------------------Attributes-------------------------
+    //------------------------------------------Attributes-------------------------
+    @ColumnInfo(name = "highestBoulderOnsight")
+    private Grades highestBoulderOnsight;
+    @ColumnInfo(name = "highestSportOnsight")
+    private Grades highestSportOnsight;
+    @ColumnInfo(name = "highestBoulderWorked")
+    private Grades highestBoulderWorked;
+    @ColumnInfo(name = "highestSportWorked")
+    private Grades highestSportWorked;
 
-        private Grades _highestBoulderOnsight;
+    public Grades getHighestBoulderOnsight() {
+            return highestBoulderOnsight;
+    }
+    public void setHighestBoulderOnsight(Grades highestBoulderOnsight) {
+            this.highestBoulderOnsight = highestBoulderOnsight;
+    }
 
-        private Grades _highestSportOnsight;
+    public Grades getHighestSportOnsight() {
+            return highestSportOnsight;
+    }
+    public void setHighestSportOnsight(Grades highestSportOnsight) {
+            this.highestSportOnsight = highestSportOnsight;
+    }
 
-        private Grades _highestBoulderWorked;
+    public Grades getHighestBoulderWorked() {
+            return highestBoulderWorked;
+    }
+    public void setHighestBoulderWorked(Grades highestBoulderWorked) {
+            this.highestBoulderWorked = highestBoulderWorked;
+    }
 
-        private Grades _highestSportWorked;
+    public Grades getHighestSportWorked() {
+            return highestSportWorked;
+    }
+    public void setHighestSportWorked(Grades highestSportWorked) {
+            this.highestSportWorked = highestSportWorked;
+    }
 
-        public Grades get_highestBoulderOnsight() {
-                return _highestBoulderOnsight;
-        }
-        public void set_highestBoulderOnsight(Grades _highestBoulderOnsight) {
-                this._highestBoulderOnsight = _highestBoulderOnsight;
-        }
+    //--------Constructor
+    public GoalAnnual(int iDUserFK, Grades highestBoulderOnsight, Grades highestSportOnsight, Grades highestBoulderWorked, Grades highestSportWorked, LocalDateTime dateCreated)
+    {
+            super(iDUserFK);
+            this.goalDuration = 1;//1 Year
+            dateExpires = dateCreated.plusYears(goalDuration);
+            goalAchieved = false;
+            this.dateCreated = dateCreated;
 
-        public Grades get_highestSportOnsight() {
-                return _highestSportOnsight;
-        }
-        public void set_highestSportOnsight(Grades _highestSportOnsight) {
-                this._highestSportOnsight = _highestSportOnsight;
-        }
+            this.highestBoulderOnsight = highestBoulderOnsight;
+            this.highestSportOnsight = highestSportOnsight;
 
-        public Grades get_highestBoulderWorked() {
-                return _highestBoulderWorked;
-        }
-        public void set_highestBoulderWorked(Grades _highestBoulderWorked) {
-                this._highestBoulderWorked = _highestBoulderWorked;
-        }
+            this.highestBoulderWorked = highestBoulderWorked;
+            this.highestSportWorked = highestSportWorked;
+    }
 
-        public Grades get_highestSportWorked() {
-                return _highestSportWorked;
-        }
-        public void set_highestSportWorked(Grades _highestSportWorked) {
-                this._highestSportWorked = _highestSportWorked;
-        }
-
-        //--------Constructor
-        public GoalAnnual(int iDUserFK, Grades highestBoulderOnsight, Grades highestSportOnsight, Grades highestBoulderWorked, Grades highestSportWorked, LocalDateTime dateCreated)
-        {
-                super(iDUserFK);
-                this._goalDruation = 1;//1 Year
-                _dateExpires = dateCreated.plusYears(_goalDruation);
-                _goalAcheaved = false;
-                _dateCreated = dateCreated;
-
-                _highestBoulderOnsight = highestBoulderOnsight;
-                _highestSportOnsight = highestSportOnsight;
-
-                _highestBoulderWorked = highestBoulderWorked;
-                _highestSportWorked = highestSportWorked;
-        }
-
-        public GoalAnnual()
-        {
-        }
+    public GoalAnnual()
+    {
+    }
 
 }

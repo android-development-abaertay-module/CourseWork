@@ -1,85 +1,98 @@
 package com.example.coursework.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+
 import com.example.coursework.model.enums.Grades;
 
 import java.time.LocalDateTime;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "GoalWeekly",foreignKeys = @ForeignKey(entity = User.class,parentColumns = "id",childColumns = "userId", onDelete = CASCADE))
 public class GoalWeekly extends Goal {
 //---------------------------------------------------------------------Attributes----------------------------------------------------
+    @ColumnInfo(name = "hoursOfTraining")
+    private int hoursOfTraining;
+    @ColumnInfo(name = "numberOfSport")
+    private int numberOfSport;
+    @ColumnInfo(name = "numberOfBoulder")
+    private int numberOfBoulder;
+    @ColumnInfo(name = "averageSportGrade")
+    private Grades averageSportGrade;
+    @ColumnInfo(name = "sportGoalValue")
+    private int sportGoalValue;
+    @ColumnInfo(name = "averageBoulderGrade")
+    private Grades averageBoulderGrade;
+    @ColumnInfo(name = "boulderGoalValue")
+    private int boulderGoalValue;
 
-    private int _hoursOfTraining;
-    private int _numberOfSport;
-    private int _numberOfBoulder;
-    private Grades _averageSportGrade;
-    private int _sportGoalValue;
-    private Grades _averageBoulderGrade;
-    private int _boulderGoalValue;
-
-    public int get_hoursOfTraining() {
-        return _hoursOfTraining;
+    public int getHoursOfTraining() {
+        return hoursOfTraining;
     }
-    public void set_hoursOfTraining(int _hoursOfTraining) {
-        this._hoursOfTraining = _hoursOfTraining;
-    }
-
-    public int get_numberOfSport() {
-        return _numberOfSport;
-    }
-    public void set_numberOfSport(int _numberOfSport) {
-        this._numberOfSport = _numberOfSport;
-    }
-
-    public int get_numberOfBoulder() {
-        return _numberOfBoulder;
-    }
-    public void set_numberOfBoulder(int _numberOfBoulder) {
-        this._numberOfBoulder = _numberOfBoulder;
+    public void setHoursOfTraining(int hoursOfTraining) {
+        this.hoursOfTraining = hoursOfTraining;
     }
 
-    public Grades get_averageSportGrade() {
-        return _averageSportGrade;
+    public int getNumberOfSport() {
+        return numberOfSport;
     }
-    public void set_averageSportGrade(Grades _averageSportGrade) {
-        this._averageSportGrade = _averageSportGrade;
-    }
-
-    public int get_sportGoalValue() {
-        return _sportGoalValue;
-    }
-    public void set_sportGoalValue(int _sportGoalValue) {
-        this._sportGoalValue = _sportGoalValue;
+    public void setNumberOfSport(int numberOfSport) {
+        this.numberOfSport = numberOfSport;
     }
 
-    public Grades get_averageBoulderGrade() {
-        return _averageBoulderGrade;
+    public int getNumberOfBoulder() {
+        return numberOfBoulder;
     }
-    public void set_averageBoulderGrade(Grades _averageBoulderGrade) {
-        this._averageBoulderGrade = _averageBoulderGrade;
+    public void setNumberOfBoulder(int numberOfBoulder) {
+        this.numberOfBoulder = numberOfBoulder;
     }
 
-    public int get_boulderGoalValue() {
-        return _boulderGoalValue;
+    public Grades getAverageSportGrade() {
+        return averageSportGrade;
     }
-    public void set_boulderGoalValue(int _boulderGoalValue) {
-        this._boulderGoalValue = _boulderGoalValue;
+    public void setAverageSportGrade(Grades averageSportGrade) {
+        this.averageSportGrade = averageSportGrade;
+    }
+
+    public int getSportGoalValue() {
+        return sportGoalValue;
+    }
+    public void setSportGoalValue(int sportGoalValue) {
+        this.sportGoalValue = sportGoalValue;
+    }
+
+    public Grades getAverageBoulderGrade() {
+        return averageBoulderGrade;
+    }
+    public void setAverageBoulderGrade(Grades averageBoulderGrade) {
+        this.averageBoulderGrade = averageBoulderGrade;
+    }
+
+    public int getBoulderGoalValue() {
+        return boulderGoalValue;
+    }
+    public void setBoulderGoalValue(int boulderGoalValue) {
+        this.boulderGoalValue = boulderGoalValue;
     }
 
     //--------------------------------------------------------------------------Constructor----------------------------------------------------
     public GoalWeekly(int iDUserFK, int hoursOfTraining, int numberOfSport, int numberOfBoulder, Grades averageSportGrade, Grades averageBoulderGrade, LocalDateTime dateCreated)
         {
             super(iDUserFK);
-            _goalDruation = 7;//7 Days
-            _dateExpires = dateCreated.plusDays(_goalDruation);
-            _goalAcheaved = false;
-            _dateCreated = dateCreated;
+            goalDuration = 7;//7 Days
+            dateExpires = dateCreated.plusDays(goalDuration);
+            goalAchieved = false;
+            this.dateCreated = dateCreated;
 
-            _hoursOfTraining = hoursOfTraining;
-            _numberOfSport = numberOfSport;
-            _numberOfBoulder = numberOfBoulder;
-            _averageSportGrade = averageSportGrade;
-            _sportGoalValue = _averageSportGrade.getValue();
-            _averageBoulderGrade = averageBoulderGrade;
-            _boulderGoalValue = _averageBoulderGrade.ordinal();
+            this.hoursOfTraining = hoursOfTraining;
+            this.numberOfSport = numberOfSport;
+            this.numberOfBoulder = numberOfBoulder;
+            this.averageSportGrade = averageSportGrade;
+            sportGoalValue = this.averageSportGrade.getValue();
+            this.averageBoulderGrade = averageBoulderGrade;
+            boulderGoalValue = this.averageBoulderGrade.ordinal();
         }
 
     public GoalWeekly()

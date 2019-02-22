@@ -1,68 +1,75 @@
 package com.example.coursework.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.time.LocalDateTime;
-import java.util.Date;
+
+import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 public abstract class Goal {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    protected int id;
+    @ColumnInfo(name = "userId")
+    protected int userId;
+    @ColumnInfo(name = "dateCreated")
+    protected LocalDateTime dateCreated;
+    @ColumnInfo(name = "dateExpires")
+    protected LocalDateTime dateExpires;
+    @ColumnInfo(name = "goalAchieved")
+    protected Boolean goalAchieved;
+    @ColumnInfo(name = "goalDuration")
+    protected int goalDuration;
 
-    protected int _IDGoal;
-
-    protected int _IDUserFK;
-
-    protected LocalDateTime _dateCreated;
-
-    protected LocalDateTime _dateExpires;
-
-    protected Boolean _goalAcheaved;
-
-    protected int _goalDruation;
-
-    public int get_IDGoal() {
-        return _IDGoal;
+    public int getId() {
+        return id;
     }
-    public void set_IDGoal(int _IDGoal) {
-        this._IDGoal = _IDGoal;
-    }
-
-    public int get_IDUserFK() {
-        return _IDUserFK;
-    }
-    public void set_IDUserFK(int _IDUserFK) {
-        this._IDUserFK = _IDUserFK;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public LocalDateTime get_dateCreated() {
-        return _dateCreated;
+    public int getUserId() {
+        return userId;
     }
-    public void set_dateCreated(LocalDateTime _dateCreated) {
-        this._dateCreated = _dateCreated;
-    }
-
-    public LocalDateTime get_dateExpires() {
-        return _dateExpires;
-    }
-    public void set_dateExpires(LocalDateTime _dateExpires) {
-        this._dateExpires = _dateExpires;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public Boolean get_goalAcheaved() {
-        return _goalAcheaved;
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
     }
-    public void set_goalAcheaved(Boolean _goalAcheaved) {
-        this._goalAcheaved = _goalAcheaved;
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
-    public int get_goalDruation() {
-        return _goalDruation;
+    public LocalDateTime getDateExpires() {
+        return dateExpires;
     }
-    public void set_goalDruation(int _goalDruation) {
-        this._goalDruation = _goalDruation;
+    public void setDateExpires(LocalDateTime dateExpires) {
+        this.dateExpires = dateExpires;
+    }
+
+    public Boolean getGoalAchieved() {
+        return goalAchieved;
+    }
+    public void setGoalAchieved(Boolean goalAchieved) {
+        this.goalAchieved = goalAchieved;
+    }
+
+    public int getGoalDuration() {
+        return goalDuration;
+    }
+    public void setGoalDuration(int goalDuration) {
+        this.goalDuration = goalDuration;
     }
 
     //-----------Constructor
     public Goal(int iDUserFK) {
-        _IDUserFK = iDUserFK;
-        _goalAcheaved = false;
+        userId = iDUserFK;
+        goalAchieved = false;
     }
     public Goal() {
     }

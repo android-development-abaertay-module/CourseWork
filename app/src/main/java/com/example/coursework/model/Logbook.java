@@ -1,53 +1,63 @@
 package com.example.coursework.model;
 
-import java.lang.reflect.Array;
-import java.time.LocalDateTime;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.util.ArrayList;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "Logbook",foreignKeys = @ForeignKey(entity = User.class,parentColumns = "id",childColumns = "userId", onDelete = CASCADE))
 public class Logbook
 {
     //----------------------------------------------Attributes
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private int id;
+    @ColumnInfo(name = "userId")
+    private int userId;
+    @Ignore
+    private ArrayList<Session> sessionLog;
+    @Ignore
+    private Session currentSession;
 
-
-    private int _IDLogbook;
-    private int _IDUserFK;
-    private ArrayList<Session> _sessionLog;
-    private Session _currentSession;
-
-    public int get_IDLogbook() {
-        return _IDLogbook;
+    public int getId() {
+        return id;
     }
-    public void set_IDLogbook(int _IDLogbook) {
-        this._IDLogbook = _IDLogbook;
-    }
-
-    public int get_IDUserFK() {
-        return _IDUserFK;
-    }
-    public void set_IDUserFK(int _IDUserFK) {
-        this._IDUserFK = _IDUserFK;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public ArrayList<Session> get_sessionLog() {
-        return _sessionLog;
+    public int getUserId() {
+        return userId;
     }
-    public void set_sessionLog(ArrayList<Session> _sessionLog) {
-        this._sessionLog = _sessionLog;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public Session get_currentSession() {
-        return _currentSession;
+    public ArrayList<Session> getSessionLog() {
+        return sessionLog;
     }
-    public void set_currentSession(Session _currentSession) {
-        this._currentSession = _currentSession;
+    public void setSessionLog(ArrayList<Session> sessionLog) {
+        this.sessionLog = sessionLog;
+    }
+
+    public Session getCurrentSession() {
+        return currentSession;
+    }
+    public void setCurrentSession(Session currentSession) {
+        this.currentSession = currentSession;
     }
 
     //----Constructor
     public Logbook(int iDUserFK)
     {
-        _IDUserFK = iDUserFK;
-        _sessionLog = new ArrayList<Session>();
-        _currentSession = null;
+        userId = iDUserFK;
+        sessionLog = new ArrayList<Session>();
+        currentSession = null;
     }
 
 }
