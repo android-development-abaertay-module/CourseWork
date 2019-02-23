@@ -1,6 +1,7 @@
 package com.example.coursework.model.data;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -11,6 +12,8 @@ import com.example.coursework.model.Logbook;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
+
+import java.util.List;
 
 public class DaoRepository {
     private GoalAnnualDAO goalAnnualDAO;
@@ -373,6 +376,15 @@ public class DaoRepository {
             userDAO.delete(users[0]);
             return  null;
         }
+    }
+    //endregion
+
+    //region [Users Get]
+    public LiveData<List<User>> getAllUsers() {
+        return userDAO.getAllUsers();
+    }
+    public LiveData<User> getUserById(long id) {
+        return userDAO.getUserById(id);
     }
     //endregion
 }

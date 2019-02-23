@@ -9,6 +9,8 @@ import android.arch.persistence.room.Update;
 
 import com.example.coursework.model.User;
 
+import java.util.List;
+
 @Dao
 public interface UserDAO {
     @Insert
@@ -19,5 +21,8 @@ public interface UserDAO {
     void delete(User user);
 
     @Query("SELECT * FROM User WHERE id ==:userId LIMIT 1")
-    LiveData<User> getAllRoutesInSession(int userId);
+    LiveData<User> getUserById(long userId);
+
+    @Query("SELECT * FROM User")
+    LiveData<List<User>> getAllUsers();
 }
