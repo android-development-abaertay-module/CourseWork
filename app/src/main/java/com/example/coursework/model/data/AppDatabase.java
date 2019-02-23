@@ -40,6 +40,7 @@ import java.time.LocalDateTime;
 public abstract class AppDatabase extends RoomDatabase {
     public  abstract GoalAnnualDAO goalAnnualDAO();
     public abstract GoalSeasonalDAO goalSeasonalDAO();
+    public abstract GoalWeeklyDAO goalWeeklyDAO();
 
     private static AppDatabase instance;
 
@@ -79,10 +80,12 @@ public abstract class AppDatabase extends RoomDatabase {
     private static class InitialDataAsyncTask extends AsyncTask<Void,Void,Void> {
         private GoalAnnualDAO goalAnnualDAO;
         private GoalSeasonalDAO goalSeasonalDAO;
+        private GoalWeeklyDAO goalWeeklyDAO;
 
         public InitialDataAsyncTask(AppDatabase appDatabase) {
             goalAnnualDAO = appDatabase.goalAnnualDAO();
             goalSeasonalDAO = appDatabase.goalSeasonalDAO();
+            goalWeeklyDAO = appDatabase.goalWeeklyDAO();
         }
 
         @Override
