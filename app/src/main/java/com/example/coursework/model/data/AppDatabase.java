@@ -42,6 +42,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract GoalSeasonalDAO goalSeasonalDAO();
     public abstract GoalWeeklyDAO goalWeeklyDAO();
     public abstract LogbookDAO logbookDAO();
+    public abstract RouteDAO routeDAO();
 
     private static AppDatabase instance;
 
@@ -63,7 +64,6 @@ public abstract class AppDatabase extends RoomDatabase {
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
             Log.d("gwyd","Room database opened successfully");
-
         }
 
         @Override
@@ -83,12 +83,14 @@ public abstract class AppDatabase extends RoomDatabase {
         private GoalSeasonalDAO goalSeasonalDAO;
         private GoalWeeklyDAO goalWeeklyDAO;
         private LogbookDAO logbookDAO;
+        private RouteDAO routeDAO;
 
         public InitialDataAsyncTask(AppDatabase appDatabase) {
             goalAnnualDAO = appDatabase.goalAnnualDAO();
             goalSeasonalDAO = appDatabase.goalSeasonalDAO();
             goalWeeklyDAO = appDatabase.goalWeeklyDAO();
             logbookDAO = appDatabase.logbookDAO();
+            routeDAO = appDatabase.routeDAO();
         }
 
         @Override
