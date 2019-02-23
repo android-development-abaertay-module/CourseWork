@@ -17,9 +17,9 @@ public class Session
     //---------------------------------------------------Attributes-----------------------------
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private int id;
+    private long id;
     @ColumnInfo(name = "logbookId", index = true)
-    private int logbookId;
+    private long logbookId;
 
     @ColumnInfo(name = "startTime")
     private LocalDateTime startTime;
@@ -28,17 +28,17 @@ public class Session
     @Ignore
     private ArrayList<Route> routeLog;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getLogbookId() {
+    public long getLogbookId() {
         return logbookId;
     }
-    public void setLogbookId(int logbookId) {
+    public void setLogbookId(long logbookId) {
         this.logbookId = logbookId;
     }
 
@@ -68,7 +68,7 @@ public class Session
 
     }
     @Ignore
-    public Session(LocalDateTime startTime, int idLogbookFK)
+    public Session(LocalDateTime startTime, long idLogbookFK)
     {
         logbookId = idLogbookFK;
         this.startTime = startTime;

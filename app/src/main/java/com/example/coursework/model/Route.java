@@ -23,9 +23,9 @@ public  class Route
     //-----------------------------------------Attributes
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private int id;
+    private long id;
     @ColumnInfo(name = "sessionId", index = true)
-    private int sessionId;
+    private long sessionId;
     @ColumnInfo(name = "styleDone")
     private StyleDone styleDone;
     @ColumnInfo(name = "timeDone")
@@ -37,17 +37,17 @@ public  class Route
     @ColumnInfo(name = "gradeValue")
     private int gradeValue;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getSessionId() {
+    public long getSessionId() {
         return sessionId;
     }
-    public void setSessionId(int sessionId) {
+    public void setSessionId(long sessionId) {
         this.sessionId = sessionId;
     }
 
@@ -93,7 +93,7 @@ public  class Route
     }
 
     @Ignore
-    public Route(int sessionIDFK, Grades grade,RouteType routeType, StyleDone styleDone, LocalDateTime dateAndtime)
+    public Route(long sessionIDFK, Grades grade,RouteType routeType, StyleDone styleDone, LocalDateTime dateAndtime)
     {
         this.grade = grade;
         gradeValue = grade.getValue();//get enum index position and add one

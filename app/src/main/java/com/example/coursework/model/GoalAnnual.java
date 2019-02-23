@@ -51,7 +51,7 @@ public class GoalAnnual extends Goal{
     }
 
     //--------Constructor
-    public GoalAnnual(int iDUserFK, Grades highestBoulderOnsight, Grades highestSportOnsight, Grades highestBoulderWorked, Grades highestSportWorked, LocalDateTime dateCreated)
+    public GoalAnnual(long iDUserFK, Grades highestBoulderOnsight, Grades highestSportOnsight, Grades highestBoulderWorked, Grades highestSportWorked, LocalDateTime dateCreated)
     {
             super(iDUserFK);
             this.goalDuration = 1;//1 Year

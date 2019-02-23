@@ -11,7 +11,7 @@ import com.example.coursework.model.Route;
 @Dao
 public interface RouteDAO {
     @Insert
-    void  insert(Route route);
+    long  insert(Route route);
     @Update
     void update(Route route);
     @Delete

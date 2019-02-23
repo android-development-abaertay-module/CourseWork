@@ -51,7 +51,7 @@ public class GoalSeasonal extends Goal {
     }
 
 //------------------------------------------------------------------------------------Constructor----------------------------------------------------
-public GoalSeasonal(int iDUserFK, Grades highestBoulderOnsight, Grades highestSportOnsight, Grades highestBoulderWorked, Grades highestSportWorked, LocalDateTime dateCreated)//6 Months
+public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestSportOnsight, Grades highestBoulderWorked, Grades highestSportWorked, LocalDateTime dateCreated)//6 Months
     {
         super(iDUserFK);
         this.goalDuration = 6;// 6 Months

@@ -17,25 +17,25 @@ public class Logbook
     //----------------------------------------------Attributes
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private int id;
+    private long id;
     @ColumnInfo(name = "userId", index = true)
-    private int userId;
+    private long userId;
     @Ignore
     private ArrayList<Session> sessionLog;
     @Ignore
     private Session currentSession;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -58,7 +58,7 @@ public class Logbook
 
     }
     @Ignore
-    public Logbook(int iDUserFK)
+    public Logbook(long iDUserFK)
     {
         userId = iDUserFK;
         sessionLog = new ArrayList<Session>();

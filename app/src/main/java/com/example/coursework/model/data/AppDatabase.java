@@ -22,6 +22,8 @@ import com.example.coursework.model.data.converters.LocalDateTimeConverter;
 import com.example.coursework.model.data.converters.RouteTypeConverter;
 import com.example.coursework.model.data.converters.StyleConverter;
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.enums.RouteType;
+import com.example.coursework.model.enums.StyleDone;
 
 import java.time.LocalDateTime;
 
@@ -75,9 +77,7 @@ public abstract class AppDatabase extends RoomDatabase {
             LocalDateTime today = LocalDateTime.now();
 
             //TODO: sort out initial test data once models setup
-            GoalAnnual test = new GoalAnnual(1, Grades.FIVE_A,Grades.FIVE_A,Grades.FIVE_B,Grades.FIVE_B,today);
             new InitialDataAsyncTask(instance).execute();
-            instance.goalAnnualDAO().insert(test);
         }
     };
     private static class InitialDataAsyncTask extends AsyncTask<Void,Void,Void> {
@@ -101,7 +101,41 @@ public abstract class AppDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            User user = new User("gwyd");
+            userDAO.insert(user);
 
+            GoalWeekly goalWeekly = new GoalWeekly(user.getId(),12,10,20,Grades.SIX_A,Grades.SIX_B,LocalDateTime.now());
+            goalWeekly.setId(goalWeeklyDAO.insert(goalWeekly));
+
+            GoalSeasonal goalSeasonal = new GoalSeasonal(user.getId(),Grades.SEVEN_A,Grades.SEVEN_A,Grades.SEVEN_B,Grades.SEVEN_B,LocalDateTime.now().minusWeeks(5));
+            goalSeasonal.setId(goalSeasonalDAO.insert(goalSeasonal));
+
+            GoalAnnual goalAnnual = new GoalAnnual(user.getId(),Grades.SEVEN_A,Grades.SEVEN_A,Grades.SEVEN_B,Grades.SEVEN_B,LocalDateTime.now().minusMonths(2));
+            goalAnnual.setId(goalAnnualDAO.insert(goalAnnual));
+
+            Logbook logbook = new Logbook(1);
+            logbook.setId(logbookDAO.insert(logbook));
+
+            Session oldSession = new Session(LocalDateTime.now().minusDays(1).minusHours(3),1);
+            oldSession.setEndTime(LocalDateTime.now());
+            oldSession.setId(sessionDAO.insert(oldSession));
+
+            Route oldRouteOne = new Route(1,Grades.FIVE_A, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(30));
+            Route oldRouteTwo = new Route(1,Grades.FIVE_B, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(20));
+            Route oldRouteThree = new Route(1,Grades.FIVE_C, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(10));
+            oldRouteOne.setId(routeDAO.insert(oldRouteOne));
+            oldRouteTwo.setId(routeDAO.insert(oldRouteTwo));
+            oldRouteThree.setId(routeDAO.insert(oldRouteThree));
+
+            Session currentSession = new Session(LocalDateTime.now(),1);
+            currentSession.setId(sessionDAO.insert(currentSession));
+
+            Route cRouteOne = new Route(2,Grades.SIX_A,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(20));
+            Route cRouteTwo = new Route(2,Grades.SIX_B,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(10));
+            Route cRouteThree = new Route(2,Grades.SIX_C,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(5));
+            cRouteOne.setId(routeDAO.insert(cRouteOne));
+            cRouteTwo.setId(routeDAO.insert(cRouteTwo));
+            cRouteThree.setId(routeDAO.insert(cRouteThree));
             return null;
         }
     }

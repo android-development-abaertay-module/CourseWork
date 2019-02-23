@@ -13,9 +13,9 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 public abstract class Goal {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    protected int id;
+    protected long id;
     @ColumnInfo(name = "userId")
-    protected int userId;
+    protected long userId;
     @ColumnInfo(name = "dateCreated")
     protected LocalDateTime dateCreated;
     @ColumnInfo(name = "dateExpires")
@@ -25,17 +25,17 @@ public abstract class Goal {
     @ColumnInfo(name = "goalDuration")
     protected int goalDuration;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -71,7 +71,7 @@ public abstract class Goal {
     public Goal() {
     }
     @Ignore
-    public Goal(int iDUserFK) {
+    public Goal(long iDUserFK) {
         userId = iDUserFK;
         goalAchieved = false;
     }

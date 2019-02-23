@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface GoalSeasonalDAO {
     @Insert
-    void  insert(GoalSeasonal goalAnnual);
+    long  insert(GoalSeasonal goalAnnual);
     @Update
     void update(GoalSeasonal goalAnnual);
     @Delete

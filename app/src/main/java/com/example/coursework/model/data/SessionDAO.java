@@ -12,7 +12,7 @@ import com.example.coursework.model.Session;
 @Dao
 public interface SessionDAO {
     @Insert
-    void  insert(Session session);
+    long  insert(Session session);
     @Update
     void update(Session session);
     @Delete

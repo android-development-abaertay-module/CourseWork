@@ -10,7 +10,7 @@ public class User
 {
     //----------------------------------------------------Attributes
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
     @ColumnInfo(name = "userName")
     private String userName;
     @Ignore
@@ -22,10 +22,10 @@ public class User
     @Ignore
     private GoalAnnual annualGoal;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

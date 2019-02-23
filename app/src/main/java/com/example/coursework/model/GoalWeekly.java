@@ -78,7 +78,7 @@ public class GoalWeekly extends Goal {
     }
 
     //--------------------------------------------------------------------------Constructor----------------------------------------------------
-    public GoalWeekly(int iDUserFK, int hoursOfTraining, int numberOfSport, int numberOfBoulder, Grades averageSportGrade, Grades averageBoulderGrade, LocalDateTime dateCreated)
+    public GoalWeekly(long iDUserFK, int hoursOfTraining, int numberOfSport, int numberOfBoulder, Grades averageSportGrade, Grades averageBoulderGrade, LocalDateTime dateCreated)
         {
             super(iDUserFK);
             goalDuration = 7;//7 Days

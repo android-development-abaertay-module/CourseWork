@@ -12,7 +12,7 @@ import com.example.coursework.model.User;
 @Dao
 public interface UserDAO {
     @Insert
-    void  insert(User user);
+    long  insert(User user);
     @Update
     void update(User user);
     @Delete

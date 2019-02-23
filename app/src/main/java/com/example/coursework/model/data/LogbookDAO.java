@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface LogbookDAO {
     @Insert
-    void  insert(Logbook logbook);
+    long  insert(Logbook logbook);
     @Update
     void update(Logbook logbook);
     @Delete

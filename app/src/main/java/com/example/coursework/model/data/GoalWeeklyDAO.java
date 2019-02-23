@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface GoalWeeklyDAO {
     @Insert
-    void  insert(GoalWeekly goalWeekly);
+    long  insert(GoalWeekly goalWeekly);
     @Update
     void update(GoalWeekly goalWeekly);
     @Delete
