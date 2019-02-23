@@ -261,7 +261,118 @@ public class DaoRepository {
     }
 
     //endregion
-    //region [Deletes]
 
+    //region [Deletes]
+    public  void deleteAnnualGoal(GoalAnnual goalAnnual){
+        new DeleteGoalAnnualAsyncTask(goalAnnualDAO).execute(goalAnnual);
+    }
+    private static  class DeleteGoalAnnualAsyncTask extends AsyncTask<GoalAnnual,Void,Void> {
+        GoalAnnualDAO anGoalDao;
+        public DeleteGoalAnnualAsyncTask(GoalAnnualDAO goalAnnualDAO) {
+            this.anGoalDao = goalAnnualDAO;
+        }
+
+        @Override
+        protected Void doInBackground(GoalAnnual... annuals) {
+            anGoalDao.delete(annuals[0]);
+            return  null;
+        }
+    }
+
+    public  void deleteSeasonalGoal(GoalSeasonal goalSeasonal){
+        new DeleteGoalSeasonalAsyncTask(goalSeasonalDAO).execute(goalSeasonal);
+    }
+    private static  class DeleteGoalSeasonalAsyncTask extends AsyncTask<GoalSeasonal,Void,Void> {
+        GoalSeasonalDAO seasonGoalDao;
+        public DeleteGoalSeasonalAsyncTask(GoalSeasonalDAO goalSeasonalDAO) {
+            this.seasonGoalDao = goalSeasonalDAO;
+        }
+
+        @Override
+        protected Void doInBackground(GoalSeasonal... annuals) {
+            seasonGoalDao.delete(annuals[0]);
+            return  null;
+        }
+    }
+
+    public  void deleteWeeklyGoal(GoalWeekly goalWeekly){
+        new DeleteGoalWeeklyAsyncTask(goalWeeklyDAO).execute(goalWeekly);
+    }
+    private static  class DeleteGoalWeeklyAsyncTask extends AsyncTask<GoalWeekly,Void,Void> {
+        GoalWeeklyDAO goalWeeklyDAO;
+        public DeleteGoalWeeklyAsyncTask(GoalWeeklyDAO goalWeeklyDAO) {
+            this.goalWeeklyDAO = goalWeeklyDAO;
+        }
+
+        @Override
+        protected Void doInBackground(GoalWeekly... weeklyGoal) {
+            goalWeeklyDAO.delete(weeklyGoal[0]);
+            return  null;
+        }
+    }
+
+    public  void deleteLogbook(Logbook logbook){
+        new DeleteLogbookAsyncTask(logbookDAO).execute(logbook);
+    }
+    private static  class DeleteLogbookAsyncTask extends AsyncTask<Logbook,Void,Void> {
+        LogbookDAO logbookDAO;
+        public DeleteLogbookAsyncTask(LogbookDAO logbookDAO) {
+            this.logbookDAO = logbookDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Logbook... logbooks) {
+            logbookDAO.delete(logbooks[0]);
+            return  null;
+        }
+    }
+
+    public  void deleteRoute(Route route){
+        new DeleteRouteAsyncTask(routeDAO).execute(route);
+    }
+    private static  class DeleteRouteAsyncTask extends AsyncTask<Route,Void,Void> {
+        RouteDAO routeDAO;
+        public DeleteRouteAsyncTask(RouteDAO routeDAO) {
+            this.routeDAO = routeDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Route... routes) {
+            routeDAO.delete(routes[0]);
+            return  null;
+        }
+    }
+
+    public  void deleteSession(Session session){
+        new DeleteSessionAsyncTask(sessionDAO).execute(session);
+    }
+    private static  class DeleteSessionAsyncTask extends AsyncTask<Session,Void,Void> {
+        SessionDAO sessionDAO;
+        public DeleteSessionAsyncTask(SessionDAO sessionDAO) {
+            this.sessionDAO = sessionDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Session... sessions) {
+            sessionDAO.delete(sessions[0]);
+            return  null;
+        }
+    }
+
+    public  void deleteUser(User user){
+        new DeleteUserAsyncTask(userDAO).execute(user);
+    }
+    private static class DeleteUserAsyncTask extends AsyncTask<User,Void,Void> {
+        UserDAO userDAO;
+        public DeleteUserAsyncTask(UserDAO userDAO) {
+            this.userDAO = userDAO;
+        }
+
+        @Override
+        protected Void doInBackground(User... users) {
+            userDAO.delete(users[0]);
+            return  null;
+        }
+    }
     //endregion
 }
