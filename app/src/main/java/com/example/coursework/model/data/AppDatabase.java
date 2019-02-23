@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
         RouteTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public  abstract GoalAnnualDAO goalAnnualDAO();
+    public abstract GoalSeasonalDAO goalSeasonalDAO();
 
     private static AppDatabase instance;
 

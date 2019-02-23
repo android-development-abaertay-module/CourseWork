@@ -3,6 +3,7 @@ package com.example.coursework.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.time.LocalDateTime;
@@ -67,11 +68,13 @@ public abstract class Goal {
     }
 
     //-----------Constructor
+    public Goal() {
+    }
+    @Ignore
     public Goal(int iDUserFK) {
         userId = iDUserFK;
         goalAchieved = false;
     }
-    public Goal() {
-    }
+
 
 }
