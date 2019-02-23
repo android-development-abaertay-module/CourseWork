@@ -148,6 +148,117 @@ public class DaoRepository {
     //endregion
 
     //region [Updates]
+    public  void updateAnnualGoal(GoalAnnual goalAnnual){
+        new UpdateGoalAnnualAsyncTask(goalAnnualDAO).execute(goalAnnual);
+    }
+    private static  class UpdateGoalAnnualAsyncTask extends AsyncTask<GoalAnnual,Void,Void> {
+        GoalAnnualDAO anGoalDao;
+        public UpdateGoalAnnualAsyncTask(GoalAnnualDAO goalAnnualDAO) {
+            this.anGoalDao = goalAnnualDAO;
+        }
+
+        @Override
+        protected Void doInBackground(GoalAnnual... annuals) {
+            anGoalDao.update(annuals[0]);
+            return  null;
+        }
+    }
+
+    public  void updateSeasonalGoal(GoalSeasonal goalSeasonal){
+        new UpdateGoalSeasonalAsyncTask(goalSeasonalDAO).execute(goalSeasonal);
+    }
+    private static  class UpdateGoalSeasonalAsyncTask extends AsyncTask<GoalSeasonal,Void,Void> {
+        GoalSeasonalDAO seasonGoalDao;
+        public UpdateGoalSeasonalAsyncTask(GoalSeasonalDAO goalSeasonalDAO) {
+            this.seasonGoalDao = goalSeasonalDAO;
+        }
+
+        @Override
+        protected Void doInBackground(GoalSeasonal... annuals) {
+            seasonGoalDao.update(annuals[0]);
+            return  null;
+        }
+    }
+
+    public  void updateWeeklyGoal(GoalWeekly goalWeekly){
+        new UpdateGoalWeeklyAsyncTask(goalWeeklyDAO).execute(goalWeekly);
+    }
+    private static  class UpdateGoalWeeklyAsyncTask extends AsyncTask<GoalWeekly,Void,Void> {
+        GoalWeeklyDAO goalWeeklyDAO;
+        public UpdateGoalWeeklyAsyncTask(GoalWeeklyDAO goalWeeklyDAO) {
+            this.goalWeeklyDAO = goalWeeklyDAO;
+        }
+
+        @Override
+        protected Void doInBackground(GoalWeekly... weeklyGoal) {
+            goalWeeklyDAO.update(weeklyGoal[0]);
+            return  null;
+        }
+    }
+
+    public  void updateLogbook(Logbook logbook){
+        new UpdateLogbookAsyncTask(logbookDAO).execute(logbook);
+    }
+    private static  class UpdateLogbookAsyncTask extends AsyncTask<Logbook,Void,Void> {
+        LogbookDAO logbookDAO;
+        public UpdateLogbookAsyncTask(LogbookDAO logbookDAO) {
+            this.logbookDAO = logbookDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Logbook... logbooks) {
+            logbookDAO.update(logbooks[0]);
+            return  null;
+        }
+    }
+
+    public  void updateRoute(Route route){
+        new UpdateRouteAsyncTask(routeDAO).execute(route);
+    }
+    private static  class UpdateRouteAsyncTask extends AsyncTask<Route,Void,Void> {
+        RouteDAO routeDAO;
+        public UpdateRouteAsyncTask(RouteDAO routeDAO) {
+            this.routeDAO = routeDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Route... routes) {
+            routeDAO.update(routes[0]);
+            return  null;
+        }
+    }
+
+    public  void updateSession(Session session){
+        new UpdateSessionAsyncTask(sessionDAO).execute(session);
+    }
+    private static  class UpdateSessionAsyncTask extends AsyncTask<Session,Void,Void> {
+        SessionDAO sessionDAO;
+        public UpdateSessionAsyncTask(SessionDAO sessionDAO) {
+            this.sessionDAO = sessionDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Session... sessions) {
+            sessionDAO.update(sessions[0]);
+            return  null;
+        }
+    }
+
+    public  void updateUser(User user){
+        new UpdateUserAsyncTask(userDAO).execute(user);
+    }
+    private static class UpdateUserAsyncTask extends AsyncTask<User,Void,Void> {
+        UserDAO userDAO;
+        public UpdateUserAsyncTask(UserDAO userDAO) {
+            this.userDAO = userDAO;
+        }
+
+        @Override
+        protected Void doInBackground(User... users) {
+            userDAO.update(users[0]);
+            return  null;
+        }
+    }
 
     //endregion
     //region [Deletes]
