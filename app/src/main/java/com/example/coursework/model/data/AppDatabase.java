@@ -6,6 +6,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -69,8 +70,25 @@ public abstract class AppDatabase extends RoomDatabase {
             Log.d("gwyd","Room database created successfully");
             LocalDateTime today = LocalDateTime.now();
 
+            //TODO: sort out initial test data once models setup
             GoalAnnual test = new GoalAnnual(1, Grades.FIVE_A,Grades.FIVE_A,Grades.FIVE_B,Grades.FIVE_B,today);
+            new InitialDataAsyncTask(instance).execute();
             instance.goalAnnualDAO().insert(test);
         }
     };
+    private static class InitialDataAsyncTask extends AsyncTask<Void,Void,Void> {
+        private GoalAnnualDAO goalAnnualDAO;
+        private GoalSeasonalDAO goalSeasonalDAO;
+
+        public InitialDataAsyncTask(AppDatabase appDatabase) {
+            goalAnnualDAO = appDatabase.goalAnnualDAO();
+            goalSeasonalDAO = appDatabase.goalSeasonalDAO();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            return null;
+        }
+    }
 }

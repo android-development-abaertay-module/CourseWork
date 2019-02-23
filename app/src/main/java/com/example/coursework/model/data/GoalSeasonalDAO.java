@@ -20,9 +20,9 @@ public interface GoalSeasonalDAO {
     @Delete
     void delete(GoalSeasonal goalAnnual);
 
-    @Query("SELECT * FROM GoalSeasonal")
-    LiveData<List<GoalSeasonal>> getAllSeasonalGoals();
-
     @Query("SELECT * FROM GoalSeasonal WHERE userId ==:userId")
     LiveData<List<GoalSeasonal>> getAllSeasonalGoalsForUser(int userId);
+
+    @Query("SELECT * FROM GoalSeasonal WHERE userId ==:userId AND goalAchieved = 0 LIMIT 1")
+    LiveData<GoalSeasonal> getCurrentSeasonalGoalsForUser(int userId);
 }
