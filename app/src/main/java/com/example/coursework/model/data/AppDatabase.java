@@ -44,6 +44,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract LogbookDAO logbookDAO();
     public abstract RouteDAO routeDAO();
     public abstract SessionDAO sessionDAO();
+    public abstract UserDAO userDAO();
 
     private static AppDatabase instance;
 
@@ -86,6 +87,7 @@ public abstract class AppDatabase extends RoomDatabase {
         private LogbookDAO logbookDAO;
         private RouteDAO routeDAO;
         private SessionDAO sessionDAO;
+        private UserDAO userDAO;
 
         public InitialDataAsyncTask(AppDatabase appDatabase) {
             goalAnnualDAO = appDatabase.goalAnnualDAO();
@@ -94,6 +96,7 @@ public abstract class AppDatabase extends RoomDatabase {
             logbookDAO = appDatabase.logbookDAO();
             routeDAO = appDatabase.routeDAO();
             sessionDAO = appDatabase.sessionDAO();
+            userDAO = appDatabase.userDAO();
         }
 
         @Override
