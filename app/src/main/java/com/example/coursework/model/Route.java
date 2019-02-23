@@ -3,8 +3,12 @@ package com.example.coursework.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
 
+import com.example.coursework.model.data.converters.StyleConverter;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
@@ -20,7 +24,7 @@ public  class Route
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
-    @ColumnInfo(name = "sessionId")
+    @ColumnInfo(name = "sessionId", index = true)
     private int sessionId;
     @ColumnInfo(name = "styleDone")
     private StyleDone styleDone;
@@ -83,6 +87,12 @@ public  class Route
     }
 
     //------Constructor
+
+    public Route(){
+
+    }
+
+    @Ignore
     public Route(int sessionIDFK, Grades grade,RouteType routeType, StyleDone styleDone, LocalDateTime dateAndtime)
     {
         this.grade = grade;

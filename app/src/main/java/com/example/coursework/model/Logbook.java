@@ -6,6 +6,7 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -17,7 +18,7 @@ public class Logbook
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
-    @ColumnInfo(name = "userId")
+    @ColumnInfo(name = "userId", index = true)
     private int userId;
     @Ignore
     private ArrayList<Session> sessionLog;
@@ -53,6 +54,10 @@ public class Logbook
     }
 
     //----Constructor
+    public Logbook(){
+
+    }
+    @Ignore
     public Logbook(int iDUserFK)
     {
         userId = iDUserFK;

@@ -65,6 +65,9 @@ public class User
     }
 
     //-----Constructor
+    public User() {
+    }
+    @Ignore
     public User(String  userName)
     {
         this.userName = userName;
@@ -73,11 +76,5 @@ public class User
         seasonalGoal = new GoalSeasonal();
         annualGoal = new GoalAnnual();
     }
-
-    public User()
-    {
-    }
-
-
     //-----Methods
 }

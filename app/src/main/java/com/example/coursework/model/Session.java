@@ -18,7 +18,7 @@ public class Session
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
-    @ColumnInfo(name = "logbookId")
+    @ColumnInfo(name = "logbookId", index = true)
     private int logbookId;
 
     @ColumnInfo(name = "startTime")
@@ -64,6 +64,10 @@ public class Session
     }
 
     //---Constructor
+    public Session(){
+
+    }
+    @Ignore
     public Session(LocalDateTime startTime, int idLogbookFK)
     {
         logbookId = idLogbookFK;

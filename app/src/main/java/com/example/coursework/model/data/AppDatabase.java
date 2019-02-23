@@ -1,13 +1,25 @@
-package com.example.coursework.model;
+package com.example.coursework.model.data;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.coursework.model.GoalAnnual;
+import com.example.coursework.model.GoalSeasonal;
+import com.example.coursework.model.GoalWeekly;
+import com.example.coursework.model.Logbook;
+import com.example.coursework.model.Route;
+import com.example.coursework.model.Session;
+import com.example.coursework.model.User;
+import com.example.coursework.model.data.converters.GradeConverter;
+import com.example.coursework.model.data.converters.LocalDateTimeConverter;
+import com.example.coursework.model.data.converters.RouteTypeConverter;
+import com.example.coursework.model.data.converters.StyleConverter;
 import com.example.coursework.model.enums.Grades;
 
 import java.time.LocalDateTime;
@@ -20,6 +32,10 @@ import java.time.LocalDateTime;
         Route.class,
         Session.class,
         User.class}, version = 1)
+@TypeConverters({GradeConverter.class,
+        StyleConverter.class,
+        LocalDateTimeConverter.class,
+        RouteTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public  abstract GoalAnnualDAO goalAnnualDAO();
 
