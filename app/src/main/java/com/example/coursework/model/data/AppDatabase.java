@@ -41,6 +41,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public  abstract GoalAnnualDAO goalAnnualDAO();
     public abstract GoalSeasonalDAO goalSeasonalDAO();
     public abstract GoalWeeklyDAO goalWeeklyDAO();
+    public abstract LogbookDAO logbookDAO();
 
     private static AppDatabase instance;
 
@@ -81,11 +82,13 @@ public abstract class AppDatabase extends RoomDatabase {
         private GoalAnnualDAO goalAnnualDAO;
         private GoalSeasonalDAO goalSeasonalDAO;
         private GoalWeeklyDAO goalWeeklyDAO;
+        private LogbookDAO logbookDAO;
 
         public InitialDataAsyncTask(AppDatabase appDatabase) {
             goalAnnualDAO = appDatabase.goalAnnualDAO();
             goalSeasonalDAO = appDatabase.goalSeasonalDAO();
             goalWeeklyDAO = appDatabase.goalWeeklyDAO();
+            logbookDAO = appDatabase.logbookDAO();
         }
 
         @Override
