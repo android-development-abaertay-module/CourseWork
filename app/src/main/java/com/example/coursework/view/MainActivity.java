@@ -1,9 +1,10 @@
-package com.example.coursework;
+package com.example.coursework.view;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.coursework.R;
 import com.example.coursework.viewmodel.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity {
