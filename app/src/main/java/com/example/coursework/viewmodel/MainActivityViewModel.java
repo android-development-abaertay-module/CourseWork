@@ -15,10 +15,20 @@ public class MainActivityViewModel extends AndroidViewModel {
     private DaoRepository daoRepository;
     private LiveData<List<User>> users;
 
+
+    public LiveData<List<User>> getUsers() {
+        if (users == null){
+            updateUsersList();
+        }
+        return users;
+    }
+
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
         daoRepository = new DaoRepository(application);
-        users = daoRepository.getAllUsers();
+        users = updateUsersList();
     }
-
+    public LiveData<List<User>> updateUsersList(){
+       return daoRepository.getAllUsers();
+    }
 }

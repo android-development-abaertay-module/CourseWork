@@ -12,17 +12,18 @@ import com.example.coursework.R;
 import com.example.coursework.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class UsersAdapter extends ArrayAdapter {
+public class UsersAdapter extends ArrayAdapter<User> {
 
-    public UsersAdapter(Context context, ArrayList<User> users) {
+    public UsersAdapter(Context context, List<User> users) {
         super(context, 0, users);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        User user = (User) getItem(position);
+        User user = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.user_list_item, parent, false);
@@ -34,4 +35,5 @@ public class UsersAdapter extends ArrayAdapter {
         // Return the completed view to render on screen
         return convertView;
     }
+
 }
