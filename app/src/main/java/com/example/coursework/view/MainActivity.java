@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.coursework.R;
@@ -16,11 +17,14 @@ import com.example.coursework.viewmodel.MainActivityViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.PendingIntent.getActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     MainActivityViewModel mainActivityViewModel;
     ListView usersLV;
     UsersAdapter userAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,26 +33,15 @@ public class MainActivity extends AppCompatActivity {
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         usersLV = findViewById(R.id.usersLV);
 
-        ArrayList<User> users = (ArrayList<User>)mainActivityViewModel.getUsers().getValue();
-        if (users != null){
-            userAdapter = new UsersAdapter(this,users);
-            usersLV.setAdapter(userAdapter);
-        }else{
-            Log.d("gwyd","user list was null");
-            userAdapter = new UsersAdapter(this,new ArrayList<User>());
-            usersLV.setAdapter(userAdapter);
-        }
-
-
         mainActivityViewModel.getUsers().observe(this, new Observer<List<User>>() {
             @Override
             public void onChanged(@Nullable List<User> users) {
                 if(users != null) {
-                    userAdapter.setUsers(users);
-                }else {
-                    Log.d("gwyd","no users found in db");
-                    userAdapter.setUsers(new ArrayList<User>());
+                    userAdapter =new UsersAdapter(getApplicationContext(), users);
+                    usersLV.setAdapter(userAdapter);
                 }
+                userAdapter.notifyDataSetChanged();
+
             }
         });
     }
