@@ -54,6 +54,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (instance == null){
             //fallback to destructive migration. delete then recreate
             //Singleton Design pattern
+            Log.d("gwyd","initializing database");
             instance = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class, "app_database")
                     .fallbackToDestructiveMigration()
                     .addCallback(callback)
@@ -74,7 +75,6 @@ public abstract class AppDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             Log.d("gwyd","Room database created successfully");
-            LocalDateTime today = LocalDateTime.now();
 
             //TODO: sort out initial test data once models setup
             new InitialDataAsyncTask(instance).execute();
@@ -136,6 +136,7 @@ public abstract class AppDatabase extends RoomDatabase {
             cRouteOne.setId(routeDAO.insert(cRouteOne));
             cRouteTwo.setId(routeDAO.insert(cRouteTwo));
             cRouteThree.setId(routeDAO.insert(cRouteThree));
+            Log.d("gwyd","initial data setup completed");
             return null;
         }
     }

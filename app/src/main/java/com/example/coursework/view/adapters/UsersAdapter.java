@@ -15,6 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsersAdapter extends ArrayAdapter<User> {
+    private List<User> users;
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+        notifyDataSetChanged();
+    }
 
     public UsersAdapter(Context context, List<User> users) {
         super(context, 0, users);
@@ -35,5 +41,4 @@ public class UsersAdapter extends ArrayAdapter<User> {
         // Return the completed view to render on screen
         return convertView;
     }
-
 }

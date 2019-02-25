@@ -381,7 +381,9 @@ public class DaoRepository {
 
     //region [Users Get]
     public LiveData<List<User>> getAllUsers() {
-        return userDAO.getAllUsers();
+        LiveData<List<User>> users = userDAO.getAllUsers();
+        List<User> lit = users.getValue();
+        return users;
     }
     public LiveData<User> getUserById(long id) {
         return userDAO.getUserById(id);

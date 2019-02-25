@@ -22,13 +22,12 @@ public class MainActivityViewModel extends AndroidViewModel {
         }
         return users;
     }
-
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
         daoRepository = new DaoRepository(application);
         users = updateUsersList();
     }
     public LiveData<List<User>> updateUsersList(){
-       return daoRepository.getAllUsers();
+        return daoRepository.getAllUsers();
     }
 }
