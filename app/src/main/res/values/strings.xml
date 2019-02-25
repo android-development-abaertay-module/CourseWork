@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CourseWork</string>
+    <string name="create_new_user_btn">Create New User</string>
 </resources>

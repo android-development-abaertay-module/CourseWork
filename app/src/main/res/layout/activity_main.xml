@@ -8,10 +8,12 @@
     android:orientation="vertical"
     tools:context=".view.MainActivity">
     <Button
-        android:id="@+id/AddNew"
+        android:id="@+id/addNewUserBtn"
+        android:onClick="addNewUserBtn_Click"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create New User"/>
+        android:text="@string/create_new_user_btn"
+        android:layout_marginBottom="10dp"/>
     <ListView
         android:id="@+id/usersLV"
         android:layout_width="match_parent"
