@@ -14,11 +14,11 @@ import java.util.List;
 @Dao
 public interface GoalSeasonalDAO {
     @Insert
-    long  insert(GoalSeasonal goalAnnual);
+    long  insert(GoalSeasonal goalSeasonal);
     @Update
-    void update(GoalSeasonal goalAnnual);
+    void update(GoalSeasonal goalSeasonal);
     @Delete
-    void delete(GoalSeasonal goalAnnual);
+    void delete(GoalSeasonal goalSeasonal);
 
     @Query("SELECT * FROM GoalSeasonal WHERE userId ==:userId")
     LiveData<List<GoalSeasonal>> getAllSeasonalGoalsForUser(int userId);
