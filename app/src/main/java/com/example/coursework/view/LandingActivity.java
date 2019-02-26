@@ -75,15 +75,17 @@ public class LandingActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case ADD_USER_REQUEST:
-                User user = new User();
-                user.setUserName(data.getStringExtra(AddOrEditUserActivity.USERNAME));
-                //create user, get id then create logbook for user
-                user.setId(mainActivityViewModel.getDaoRepository().insertUser(user));
-                //create user logbook
-                Logbook logbook = new Logbook(user.getId());
-                logbook.setId(mainActivityViewModel.getDaoRepository().insertLogbook(logbook));
-                //refresh loaded list
-                mainActivityViewModel.updateUsersList();
+                if (resultCode ==  RESULT_OK){
+                    User user = new User();
+                    user.setUserName(data.getStringExtra(AddOrEditUserActivity.USERNAME));
+                    //create user, get id then create logbook for user
+                    user.setId(mainActivityViewModel.getDaoRepository().insertUser(user));
+                    //create user logbook
+                    Logbook logbook = new Logbook(user.getId());
+                    logbook.setId(mainActivityViewModel.getDaoRepository().insertLogbook(logbook));
+                    //refresh loaded list
+                    mainActivityViewModel.updateUsersList();
+                }
                 break;
             case EDIT_USER_REQUEST:
                 break;
