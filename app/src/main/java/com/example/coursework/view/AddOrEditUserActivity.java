@@ -2,6 +2,7 @@ package com.example.coursework.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,10 +20,10 @@ import static android.app.PendingIntent.getActivity;
 
 public class AddOrEditUserActivity extends AppCompatActivity {
 
+    public static final String USERNAME = "username";
     AddOrEditUserViewModel addOrEditUserViewModel;
     EditText usernameTxt;
     List<User> allUsers;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +40,7 @@ public class AddOrEditUserActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     public void addOrEditUserBtn_Click(View view) {
@@ -52,7 +54,16 @@ public class AddOrEditUserActivity extends AppCompatActivity {
             if(usr.getUserName().contains(user.getUserName())){
                 Toast.makeText(this,"Username Already Used",Toast.LENGTH_LONG).show();
                 return;
+            }else{
+                addOrEditUser();
             }
         }
+    }
+
+    private void addOrEditUser() {
+        Intent intent=new Intent();
+        intent.putExtra(USERNAME,usernameTxt.getText().toString());
+        setResult(RESULT_OK,intent);
+        finish();
     }
 }

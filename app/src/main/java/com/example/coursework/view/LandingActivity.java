@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.coursework.R;
+import com.example.coursework.model.Logbook;
 import com.example.coursework.model.User;
 import com.example.coursework.view.adapters.UsersAdapter;
+import com.example.coursework.viewmodel.AddOrEditUserViewModel;
 import com.example.coursework.viewmodel.MainActivityViewModel;
 
 import java.util.List;
@@ -62,6 +64,10 @@ public class LandingActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case ADD_USER_REQUEST:
+                User user = new User();
+                user.setUserName(data.getStringExtra(AddOrEditUserActivity.USERNAME));
+                //create user, get id then create logbook for user
+                Logbook logbook = new Logbook();
                 break;
             case EDIT_USER_REQUEST:
                 break;
