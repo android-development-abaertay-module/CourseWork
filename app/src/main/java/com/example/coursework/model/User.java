@@ -1,9 +1,13 @@
 package com.example.coursework.model;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+
+import com.example.coursework.model.data.DaoRepository;
+import com.example.coursework.model.data.UserDAO;
 
 @Entity(tableName = "User")
 public class User
@@ -66,6 +70,7 @@ public class User
 
     //-----Constructor
     public User() {
+
     }
     @Ignore
     public User(String  userName)
@@ -77,4 +82,5 @@ public class User
         annualGoal = new GoalAnnual();
     }
     //-----Methods
+
 }

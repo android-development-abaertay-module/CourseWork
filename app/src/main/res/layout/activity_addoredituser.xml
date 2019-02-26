@@ -6,18 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.MainActivity">
+    tools:context=".view.AddOrEditUserActivity">
     <Button
         android:id="@+id/addNewUserBtn"
-        android:onClick="addNewUserBtn_Click"
+        android:onClick="addOrEditUserBtn_Click"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_new_user_btn"
+        android:text="@string/submit_btn"
         android:layout_marginBottom="10dp"/>
-    <ListView
-        android:id="@+id/usersLV"
+    <EditText
+        android:id="@+id/userNameTxt"
+        android:hint="User Name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical">
-    </ListView>
+        android:layout_height="wrap_content">
+    </EditText>
 </LinearLayout>

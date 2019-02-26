@@ -18,7 +18,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<List<User>> getUsers() {
         if (users == null){
-            updateUsersList();
+           users = updateUsersList();
         }
         return users;
     }

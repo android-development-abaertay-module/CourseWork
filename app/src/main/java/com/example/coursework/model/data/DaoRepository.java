@@ -3,7 +3,6 @@ package com.example.coursework.model.data;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.coursework.model.GoalAnnual;
 import com.example.coursework.model.GoalSeasonal;
@@ -388,5 +387,9 @@ public class DaoRepository {
     public LiveData<User> getUserById(long id) {
         return userDAO.getUserById(id);
     }
+    public LiveData<User> getUserByName(String name) {
+         return userDAO.getUserByName(name);
+    }
+
     //endregion
 }
