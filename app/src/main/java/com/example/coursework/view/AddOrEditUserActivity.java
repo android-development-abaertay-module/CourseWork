@@ -54,10 +54,9 @@ public class AddOrEditUserActivity extends AppCompatActivity {
             if(usr.getUserName().contains(user.getUserName())){
                 Toast.makeText(this,"Username Already Used",Toast.LENGTH_LONG).show();
                 return;
-            }else{
-                addOrEditUser();
             }
         }
+        addOrEditUser();
     }
 
     private void addOrEditUser() {

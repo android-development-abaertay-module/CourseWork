@@ -83,18 +83,21 @@ public class DaoRepository {
         }
     }
 
-    public  void insertLogbook(Logbook logbook){
-        new InsertLogbookAsyncTask(logbookDAO).execute(logbook);
+    public  long insertLogbook(Logbook logbook){
+        InsertLogbookAsyncTask task = new InsertLogbookAsyncTask(logbookDAO);
+        task.execute(logbook);
+        return task.newLogbookId;
     }
     private static  class InsertLogbookAsyncTask extends AsyncTask<Logbook,Void,Void> {
         LogbookDAO logbookDAO;
+        long newLogbookId;
         public InsertLogbookAsyncTask(LogbookDAO logbookDAO) {
             this.logbookDAO = logbookDAO;
         }
 
         @Override
         protected Void doInBackground(Logbook... logbooks) {
-            logbookDAO.insert(logbooks[0]);
+            newLogbookId = logbookDAO.insert(logbooks[0]);
             return  null;
         }
     }
@@ -131,19 +134,22 @@ public class DaoRepository {
         }
     }
 
-    public  void insertUser(User user){
-        new InsertUserAsyncTask(userDAO).execute(user);
+    public  long insertUser(User user){
+        InsertUserAsyncTask task = new InsertUserAsyncTask(userDAO);
+         task.execute(user);
+         return task.newUserId;
     }
-    private static class InsertUserAsyncTask extends AsyncTask<User,Void,Void> {
+    private static class InsertUserAsyncTask extends AsyncTask<User,Void,Long> {
         UserDAO userDAO;
+        long newUserId;
         public InsertUserAsyncTask(UserDAO userDAO) {
             this.userDAO = userDAO;
         }
 
         @Override
-        protected Void doInBackground(User... users) {
-            userDAO.insert(users[0]);
-            return  null;
+        protected Long doInBackground(User... users) {
+           newUserId = userDAO.insert(users[0]);
+            return  newUserId;
         }
     }
 

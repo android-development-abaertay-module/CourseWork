@@ -15,6 +15,9 @@ public class MainActivityViewModel extends AndroidViewModel {
     private DaoRepository daoRepository;
     private LiveData<List<User>> users;
 
+    public DaoRepository getDaoRepository() {
+        return daoRepository;
+    }
 
     public LiveData<List<User>> getUsers() {
         if (users == null){

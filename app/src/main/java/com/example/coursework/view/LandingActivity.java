@@ -1,5 +1,6 @@
 package com.example.coursework.view;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -10,7 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.coursework.R;
 import com.example.coursework.model.Logbook;
@@ -40,7 +45,14 @@ public class LandingActivity extends AppCompatActivity {
 
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         usersLV = findViewById(R.id.usersLV);
-
+        usersLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LinearLayout ll = (LinearLayout) view;
+                TextView tv = ll.findViewById(R.id.userLvItemTV);
+                Toast.makeText(getApplicationContext(),tv.getText().toString() + "  " + tv.getTag(),Toast.LENGTH_SHORT).show();
+            }
+        });
         mainActivityViewModel.getUsers().observe(this, new Observer<List<User>>() {
             @Override
             public void onChanged(@Nullable List<User> users) {
@@ -49,7 +61,6 @@ public class LandingActivity extends AppCompatActivity {
                     usersLV.setAdapter(userAdapter);
                 }
                 userAdapter.notifyDataSetChanged();
-
             }
         });
     }
@@ -67,7 +78,12 @@ public class LandingActivity extends AppCompatActivity {
                 User user = new User();
                 user.setUserName(data.getStringExtra(AddOrEditUserActivity.USERNAME));
                 //create user, get id then create logbook for user
-                Logbook logbook = new Logbook();
+                user.setId(mainActivityViewModel.getDaoRepository().insertUser(user));
+                //create user logbook
+                Logbook logbook = new Logbook(user.getId());
+                logbook.setId(mainActivityViewModel.getDaoRepository().insertLogbook(logbook));
+                //refresh loaded list
+                mainActivityViewModel.updateUsersList();
                 break;
             case EDIT_USER_REQUEST:
                 break;
