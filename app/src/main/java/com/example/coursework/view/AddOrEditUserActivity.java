@@ -3,6 +3,7 @@ package com.example.coursework.view;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,9 +22,12 @@ import static android.app.PendingIntent.getActivity;
 public class AddOrEditUserActivity extends AppCompatActivity {
 
     public static final String USERNAME = "username";
+    public static final String USER_ID = "USER_ID";
+
     AddOrEditUserViewModel addOrEditUserViewModel;
     EditText usernameTxt;
     List<User> allUsers;
+    long userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +44,19 @@ public class AddOrEditUserActivity extends AppCompatActivity {
             }
         });
 
-
+        Intent intent = getIntent();
+        if (intent.hasExtra(USER_ID)){
+            setTitle("Edit User");
+            usernameTxt.setText(intent.getStringExtra(USERNAME));
+            userID = intent.getLongExtra(USER_ID,0);
+        }else{
+            setTitle("Add User");
+        }
     }
 
     public void addOrEditUserBtn_Click(View view) {
         User user = new User(usernameTxt.getText().toString());
+        //Validate
         if (user.getUserName().equals("")){
             Toast.makeText(this,"Username Required",Toast.LENGTH_LONG).show();
             return;
@@ -63,6 +75,7 @@ public class AddOrEditUserActivity extends AppCompatActivity {
     private void addOrEditUser() {
         Intent intent=new Intent();
         intent.putExtra(USERNAME,usernameTxt.getText().toString());
+        intent.putExtra(USER_ID,userID);
         setResult(RESULT_OK,intent);
         finish();
     }

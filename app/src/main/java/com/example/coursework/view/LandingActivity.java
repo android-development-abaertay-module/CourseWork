@@ -26,6 +26,9 @@ import com.example.coursework.viewmodel.LandingActivityViewModel;
 
 import java.util.List;
 
+import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
+import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
+
 public class LandingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private static final int ADD_USER_REQUEST = 1;
@@ -76,6 +79,9 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
                 }
                 break;
             case EDIT_USER_REQUEST:
+                if (resultCode == RESULT_OK){
+                    editUser(data);
+                }
                 break;
             default:
                 break;
@@ -114,6 +120,10 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
 
         switch (menuItemName){
             case "Edit":
+                Intent intent = new Intent(LandingActivity.this,AddOrEditUserActivity.class);
+                intent.putExtra(USERNAME,selectedUser.getUserName());
+                intent.putExtra(USER_ID,selectedUser.getId());
+                startActivityForResult(intent, EDIT_USER_REQUEST);
                 break;
             case "Delete":
                 landingActivityViewModel.getDaoRepository().deleteUser(selectedUser);
@@ -126,7 +136,7 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
     }
     private void createNewUser(@Nullable Intent data) {
         User user = new User();
-        user.setUserName(data.getStringExtra(AddOrEditUserActivity.USERNAME));
+        user.setUserName(data.getStringExtra(USERNAME));
         //create user, get id then create logbook for user
         user.setId(landingActivityViewModel.getDaoRepository().insertUser(user));
         //create user logbook
@@ -134,5 +144,23 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         logbook.setId(landingActivityViewModel.getDaoRepository().insertLogbook(logbook));
         //refresh loaded list
         landingActivityViewModel.updateUsersList();
+    }
+    private void editUser(@Nullable Intent data) {
+        User user = new User();
+        user.setUserName(data.getStringExtra(USERNAME));
+        //create user, get id then create logbook for user
+        long id = data.getLongExtra(USER_ID,0);
+        if (id == 0){
+            Toast.makeText(this,"error Updating User. Please contact support",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        user.setId(id);
+        try{
+            landingActivityViewModel.getDaoRepository().updateUser(user);
+            //refresh loaded list
+            landingActivityViewModel.updateUsersList();
+        }catch (Exception ex){
+            Toast.makeText(this,"error Updating User. Please contact support",Toast.LENGTH_SHORT).show();
+        }
     }
 }
