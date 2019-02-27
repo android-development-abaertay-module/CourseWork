@@ -2,4 +2,8 @@
     <string name="app_name">CourseWork</string>
     <string name="submit_btn">Submit</string>
     <string name="title_activity_landing">LandingActivity</string>
+    <string-array name="userContextMenu">
+        <item>Edit</item>
+        <item>Delete</item>
+    </string-array>
 </resources>

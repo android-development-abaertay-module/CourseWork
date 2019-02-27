@@ -11,7 +11,7 @@ import com.example.coursework.model.data.DaoRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivityViewModel extends AndroidViewModel {
+public class LandingActivityViewModel extends AndroidViewModel {
     private DaoRepository daoRepository;
     private LiveData<List<User>> users;
 
@@ -25,7 +25,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         }
         return users;
     }
-    public MainActivityViewModel(@NonNull Application application) {
+    public LandingActivityViewModel(@NonNull Application application) {
         super(application);
         daoRepository = new DaoRepository(application);
         users = updateUsersList();

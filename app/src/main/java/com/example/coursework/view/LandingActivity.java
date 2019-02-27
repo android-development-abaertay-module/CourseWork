@@ -1,6 +1,5 @@
 package com.example.coursework.view;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -9,7 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -21,18 +22,19 @@ import com.example.coursework.R;
 import com.example.coursework.model.Logbook;
 import com.example.coursework.model.User;
 import com.example.coursework.view.adapters.UsersAdapter;
-import com.example.coursework.viewmodel.AddOrEditUserViewModel;
-import com.example.coursework.viewmodel.MainActivityViewModel;
+import com.example.coursework.viewmodel.LandingActivityViewModel;
 
 import java.util.List;
 
-public class LandingActivity extends AppCompatActivity {
+public class LandingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private static final int ADD_USER_REQUEST = 1;
     private static final int EDIT_USER_REQUEST = 2;
-    MainActivityViewModel mainActivityViewModel;
+    LandingActivityViewModel landingActivityViewModel;
     ListView usersLV;
     UsersAdapter userAdapter;
+    List<User> allUsers;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,23 +44,17 @@ public class LandingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-
-        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        landingActivityViewModel = ViewModelProviders.of(this).get(LandingActivityViewModel.class);
         usersLV = findViewById(R.id.usersLV);
-        usersLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LinearLayout ll = (LinearLayout) view;
-                TextView tv = ll.findViewById(R.id.userLvItemTV);
-                Toast.makeText(getApplicationContext(),tv.getText().toString() + "  " + tv.getTag(),Toast.LENGTH_SHORT).show();
-            }
-        });
-        mainActivityViewModel.getUsers().observe(this, new Observer<List<User>>() {
+        usersLV.setOnItemClickListener(this);
+        registerForContextMenu(usersLV);
+        landingActivityViewModel.getUsers().observe(this, new Observer<List<User>>() {
             @Override
             public void onChanged(@Nullable List<User> users) {
                 if(users != null) {
                     userAdapter =new UsersAdapter(getApplicationContext(), users);
                     usersLV.setAdapter(userAdapter);
+                    allUsers = users;
                 }
                 userAdapter.notifyDataSetChanged();
             }
@@ -76,15 +72,7 @@ public class LandingActivity extends AppCompatActivity {
         switch (requestCode){
             case ADD_USER_REQUEST:
                 if (resultCode ==  RESULT_OK){
-                    User user = new User();
-                    user.setUserName(data.getStringExtra(AddOrEditUserActivity.USERNAME));
-                    //create user, get id then create logbook for user
-                    user.setId(mainActivityViewModel.getDaoRepository().insertUser(user));
-                    //create user logbook
-                    Logbook logbook = new Logbook(user.getId());
-                    logbook.setId(mainActivityViewModel.getDaoRepository().insertLogbook(logbook));
-                    //refresh loaded list
-                    mainActivityViewModel.updateUsersList();
+                    createNewUser(data);
                 }
                 break;
             case EDIT_USER_REQUEST:
@@ -92,5 +80,59 @@ public class LandingActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (view.getId()){
+            case R.id.userListItemLL:
+                LinearLayout ll = (LinearLayout) view;
+                TextView tv = ll.findViewById(R.id.userLvItemTV);
+                Toast.makeText(getApplicationContext(),tv.getText().toString() + "  " + tv.getTag(),Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId()==R.id.usersLV) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle(allUsers.get(info.position).getUserName());
+            String[] menuItems = getResources().getStringArray(R.array.userContextMenu);
+            for (int i = 0; i<menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        String[] menuItems = getResources().getStringArray(R.array.userContextMenu);
+        String menuItemName = menuItems[menuItemIndex];
+        User selectedUser = allUsers.get(info.position);
+
+        switch (menuItemName){
+            case "Edit":
+                break;
+            case "Delete":
+                landingActivityViewModel.getDaoRepository().deleteUser(selectedUser);
+                //Refresh all users list
+                landingActivityViewModel.getDaoRepository().getAllUsers();
+                break;
+        }
+        Toast.makeText(this,selectedUser.getUserName(),Toast.LENGTH_SHORT).show();
+        return true;
+    }
+    private void createNewUser(@Nullable Intent data) {
+        User user = new User();
+        user.setUserName(data.getStringExtra(AddOrEditUserActivity.USERNAME));
+        //create user, get id then create logbook for user
+        user.setId(landingActivityViewModel.getDaoRepository().insertUser(user));
+        //create user logbook
+        Logbook logbook = new Logbook(user.getId());
+        logbook.setId(landingActivityViewModel.getDaoRepository().insertLogbook(logbook));
+        //refresh loaded list
+        landingActivityViewModel.updateUsersList();
     }
 }

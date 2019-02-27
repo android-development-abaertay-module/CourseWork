@@ -45,8 +45,9 @@ public class AddOrEditUserActivity extends AppCompatActivity {
 
     public void addOrEditUserBtn_Click(View view) {
         User user = new User(usernameTxt.getText().toString());
-        if (user.getUserName() ==""){
+        if (user.getUserName().equals("")){
             Toast.makeText(this,"Username Required",Toast.LENGTH_LONG).show();
+            return;
         }
         addOrEditUserViewModel.updateUserList();
 
