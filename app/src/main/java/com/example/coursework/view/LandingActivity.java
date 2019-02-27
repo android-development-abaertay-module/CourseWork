@@ -93,7 +93,12 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
             case R.id.userListItemLL:
                 LinearLayout ll = (LinearLayout) view;
                 TextView tv = ll.findViewById(R.id.userLvItemTV);
-                Toast.makeText(getApplicationContext(),tv.getText().toString() + "  " + tv.getTag(),Toast.LENGTH_SHORT).show();
+                //Go to Menu Activity
+                Intent intent = new Intent(LandingActivity.this,MenuActivity.class);
+                intent.putExtra(USER_ID,tv.getTag().toString());
+                intent.putExtra(USERNAME,tv.getText().toString());
+                startActivity(intent);
+
                 break;
         }
 
