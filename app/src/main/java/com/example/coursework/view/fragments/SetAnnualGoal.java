@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.coursework.R;
+import com.example.coursework.viewmodel.SetGoalsVM.SetAnnualGoalViewModel;
 
 public class SetAnnualGoal extends Fragment {
 

@@ -1,4 +1,4 @@
-package com.example.coursework.view.fragments;
+package com.example.coursework.viewmodel.SetGoalsVM;
 
 import android.arch.lifecycle.ViewModel;
 
