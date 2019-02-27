@@ -40,7 +40,6 @@ public class SetWeeklyGoal extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SetWeeklyGoalViewModel.class);
 
-        //
         hoursTrainingSpinner = getView().findViewById(R.id.hoursTrainingSpinner);
 
         numSportSpinner = getView().findViewById(R.id.numberOfSportSpinner);
