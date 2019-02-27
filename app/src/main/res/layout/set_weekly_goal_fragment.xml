@@ -57,7 +57,14 @@
             android:id="@+id/averageBoulderGradeSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
+        <TextView
+            android:id="@+id/createdOnTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/expiresOnTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

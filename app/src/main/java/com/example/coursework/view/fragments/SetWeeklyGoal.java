@@ -10,10 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.coursework.R;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetWeeklyGoalViewModel;
+
+import org.w3c.dom.Text;
 
 public class SetWeeklyGoal extends Fragment {
 
@@ -23,6 +26,8 @@ public class SetWeeklyGoal extends Fragment {
     Spinner numBoulderSpinner;
     Spinner avgSportSpinner;
     Spinner avgBoulderSpinner;
+    TextView createdOnTxt;
+    TextView expiresOnTxt;
 
 
     public static SetWeeklyGoal newInstance() {
@@ -49,6 +54,8 @@ public class SetWeeklyGoal extends Fragment {
 
         avgBoulderSpinner = getView().findViewById(R.id.averageBoulderGradeSpinner);
         avgBoulderSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        createdOnTxt = getView().findViewById(R.id.createdOnTxt);
+        expiresOnTxt = getView().findViewById(R.id.expiresOnTxt);
 
     }
 }
