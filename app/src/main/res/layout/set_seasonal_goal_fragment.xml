@@ -5,9 +5,45 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.SetSeasonalGoal">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello Seasonal" />
-
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/boulderOsGoalTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/boulder_onsight_goal"/>
+        <Spinner
+            android:id="@+id/boulderOsGoalSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/sportOsGoalTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sport_onsight_goal"/>
+        <Spinner
+            android:id="@+id/sportOsGoalSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/boulderWorkedGoalTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/boulder_worked_goal"/>
+        <Spinner
+            android:id="@+id/boulderWorkedGoalSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/sportWorkedGoalTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sport_worked_goal"/>
+        <Spinner
+            android:id="@+id/sportWorkedGoalSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 </FrameLayout>

@@ -5,9 +5,60 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.SetWeeklyGoal">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello Weekly" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/hoursTrainingTxt"
+            android:text="@string/hours_training"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/hoursTrainingSpinner"
+            android:entries="@array/hours_training_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/numberOfSportTxt"
+            android:text="@string/number_of_sport_routes_to_complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/numberOfSportSpinner"
+            android:entries="@array/number_routes_complete_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/numberOfBoulderTxt"
+            android:text="@string/number_of_boulder_problems_to_complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/numberOfBoulderSpinner"
+            android:entries="@array/number_routes_complete_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/averageSportGradeTxt"
+            android:text="@string/average_sport_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/averageSportGradeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/averageBoulderGradeTxt"
+            android:text="@string/average_boulder_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/averageBoulderGradeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
 
 </FrameLayout>

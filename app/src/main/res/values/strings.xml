@@ -6,6 +6,30 @@
         <item>Edit</item>
         <item>Delete</item>
     </string-array>
+    <string-array name="hours_training_options">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+        <item>15</item>
+        <item>20</item>
+    </string-array>
+    <string-array name="number_routes_complete_options">
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -20,4 +44,13 @@
     <string name="Communicate">Share</string>
     <string name="share">Share</string>
     <string name="send">Send</string>
+    <string name="boulder_onsight_goal">Boulder Onsight Goal</string>
+    <string name="sport_onsight_goal">Sport Onsight Goal</string>
+    <string name="boulder_worked_goal">Boulder Worked Goal</string>
+    <string name="sport_worked_goal">Sport Worked Goal</string>
+    <string name="average_boulder_grade">Average Boulder Grade</string>
+    <string name="average_sport_grade">Average Sport Grade</string>
+    <string name="number_of_boulder_problems_to_complete">Number of Boulder Problems to Complete</string>
+    <string name="number_of_sport_routes_to_complete">Number of Sport Routes to Complete</string>
+    <string name="hours_training">Hours Training</string>
 </resources>
