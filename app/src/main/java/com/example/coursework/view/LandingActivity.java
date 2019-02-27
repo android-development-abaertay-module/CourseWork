@@ -141,9 +141,13 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         user.setId(landingActivityViewModel.getDaoRepository().insertUser(user));
         //create user logbook
         Logbook logbook = new Logbook(user.getId());
-        logbook.setId(landingActivityViewModel.getDaoRepository().insertLogbook(logbook));
-        //refresh loaded list
-        landingActivityViewModel.updateUsersList();
+        try{
+            logbook.setId(landingActivityViewModel.getDaoRepository().insertLogbook(logbook));
+            //refresh loaded list
+            landingActivityViewModel.updateUsersList();
+        }catch (Exception ex){
+            Toast.makeText(this,"Error Creating User. Please contact support",Toast.LENGTH_SHORT).show();
+        }
     }
     private void editUser(@Nullable Intent data) {
         User user = new User();
