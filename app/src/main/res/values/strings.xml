@@ -55,4 +55,5 @@
     <string name="hours_training">Hours Training</string>
     <string name="created_on">Created On</string>
     <string name="expires_on">Expires On</string>
+    <string name="set_goal_targets">Set  Targets</string>
 </resources>
