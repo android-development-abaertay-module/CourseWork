@@ -69,15 +69,15 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
             }
         }
 
-        numSportSpinner = getView().findViewById(R.id.numberOfSportSpinner);
-        numBoulderSpinner = getView().findViewById(R.id.numberOfBoulderSpinner);
-        avgSportSpinner = getView().findViewById(R.id.averageSportGradeSpinner);
+        numSportSpinner = getView().findViewById(R.id.weeklyNumberOfSportSpinner);
+        numBoulderSpinner = getView().findViewById(R.id.weeklyNumberOfBoulderSpinner);
+        avgSportSpinner = getView().findViewById(R.id.weeklyAverageSportGradeSpinner);
         avgSportSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
-        avgBoulderSpinner = getView().findViewById(R.id.averageBoulderGradeSpinner);
+        avgBoulderSpinner = getView().findViewById(R.id.weeklyAverageBoulderGradeSpinner);
         avgBoulderSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
-        createdOnTxt = getView().findViewById(R.id.createdOnTxt);
-        expiresOnTxt = getView().findViewById(R.id.expiresOnTxt);
+        createdOnTxt = getView().findViewById(R.id.weeklyCreatedOnTxt);
+        expiresOnTxt = getView().findViewById(R.id.weeklyExpiresOnTxt);
         resetWeeklyGoalBtn = getView().findViewById(R.id.resetWeeklyGoalBtn);
         resetWeeklyGoalBtn.setOnClickListener(this);
 

@@ -52,8 +52,8 @@ public class SetAnnualGoal extends Fragment {
 
         sportWorkedSpinner = getView().findViewById(R.id.annualSportWorkedGoalSpinner);
         sportWorkedSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
-        createdOnTxt = getView().findViewById(R.id.createdOnTxt);
-        expiresOnTxt = getView().findViewById(R.id.expiresOnTxt);
+        createdOnTxt = getView().findViewById(R.id.annualCreatedOnTxt);
+        expiresOnTxt = getView().findViewById(R.id.annualCreatedOnTxt);
     }
 
 }
