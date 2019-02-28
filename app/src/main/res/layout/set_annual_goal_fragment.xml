@@ -9,57 +9,64 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
-        android:id="@+id/boulderOsGoalTxt"
+        android:id="@+id/annualTitleTxt"
+        android:text="@string/set_goal_targets"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/annualBoulderOsGoalTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/boulder_onsight_goal"/>
     <Spinner
-        android:id="@+id/boulderOsGoalSpinner"
+        android:id="@+id/annualBoulderOsGoalSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/sportOsGoalTxt"
+        android:id="@+id/annualSportOsGoalTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/sport_onsight_goal"/>
     <Spinner
-        android:id="@+id/sportOsGoalSpinner"
+        android:id="@+id/annualSportOsGoalSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/boulderWorkedGoalTxt"
+        android:id="@+id/annualBoulderWorkedGoalTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/boulder_worked_goal"/>
     <Spinner
-        android:id="@+id/boulderWorkedGoalSpinner"
+        android:id="@+id/annualBoulderWorkedGoalSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/sportWorkedGoalTxt"
+        android:id="@+id/annualSportWorkedGoalTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/sport_worked_goal"/>
     <Spinner
-        android:id="@+id/sportWorkedGoalSpinner"
+        android:id="@+id/annualSportWorkedGoalSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/createdOnLabel"
+        android:id="@+id/annualCreatedOnLabel"
         android:text="@string/created_on"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:id="@+id/createdOnTxt"
+        android:id="@+id/annualCreatedOnTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:id="@+id/expiresOnLabel"
+        android:id="@+id/annualExpiresOnLabel"
         android:text="@string/expires_on"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:id="@+id/expiresOnTxt"
+        android:id="@+id/annualExpiresOnTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

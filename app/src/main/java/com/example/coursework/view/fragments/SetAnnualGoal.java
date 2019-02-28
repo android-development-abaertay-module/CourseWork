@@ -41,16 +41,16 @@ public class SetAnnualGoal extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SetAnnualGoalViewModel.class);
 
-        boulderOSSpinner = getView().findViewById(R.id.boulderOsGoalSpinner);
+        boulderOSSpinner = getView().findViewById(R.id.annualBoulderOsGoalSpinner);
         boulderOSSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
-        sportOsSpinner = getView().findViewById(R.id.sportOsGoalSpinner);
+        sportOsSpinner = getView().findViewById(R.id.annualSportOsGoalSpinner);
         sportOsSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
-        boulderWorkedSpinner = getView().findViewById(R.id.boulderWorkedGoalSpinner);
+        boulderWorkedSpinner = getView().findViewById(R.id.annualBoulderWorkedGoalSpinner);
         boulderWorkedSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
-        sportWorkedSpinner = getView().findViewById(R.id.sportWorkedGoalSpinner);
+        sportWorkedSpinner = getView().findViewById(R.id.annualSportWorkedGoalSpinner);
         sportWorkedSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
         createdOnTxt = getView().findViewById(R.id.createdOnTxt);
         expiresOnTxt = getView().findViewById(R.id.expiresOnTxt);
