@@ -13,7 +13,7 @@
             android:id="@+id/weeklyTitleTxt"
             android:text="@string/set_goal_targets"
             android:gravity="center"
-            android:textSize="14sp"
+            android:textSize="24sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView

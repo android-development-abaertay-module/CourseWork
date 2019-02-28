@@ -1,6 +1,9 @@
 package com.example.coursework.view.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,16 +12,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.coursework.R;
+import com.example.coursework.model.GoalSeasonal;
+import com.example.coursework.model.GoalWeekly;
+import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetSeasonalGoalViewModel;
+
+import java.time.LocalDateTime;
+
+import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
+import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class SetSeasonalGoal extends Fragment {
 
     private SetSeasonalGoalViewModel mViewModel;
+    User user;
+    GoalSeasonal seasonalGoal;
 
     Spinner boulderOSSpinner;
     Spinner sportOsSpinner;
@@ -26,6 +40,7 @@ public class SetSeasonalGoal extends Fragment {
     Spinner sportWorkedSpinner;
     TextView createdOnTxt;
     TextView expiresOnTxt;
+    Button resetSeasonalGoalBtn;
 
     public static SetSeasonalGoal newInstance() {
         return new SetSeasonalGoal();
@@ -42,20 +57,65 @@ public class SetSeasonalGoal extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SetSeasonalGoalViewModel.class);
 
-        boulderOSSpinner = getView().findViewById(R.id.boulderOsGoalSpinner);
+        Intent intent = getActivity().getIntent();
+        if (intent != null){
+            if (intent.hasExtra(USER_ID)){
+                user = new User(intent.getStringExtra(USERNAME));
+                user.setId(intent.getLongExtra(USER_ID,0));
+                mViewModel.getUserById(user.getId());
+                mViewModel.getMostRecentSeasonalGoal(user.getId());
+            }
+        }
+
+        boulderOSSpinner = getView().findViewById(R.id.seasonalBoulderOsGoalSpinner);
         boulderOSSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
-        sportOsSpinner = getView().findViewById(R.id.sportOsGoalSpinner);
+        sportOsSpinner = getView().findViewById(R.id.seasonalSportOsGoalSpinner);
         sportOsSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
-        boulderWorkedSpinner = getView().findViewById(R.id.boulderWorkedGoalSpinner);
+        boulderWorkedSpinner = getView().findViewById(R.id.seasonalBoulderWorkedGoalSpinner);
         boulderWorkedSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
-        sportWorkedSpinner = getView().findViewById(R.id.sportWorkedGoalSpinner);
+        sportWorkedSpinner = getView().findViewById(R.id.seasonalSportWorkedGoalSpinner);
         sportWorkedSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
-        createdOnTxt = getView().findViewById(R.id.createdOnTxt);
-        expiresOnTxt = getView().findViewById(R.id.expiresOnTxt);
+        createdOnTxt = getView().findViewById(R.id.seasonalCreatedOnTxt);
+        expiresOnTxt = getView().findViewById(R.id.seasonalExpiresOnTxt);
+        resetSeasonalGoalBtn = getView().findViewById(R.id.resetSeasonalGoalBtn);
 
+        mViewModel.getUserById(user.getId()).observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable User userVal) {
+                user = userVal;
+            }
+        });
+        mViewModel.getMostRecentSeasonalGoal(user.getId()).observe(this, new Observer<GoalSeasonal>() {
+            @Override
+            public void onChanged(@Nullable GoalSeasonal goalSeasonal) {
+                seasonalGoal = goalSeasonal;
+                if (goalSeasonal != null) {
+
+                    updateSeasonalGoalView(goalSeasonal);
+                }else {
+                    //no weekly goal found
+                    resetSeasonalGoalBtn.setText("CREATE WEEKLY GOAL");
+                    resetSeasonalGoalBtn.setBackgroundColor(Color.RED);
+                }
+            }
+        });
     }
-
+    private void updateSeasonalGoalView(GoalSeasonal goalSeasonal) {
+        boulderOSSpinner.setSelection(((ArrayAdapter<Grades>)boulderOSSpinner.getAdapter()).getPosition(goalSeasonal.get_highestBoulderOnsight()));
+        sportOsSpinner.setSelection(((ArrayAdapter<Grades>)sportOsSpinner.getAdapter()).getPosition(goalSeasonal.get_highestSportOnsight()));
+        boulderWorkedSpinner.setSelection(((ArrayAdapter<Grades>)boulderWorkedSpinner.getAdapter()).getPosition(goalSeasonal.get_highestBoulderWorked()));
+        sportWorkedSpinner.setSelection(((ArrayAdapter<Grades>)sportWorkedSpinner.getAdapter()).getPosition(goalSeasonal.get_highestSportWorked()));
+        createdOnTxt.setText(goalSeasonal.getDateCreated().toLocalDate().toString());
+        expiresOnTxt.setText(goalSeasonal.getDateExpires().toLocalDate().toString());
+        resetSeasonalGoalBtn.setText("RESET SEASONAL GOAL");
+        if (goalSeasonal.getDateExpires().isBefore(LocalDateTime.now())) {
+            //Weekly Goal Expired.
+            resetSeasonalGoalBtn.setBackgroundColor(Color.RED);
+        }else{
+            resetSeasonalGoalBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
+        }
+    }
 }

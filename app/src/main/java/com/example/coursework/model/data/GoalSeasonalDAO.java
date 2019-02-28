@@ -25,4 +25,7 @@ public interface GoalSeasonalDAO {
 
     @Query("SELECT * FROM GoalSeasonal WHERE userId ==:userId AND goalAchieved = 0 LIMIT 1")
     LiveData<GoalSeasonal> getCurrentSeasonalGoalsForUser(int userId);
+
+    @Query("SELECT * FROM GoalSeasonal WHERE userId ==:userId ORDER BY dateCreated DESC LIMIT 1")
+    LiveData<GoalSeasonal> getMostRecentSeasonalGoalForUser(long userId);
 }
