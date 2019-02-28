@@ -3,6 +3,7 @@ package com.example.coursework.model.data;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.coursework.model.GoalAnnual;
 import com.example.coursework.model.GoalSeasonal;
@@ -134,21 +135,29 @@ public class DaoRepository {
         }
     }
 
-    public  long insertUser(User user){
-        InsertUserAsyncTask task = new InsertUserAsyncTask(userDAO);
+    public  long insertUserWithLogbook(User user){
+        InsertUserWithLogbookAsyncTask task = new InsertUserWithLogbookAsyncTask(userDAO,logbookDAO);
          task.execute(user);
          return task.newUserId;
     }
-    private static class InsertUserAsyncTask extends AsyncTask<User,Void,Long> {
+    private static class InsertUserWithLogbookAsyncTask extends AsyncTask<User,Void,Long> {
         UserDAO userDAO;
+        LogbookDAO logbookDAO;
         long newUserId;
-        public InsertUserAsyncTask(UserDAO userDAO) {
+        public InsertUserWithLogbookAsyncTask(UserDAO userDAO,LogbookDAO logbookDAO) {
             this.userDAO = userDAO;
+            this.logbookDAO = logbookDAO;
         }
 
         @Override
         protected Long doInBackground(User... users) {
-           newUserId = userDAO.insert(users[0]);
+            Log.d("gwyd",users[0].getId() + "");
+            newUserId = userDAO.insert(users[0]);
+            Log.d("gwyd",newUserId + "");
+            Logbook logbook = new Logbook(newUserId);
+            Log.d("gwyd",logbook.getId() + "");
+            long newLbId = logbookDAO.insert(logbook);
+            Log.d("gwyd",newLbId + "");
             return  newUserId;
         }
     }
@@ -397,5 +406,10 @@ public class DaoRepository {
          return userDAO.getUserByName(name);
     }
 
+    //endregion
+    //region [GoalWeekly Get]
+    public LiveData<GoalWeekly>getMostRecentGoalWeekly(long userId){
+        return goalWeeklyDAO.getMostRecentWeeklyGoalForUser(userId);
+    }
     //endregion
 }
