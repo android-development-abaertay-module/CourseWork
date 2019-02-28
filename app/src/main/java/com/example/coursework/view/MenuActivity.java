@@ -15,9 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.coursework.R;
+import com.example.coursework.model.User;
+
+import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
+import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+        User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,12 @@ public class MenuActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Intent intent = getIntent();
+        if (intent.hasExtra(USER_ID) && intent.hasExtra(USERNAME)){
+            user = new User(intent.getStringExtra(USERNAME));
+            user.setId(Long.parseLong(intent.getStringExtra(USER_ID)));
+        }
     }
 
     @Override
@@ -86,6 +97,8 @@ public class MenuActivity extends AppCompatActivity
 
         if (id == R.id.nav_set_goals) {
             Intent intent = new Intent(MenuActivity.this,SetGoalsActivity.class );
+            intent.putExtra(USER_ID,user.getId());
+            intent.putExtra(USERNAME,user.getUserName());
             startActivity(intent);
         } else if (id == R.id.nav_check_goals) {
 

@@ -16,10 +16,6 @@ public class SetWeeklyGoalViewModel extends AndroidViewModel {
     private LiveData<GoalWeekly> weeklyGoalLiveData;
     private LiveData<User> user;
 
-    public DaoRepository getDaoRepository() {
-        return daoRepository;
-    }
-
     public LiveData<GoalWeekly> getWeeklyGoalLiveData() {
         return weeklyGoalLiveData;
     }
@@ -27,9 +23,14 @@ public class SetWeeklyGoalViewModel extends AndroidViewModel {
     public SetWeeklyGoalViewModel(@NonNull Application application) {
         super(application);
         daoRepository = new DaoRepository(application);
+        weeklyGoalLiveData = new MutableLiveData<>();
+        user = new MutableLiveData<>();
     }
 
-    private LiveData<GoalWeekly> getMostRecentWeeklyGoal(long userId) {
+    public LiveData<User>getUserById(long userId){
+        return daoRepository.getUserById(userId);
+    }
+    public LiveData<GoalWeekly> getMostRecentWeeklyGoal(long userId) {
         return daoRepository.getMostRecentGoalWeekly(userId);
     }
 }
