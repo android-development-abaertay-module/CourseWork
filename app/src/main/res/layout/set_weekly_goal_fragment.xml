@@ -75,6 +75,11 @@
             android:id="@+id/expiresOnTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/resetWeeklyGoalBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reset Weekly Goal"/>
     </LinearLayout>
 
 </FrameLayout>

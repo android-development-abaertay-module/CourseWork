@@ -94,18 +94,20 @@ public class SetWeeklyGoal extends Fragment {
                 updateWeeklyGoalView(goalWeekly);
             }
         });
-
-
-
     }
 
     private void updateWeeklyGoalView(GoalWeekly goalWeekly) {
-        hoursTrainingSpinner.setSelection(((ArrayAdapter<String>)hoursTrainingSpinner.getAdapter()).getPosition(goalWeekly.getHoursOfTraining() +""));
-        numSportSpinner.setSelection(((ArrayAdapter<String>)numSportSpinner.getAdapter()).getPosition(goalWeekly.getNumberOfSport() +""));
-        numBoulderSpinner.setSelection(((ArrayAdapter<String>)numBoulderSpinner.getAdapter()).getPosition(goalWeekly.getNumberOfBoulder() +""));
-        avgSportSpinner.setSelection(((ArrayAdapter<Grades>)avgSportSpinner.getAdapter()).getPosition(goalWeekly.getAverageSportGrade()));
-        avgBoulderSpinner.setSelection(((ArrayAdapter<Grades>)avgBoulderSpinner.getAdapter()).getPosition(goalWeekly.getAverageBoulderGrade()));
-        createdOnTxt.setText(goalWeekly.getDateCreated().toLocalDate().toString());
-        expiresOnTxt.setText(goalWeekly.getDateExpires().toLocalDate().toString());
+        if (goalWeekly != null){
+            hoursTrainingSpinner.setSelection(((ArrayAdapter<String>)hoursTrainingSpinner.getAdapter()).getPosition(goalWeekly.getHoursOfTraining() +""));
+            numSportSpinner.setSelection(((ArrayAdapter<String>)numSportSpinner.getAdapter()).getPosition(goalWeekly.getNumberOfSport() +""));
+            numBoulderSpinner.setSelection(((ArrayAdapter<String>)numBoulderSpinner.getAdapter()).getPosition(goalWeekly.getNumberOfBoulder() +""));
+            avgSportSpinner.setSelection(((ArrayAdapter<Grades>)avgSportSpinner.getAdapter()).getPosition(goalWeekly.getAverageSportGrade()));
+            avgBoulderSpinner.setSelection(((ArrayAdapter<Grades>)avgBoulderSpinner.getAdapter()).getPosition(goalWeekly.getAverageBoulderGrade()));
+            createdOnTxt.setText(goalWeekly.getDateCreated().toLocalDate().toString());
+            expiresOnTxt.setText(goalWeekly.getDateExpires().toLocalDate().toString());
+        }else{
+            //No Weekly goal found
+        }
+
     }
 }
