@@ -104,7 +104,7 @@ public abstract class AppDatabase extends RoomDatabase {
             User user = new User("gwyd");
             user.setId(userDAO.insert(user));
 
-            GoalWeekly goalWeekly = new GoalWeekly(user.getId(),12,10,20,Grades.SIX_A,Grades.SIX_B,LocalDateTime.now());
+            GoalWeekly goalWeekly = new GoalWeekly(user.getId(),10,20,Grades.SIX_A,Grades.SIX_B,LocalDateTime.now());
             goalWeekly.setId(goalWeeklyDAO.insert(goalWeekly));
 
             GoalSeasonal goalSeasonal = new GoalSeasonal(user.getId(),Grades.SEVEN_A,Grades.SEVEN_A,Grades.SEVEN_B,Grades.SEVEN_B,LocalDateTime.now().minusWeeks(5));

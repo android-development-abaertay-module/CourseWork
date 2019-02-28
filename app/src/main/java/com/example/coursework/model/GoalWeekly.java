@@ -13,8 +13,6 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(tableName = "GoalWeekly",foreignKeys = @ForeignKey(entity = User.class,parentColumns = "id",childColumns = "userId", onDelete = CASCADE))
 public class GoalWeekly extends Goal {
 //---------------------------------------------------------------------Attributes----------------------------------------------------
-    @ColumnInfo(name = "hoursOfTraining")
-    private int hoursOfTraining;
     @ColumnInfo(name = "numberOfSport")
     private int numberOfSport;
     @ColumnInfo(name = "numberOfBoulder")
@@ -27,13 +25,6 @@ public class GoalWeekly extends Goal {
     private Grades averageBoulderGrade;
     @ColumnInfo(name = "boulderGoalValue")
     private int boulderGoalValue;
-
-    public int getHoursOfTraining() {
-        return hoursOfTraining;
-    }
-    public void setHoursOfTraining(int hoursOfTraining) {
-        this.hoursOfTraining = hoursOfTraining;
-    }
 
     public int getNumberOfSport() {
         return numberOfSport;
@@ -78,7 +69,7 @@ public class GoalWeekly extends Goal {
     }
 
     //--------------------------------------------------------------------------Constructor----------------------------------------------------
-    public GoalWeekly(long iDUserFK, int hoursOfTraining, int numberOfSport, int numberOfBoulder, Grades averageSportGrade, Grades averageBoulderGrade, LocalDateTime dateCreated)
+    public GoalWeekly(long iDUserFK, int numberOfSport, int numberOfBoulder, Grades averageSportGrade, Grades averageBoulderGrade, LocalDateTime dateCreated)
         {
             super(iDUserFK);
             goalDuration = 7;//7 Days
@@ -86,7 +77,6 @@ public class GoalWeekly extends Goal {
             goalAchieved = false;
             this.dateCreated = dateCreated;
 
-            this.hoursOfTraining = hoursOfTraining;
             this.numberOfSport = numberOfSport;
             this.numberOfBoulder = numberOfBoulder;
             this.averageSportGrade = averageSportGrade;

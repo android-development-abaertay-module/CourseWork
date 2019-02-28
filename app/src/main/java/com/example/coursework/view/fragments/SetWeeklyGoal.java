@@ -31,7 +31,6 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
 
     private SetWeeklyGoalViewModel mViewModel;
-    Spinner hoursTrainingSpinner;
     Spinner numSportSpinner;
     Spinner numBoulderSpinner;
     Spinner avgSportSpinner;
@@ -70,8 +69,6 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
             }
         }
 
-
-        hoursTrainingSpinner = getView().findViewById(R.id.hoursTrainingSpinner);
         numSportSpinner = getView().findViewById(R.id.numberOfSportSpinner);
         numBoulderSpinner = getView().findViewById(R.id.numberOfBoulderSpinner);
         avgSportSpinner = getView().findViewById(R.id.averageSportGradeSpinner);
@@ -109,7 +106,6 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
     }
 
     private void updateWeeklyGoalView(GoalWeekly goalWeekly) {
-        hoursTrainingSpinner.setSelection(((ArrayAdapter<String>)hoursTrainingSpinner.getAdapter()).getPosition(goalWeekly.getHoursOfTraining() +""));
         numSportSpinner.setSelection(((ArrayAdapter<String>)numSportSpinner.getAdapter()).getPosition(goalWeekly.getNumberOfSport() +""));
         numBoulderSpinner.setSelection(((ArrayAdapter<String>)numBoulderSpinner.getAdapter()).getPosition(goalWeekly.getNumberOfBoulder() +""));
         avgSportSpinner.setSelection(((ArrayAdapter<Grades>)avgSportSpinner.getAdapter()).getPosition(goalWeekly.getAverageSportGrade()));
@@ -141,6 +137,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                         mViewModel.getMostRecentWeeklyGoal(user.getId());
                     }else{
                         //update current goal
+                        updateWeeklyGoalFromForm();
                         mViewModel.updateGoalWeekly(weeklyGoal);
                     }
 
@@ -154,12 +151,21 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void getNewGoalFromForm() {
-        int hoursTraining = Integer.parseInt(hoursTrainingSpinner.getSelectedItem().toString());
+    private void updateWeeklyGoalFromForm(){
         int numSport = Integer.parseInt(numSportSpinner.getSelectedItem().toString());
         int numBoulder = Integer.parseInt(numBoulderSpinner.getSelectedItem().toString());
         Grades avgSport = (Grades) avgSportSpinner.getSelectedItem();
         Grades avgBoulder = (Grades) avgBoulderSpinner.getSelectedItem();
-        weeklyGoal = new GoalWeekly(user.getId(),hoursTraining,numSport,numBoulder,avgSport,avgBoulder, LocalDateTime.now());
+        weeklyGoal.setNumberOfSport(numSport);
+        weeklyGoal.setNumberOfBoulder(numBoulder);
+        weeklyGoal.setAverageSportGrade(avgSport);
+        weeklyGoal.setAverageBoulderGrade(avgBoulder);
+    }
+    private void getNewGoalFromForm() {
+        int numSport = Integer.parseInt(numSportSpinner.getSelectedItem().toString());
+        int numBoulder = Integer.parseInt(numBoulderSpinner.getSelectedItem().toString());
+        Grades avgSport = (Grades) avgSportSpinner.getSelectedItem();
+        Grades avgBoulder = (Grades) avgBoulderSpinner.getSelectedItem();
+        weeklyGoal = new GoalWeekly(user.getId(),numSport,numBoulder,avgSport,avgBoulder, LocalDateTime.now());
     }
 }

@@ -17,16 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/hoursTrainingTxt"
-            android:text="@string/hours_training"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <Spinner
-            android:id="@+id/hoursTrainingSpinner"
-            android:entries="@array/hours_training_options"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
             android:id="@+id/numberOfSportTxt"
             android:text="@string/number_of_sport_routes_to_complete"
             android:layout_width="match_parent"
