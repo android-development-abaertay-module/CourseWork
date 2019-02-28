@@ -90,11 +90,10 @@ public class GoalWeekly extends Goal {
             this.numberOfSport = numberOfSport;
             this.numberOfBoulder = numberOfBoulder;
             this.averageSportGrade = averageSportGrade;
-            sportGoalValue = this.averageSportGrade.getValue();
+            this.sportGoalValue = this.averageSportGrade.getValue();
             this.averageBoulderGrade = averageBoulderGrade;
-            boulderGoalValue = this.averageBoulderGrade.ordinal();
+            this.boulderGoalValue = this.averageBoulderGrade.getValue();
         }
-
     public GoalWeekly()
         {
             super();

@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "Route",foreignKeys = @ForeignKey(entity = Session.class,parentColumns = "id",childColumns = "sessionId", onDelete = CASCADE))
+@Entity(tableName = "Route",foreignKeys = {@ForeignKey(entity = Session.class,parentColumns = "id",childColumns = "sessionId", onDelete = CASCADE),
+        @ForeignKey(entity = User.class,parentColumns = "id",childColumns = "userId")})
 public  class Route
 {
     //-----------------------------------------Attributes
@@ -26,6 +27,8 @@ public  class Route
     private long id;
     @ColumnInfo(name = "sessionId", index = true)
     private long sessionId;
+    @ColumnInfo(name = "userId")
+    private long userId;
     @ColumnInfo(name = "styleDone")
     private StyleDone styleDone;
     @ColumnInfo(name = "timeDone")
@@ -42,6 +45,14 @@ public  class Route
     }
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public long getSessionId() {
@@ -93,8 +104,9 @@ public  class Route
     }
 
     @Ignore
-    public Route(long sessionIDFK, Grades grade,RouteType routeType, StyleDone styleDone, LocalDateTime dateAndtime)
+    public Route(long sessionIDFK,long userId, Grades grade,RouteType routeType, StyleDone styleDone, LocalDateTime dateAndtime)
     {
+        this.userId = userId;
         this.grade = grade;
         gradeValue = grade.getValue();//get enum index position and add one
         sessionId = sessionIDFK;

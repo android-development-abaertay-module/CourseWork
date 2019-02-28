@@ -21,6 +21,6 @@ public interface LogbookDAO {
     void delete(Logbook logbook);
 
     @Query("SELECT * FROM Logbook WHERE userId ==:userId Limit 1")
-    LiveData<Logbook> getLogbookForUser(int userId);
+    LiveData<Logbook> getLogbookForUser(long userId);
 
 }

@@ -4,11 +4,11 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +23,12 @@ import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetWeeklyGoalViewModel;
 
-import org.w3c.dom.Text;
-
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
-public class SetWeeklyGoal extends Fragment {
+public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
 
     private SetWeeklyGoalViewModel mViewModel;
     Spinner hoursTrainingSpinner;
@@ -42,6 +39,7 @@ public class SetWeeklyGoal extends Fragment {
     TextView createdOnTxt;
     TextView expiresOnTxt;
     Button resetWeeklyGoalBtn;
+    GoalWeekly weeklyGoal;
 
     public static SetWeeklyGoal newInstance() {
         return new SetWeeklyGoal();
@@ -84,6 +82,7 @@ public class SetWeeklyGoal extends Fragment {
         createdOnTxt = getView().findViewById(R.id.createdOnTxt);
         expiresOnTxt = getView().findViewById(R.id.expiresOnTxt);
         resetWeeklyGoalBtn = getView().findViewById(R.id.resetWeeklyGoalBtn);
+        resetWeeklyGoalBtn.setOnClickListener(this);
 
         mViewModel.getUserById(user.getId()).observe(this, new Observer<User>() {
             @Override
@@ -96,7 +95,9 @@ public class SetWeeklyGoal extends Fragment {
         mViewModel.getMostRecentWeeklyGoal(user.getId()).observe(this, new Observer<GoalWeekly>() {
             @Override
             public void onChanged(@Nullable GoalWeekly goalWeekly) {
+                weeklyGoal = goalWeekly;
                 if (goalWeekly != null) {
+
                     updateWeeklyGoalView(goalWeekly);
                 }else {
                     //no weekly goal found
@@ -120,7 +121,45 @@ public class SetWeeklyGoal extends Fragment {
             //Weekly Goal Expired.
             resetWeeklyGoalBtn.setBackgroundColor(Color.RED);
         }else{
-            resetWeeklyGoalBtn.setBackgroundColor(Color.GRAY);
+            resetWeeklyGoalBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.resetWeeklyGoalBtn:
+                Log.d("gwyd","btn clicked");
+                if (weeklyGoal != null){
+                    //user Has a goal
+                    //check if goal expired
+                    if (weeklyGoal.getDateExpires().isBefore(LocalDateTime.now())){
+                        //goal Expired - Close it and create a new one
+                        mViewModel.closeGoalSetWasMet(weeklyGoal);
+                        getNewGoalFromForm();
+                        mViewModel.createGoalWeekly(weeklyGoal);
+                        mViewModel.getMostRecentWeeklyGoal(user.getId());
+                    }else{
+                        //update current goal
+                        mViewModel.updateGoalWeekly(weeklyGoal);
+                    }
+
+                }else{
+                    //user doesn't have a goal - create one
+                    getNewGoalFromForm();
+                    mViewModel.createGoalWeekly(weeklyGoal);
+                }
+                mViewModel.getMostRecentWeeklyGoal(user.getId());
+                break;
+        }
+    }
+
+    private void getNewGoalFromForm() {
+        int hoursTraining = Integer.parseInt(hoursTrainingSpinner.getSelectedItem().toString());
+        int numSport = Integer.parseInt(numSportSpinner.getSelectedItem().toString());
+        int numBoulder = Integer.parseInt(numBoulderSpinner.getSelectedItem().toString());
+        Grades avgSport = (Grades) avgSportSpinner.getSelectedItem();
+        Grades avgBoulder = (Grades) avgBoulderSpinner.getSelectedItem();
+        weeklyGoal = new GoalWeekly(user.getId(),hoursTraining,numSport,numBoulder,avgSport,avgBoulder, LocalDateTime.now());
     }
 }

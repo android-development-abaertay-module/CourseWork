@@ -8,6 +8,10 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.example.coursework.model.Route;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Dao
 public interface RouteDAO {
     @Insert
@@ -17,6 +21,7 @@ public interface RouteDAO {
     @Delete
     void delete(Route route);
 
-    @Query("SELECT * FROM Route WHERE sessionId ==:sessionId")
-    LiveData<Route> getAllRoutesInSession(int sessionId);
+    @Query("SELECT * FROM Route WHERE userId ==:userId and timeDone BETWEEN :periodStart AND :periodEnd")
+    List<Route> getAllRoutesForUserInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd);
+
 }

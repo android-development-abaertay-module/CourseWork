@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
 import com.example.coursework.model.GoalWeekly;
@@ -32,5 +31,15 @@ public class SetWeeklyGoalViewModel extends AndroidViewModel {
     }
     public LiveData<GoalWeekly> getMostRecentWeeklyGoal(long userId) {
         return daoRepository.getMostRecentGoalWeekly(userId);
+    }
+
+    public void closeGoalSetWasMet(GoalWeekly weeklyGoal) {
+        daoRepository.closeGoalSetWasWeeklyGoalMet(weeklyGoal);
+    }
+    public void updateGoalWeekly(GoalWeekly goalWeekly){
+        daoRepository.updateWeeklyGoal(goalWeekly);
+    }
+    public void createGoalWeekly(GoalWeekly goalWeekly){
+        daoRepository.insertWeeklyGoal(goalWeekly);
     }
 }

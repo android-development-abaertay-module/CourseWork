@@ -120,9 +120,9 @@ public abstract class AppDatabase extends RoomDatabase {
             oldSession.setEndTime(LocalDateTime.now());
             oldSession.setId(sessionDAO.insert(oldSession));
 
-            Route oldRouteOne = new Route(oldSession.getId(),Grades.FIVE_A, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(30));
-            Route oldRouteTwo = new Route(oldSession.getId(),Grades.FIVE_B, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(20));
-            Route oldRouteThree = new Route(oldSession.getId(),Grades.FIVE_C, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(10));
+            Route oldRouteOne = new Route(oldSession.getId(),user.getId(),Grades.FIVE_A, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(30));
+            Route oldRouteTwo = new Route(oldSession.getId(),user.getId(),Grades.FIVE_B, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(20));
+            Route oldRouteThree = new Route(oldSession.getId(),user.getId(),Grades.FIVE_C, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(10));
             oldRouteOne.setId(routeDAO.insert(oldRouteOne));
             oldRouteTwo.setId(routeDAO.insert(oldRouteTwo));
             oldRouteThree.setId(routeDAO.insert(oldRouteThree));
@@ -130,9 +130,9 @@ public abstract class AppDatabase extends RoomDatabase {
             Session currentSession = new Session(LocalDateTime.now(),1);
             currentSession.setId(sessionDAO.insert(currentSession));
 
-            Route cRouteOne = new Route(currentSession.getId(),Grades.SIX_A,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(20));
-            Route cRouteTwo = new Route(currentSession.getId(),Grades.SIX_B,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(10));
-            Route cRouteThree = new Route(currentSession.getId(),Grades.SIX_C,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(5));
+            Route cRouteOne = new Route(currentSession.getId(),user.getId(),Grades.SIX_A,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(20));
+            Route cRouteTwo = new Route(currentSession.getId(),user.getId(),Grades.SIX_B,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(10));
+            Route cRouteThree = new Route(currentSession.getId(),user.getId(),Grades.SIX_C,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(5));
             cRouteOne.setId(routeDAO.insert(cRouteOne));
             cRouteTwo.setId(routeDAO.insert(cRouteTwo));
             cRouteThree.setId(routeDAO.insert(cRouteThree));

@@ -12,7 +12,9 @@ import com.example.coursework.model.Logbook;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
+import com.example.coursework.model.enums.RouteType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DaoRepository {
@@ -410,6 +412,72 @@ public class DaoRepository {
     //region [GoalWeekly Get]
     public LiveData<GoalWeekly>getMostRecentGoalWeekly(long userId){
         return goalWeeklyDAO.getMostRecentWeeklyGoalForUser(userId);
+    }
+
+    public void closeGoalSetWasWeeklyGoalMet(GoalWeekly goalWeekly){
+        new CloseGoalSetWasWeeklyGoalMetAsyncTask(routeDAO,goalWeeklyDAO).execute(goalWeekly);
+    }
+    private static class CloseGoalSetWasWeeklyGoalMetAsyncTask extends AsyncTask<GoalWeekly,Void,Void>{
+
+        private  GoalWeeklyDAO goalWeeklyDAO;
+        private RouteDAO routeDAO;
+        public CloseGoalSetWasWeeklyGoalMetAsyncTask(RouteDAO routeDAO, GoalWeeklyDAO goalWeeklyDAO) {
+            this.routeDAO = routeDAO;
+            this.goalWeeklyDAO = goalWeeklyDAO;
+        }
+
+        @Override
+        protected Void doInBackground(GoalWeekly... goalWeeklies) {
+            Boolean wasComplete = true;
+            GoalWeekly gw = goalWeeklies[0];
+            List<Route> routesInPeriod = routeDAO.getAllRoutesForUserInPeriod(gw.getUserId(),gw.getDateCreated(),gw.getDateExpires());
+            List<Route> sport = new ArrayList<Route>();
+            int totalSportScore = 0;
+            int highestSport = 0;
+
+            //===========Get Values
+            List<Route> boulder = new ArrayList<Route>();
+            int totalBoulderScore = 0;
+            int highestBoulder = 0;
+
+            for (Route r:routesInPeriod) {
+                if (r.getRouteType() == RouteType.BOULDER){
+                    boulder.add(r);
+                    totalBoulderScore += r.getGradeValue();
+                    if (r.getGradeValue() > highestBoulder){
+                        highestBoulder = r.getGradeValue();
+                    }
+                }
+                if (r.getRouteType() == RouteType.SPORT){
+                    sport.add(r);
+                    totalSportScore = r.getGradeValue();
+                    if (r.getGradeValue() > highestSport){
+                        highestSport = r.getGradeValue();
+                    }
+                }
+            }
+            //==========Check Values
+            if (sport.size() < gw.getNumberOfSport())
+                wasComplete = false;
+
+            if (boulder.size() < gw.getNumberOfBoulder())
+                wasComplete =false;
+
+            double avgBoulder = (double) totalBoulderScore / boulder.size();
+            int avgBScore =(int) Math.floor(avgBoulder);
+            if (avgBoulder < gw.getAverageBoulderGrade().getValue())
+                wasComplete = false;
+
+            double avgSport = (double) totalSportScore / sport.size();
+            int avgSScore = (int) Math.floor(avgSport);
+            if (avgSport < gw.getAverageSportGrade().getValue())
+                wasComplete = false;
+
+            //Update Current Goal
+            gw.setGoalAchieved(wasComplete);
+            goalWeeklyDAO.update(gw);
+            return null;
+        }
     }
     //endregion
 }

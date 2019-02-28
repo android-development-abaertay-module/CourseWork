@@ -9,6 +9,8 @@ import android.arch.persistence.room.Update;
 
 import com.example.coursework.model.Session;
 
+import java.time.LocalDateTime;
+
 @Dao
 public interface SessionDAO {
     @Insert
@@ -23,4 +25,8 @@ public interface SessionDAO {
 
     @Query("SELECT * FROM Session WHERE logbookId ==:logbookId")
     LiveData<Session> getAllSessionsInLogbook(int logbookId);
+
+    @Query("SELECT * FROM Session WHERE logbookId ==:logbookId AND startTime between :statTime AND :endTime")
+    LiveData<Session> getAllSessionsInLogbookForPeriod(long logbookId, LocalDateTime statTime, LocalDateTime endTime);
+
 }
