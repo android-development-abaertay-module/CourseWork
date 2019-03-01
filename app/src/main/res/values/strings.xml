@@ -56,4 +56,8 @@
     <string name="created_on">Created On</string>
     <string name="expires_on">Expires On</string>
     <string name="set_goal_targets">Set  Targets</string>
+    <string name="title_activity_training">TrainingActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

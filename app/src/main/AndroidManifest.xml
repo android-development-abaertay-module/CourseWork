@@ -9,9 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.SetGoalsActivity" android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".view.TrainingActivity"
+            android:label="@string/title_activity_training"></activity>
+        <activity
+            android:name=".view.SetGoalsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".view.MenuActivity"
             android:label="@string/title_activity_menu"
