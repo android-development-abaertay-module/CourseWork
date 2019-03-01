@@ -537,14 +537,23 @@ public class DaoRepository {
                 }
             }
             //check goal progress
-            if (highestBoulderOSValue < gs.get_highestBoulderOnsight().getValue())
+            if (highestBoulderOSValue < gs.get_highestBoulderOnsight().getValue()) {
                 wasComplete = false;
-            if (highestBoulderWorkedValue < gs.get_highestBoulderWorked().getValue())
+                Log.d("gwyd","highest Boulder OS Goal Was NOT met");
+            }
+            if (highestBoulderWorkedValue < gs.get_highestBoulderWorked().getValue()) {
                 wasComplete = false;
-            if (highestSportOSValue < gs.get_highestSportOnsight().getValue())
+                Log.d("gwyd","highest Boulder Worked Goal Was NOT met");
+
+            }
+            if (highestSportOSValue < gs.get_highestSportOnsight().getValue()) {
                 wasComplete = false;
-            if (highestSportWorkedValue < gs.get_highestSportWorked().getValue())
+                Log.d("gwyd","highest Sport OS Goal Was NOT met");
+            }
+            if (highestSportWorkedValue < gs.get_highestSportWorked().getValue()) {
                 wasComplete = false;
+                Log.d("gwyd","highest Sport Worked Goal Was NOT met");
+            }
 
             return null;
         }
