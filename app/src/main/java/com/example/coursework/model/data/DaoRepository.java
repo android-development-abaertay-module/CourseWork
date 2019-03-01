@@ -464,12 +464,10 @@ public class DaoRepository {
                 wasComplete =false;
 
             double avgBoulder = (double) totalBoulderScore / boulder.size();
-            int avgBScore =(int) Math.floor(avgBoulder);
             if (avgBoulder < gw.getAverageBoulderGrade().getValue())
                 wasComplete = false;
 
             double avgSport = (double) totalSportScore / sport.size();
-            int avgSScore = (int) Math.floor(avgSport);
             if (avgSport < gw.getAverageSportGrade().getValue())
                 wasComplete = false;
 

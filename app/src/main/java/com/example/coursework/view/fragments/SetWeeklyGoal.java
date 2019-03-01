@@ -132,7 +132,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                     if (weeklyGoal.getDateExpires().isBefore(LocalDateTime.now())){
                         //goal Expired - Close it and create a new one
                         mViewModel.closeGoalSetWasMet(weeklyGoal);
-                        getNewGoalFromForm();
+                        getNewWeeklyGoalFromForm();
                         mViewModel.createGoalWeekly(weeklyGoal);
                         mViewModel.getWeeklyGoalLD(user.getId());
                     }else{
@@ -143,7 +143,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
 
                 }else{
                     //user doesn't have a goal - create one
-                    getNewGoalFromForm();
+                    getNewWeeklyGoalFromForm();
                     mViewModel.createGoalWeekly(weeklyGoal);
                 }
                 mViewModel.getWeeklyGoalLD(user.getId());
@@ -161,7 +161,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         weeklyGoal.setAverageSportGrade(avgSport);
         weeklyGoal.setAverageBoulderGrade(avgBoulder);
     }
-    private void getNewGoalFromForm() {
+    private void getNewWeeklyGoalFromForm() {
         int numSport = Integer.parseInt(numSportSpinner.getSelectedItem().toString());
         int numBoulder = Integer.parseInt(numBoulderSpinner.getSelectedItem().toString());
         Grades avgSport = (Grades) avgSportSpinner.getSelectedItem();

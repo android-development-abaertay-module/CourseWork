@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
-public class SetSeasonalGoal extends Fragment {
+public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
 
     private SetSeasonalGoalViewModel mViewModel;
     User user;
@@ -80,6 +80,7 @@ public class SetSeasonalGoal extends Fragment {
         createdOnTxt = getView().findViewById(R.id.seasonalCreatedOnTxt);
         expiresOnTxt = getView().findViewById(R.id.seasonalExpiresOnTxt);
         resetSeasonalGoalBtn = getView().findViewById(R.id.resetSeasonalGoalBtn);
+        resetSeasonalGoalBtn.setOnClickListener(this);
 
         mViewModel.getUserLD(user.getId()).observe(this, new Observer<User>() {
             @Override
@@ -116,5 +117,32 @@ public class SetSeasonalGoal extends Fragment {
         }else{
             resetSeasonalGoalBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.resetSeasonalGoalBtn:
+                //TODO: implemente on click
+                break;
+        }
+    }
+
+    private void updateSeasonalGoalFromForm(){
+        Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();
+        Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
+        Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
+        Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
+        seasonalGoal.set_highestBoulderOnsight(bOs);
+        seasonalGoal.set_highestSportOnsight(sOs);
+        seasonalGoal.set_highestBoulderWorked(bWorked);
+        seasonalGoal.set_highestSportWorked(sWorked);
+    }
+    private void getNewSeasonalGoalFromForm() {
+        Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();
+        Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
+        Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
+        Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
+        seasonalGoal = new GoalSeasonal(user.getId(),bOs,sOs,bWorked,sWorked,LocalDateTime.now());
     }
 }

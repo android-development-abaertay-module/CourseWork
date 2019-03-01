@@ -21,7 +21,12 @@ public interface RouteDAO {
     @Delete
     void delete(Route route);
 
-    @Query("SELECT * FROM Route WHERE userId ==:userId and timeDone BETWEEN :periodStart AND :periodEnd")
+    @Query("SELECT * FROM Route WHERE userId ==:userId and timeDone BETWEEN datetime(:periodStart) AND datetime(:periodEnd)")
     List<Route> getAllRoutesForUserInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd);
 
+    @Query("SELECT * FROM Route WHERE userId ==:userId")
+    List<Route> getAllRoutesForUser(long userId);
+
+    @Query("SELECT * FROM Route WHERE userId ==:userId ORDER BY timeDone ASC")
+    List<Route> getAllRoutesForUserOrderASC(long userId);
 }
