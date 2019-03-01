@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ import java.time.LocalDateTime;
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
-public class SetAnnualGoal extends Fragment {
+public class SetAnnualGoal extends Fragment implements View.OnClickListener{
 
     private SetAnnualGoalViewModel mViewModel;
     User user;
@@ -80,6 +81,7 @@ public class SetAnnualGoal extends Fragment {
         createdOnTxt = getView().findViewById(R.id.annualCreatedOnTxt);
         expiresOnTxt = getView().findViewById(R.id.annualExpiresOnTxt);
         resetAnnualGoalBtn = getView().findViewById(R.id.resetAnnualGoalBtn);
+        resetAnnualGoalBtn.setOnClickListener(this);
 
         mViewModel.getUserDL(user.getId()).observe(this, new Observer<User>() {
             @Override
@@ -118,4 +120,51 @@ public class SetAnnualGoal extends Fragment {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.resetAnnualGoalBtn:
+                Log.d("gwyd","btn clicked");
+                if (annualGoal != null){
+                    //user Has a goal
+                    //check if goal expired
+                    if (annualGoal.getDateExpires().isBefore(LocalDateTime.now())){
+                        //goal Expired - Close it and create a new one
+                        mViewModel.closeAnnualGoalSetWasMet(annualGoal);
+                        getNewAnnualGoalFromForm();
+                        mViewModel.createGoalAnnual(annualGoal);
+                        mViewModel.getAnnualGoalLD(user.getId());
+                    }else{
+                        //update current goal
+                        updateAnnualGoalFromForm();
+                        mViewModel.updateGoalAnnual(annualGoal);
+                    }
+
+                }else{
+                    //user doesn't have a goal - create one
+                    getNewAnnualGoalFromForm();
+                    mViewModel.createGoalAnnual(annualGoal);
+                }
+                //refresh the view
+                mViewModel.getAnnualGoalLD(user.getId());
+                break;
+        }
+    }
+    private void updateAnnualGoalFromForm(){
+        Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();
+        Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
+        Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
+        Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
+        annualGoal.setHighestBoulderOnsight(bOs);
+        annualGoal.setHighestSportOnsight(sOs);
+        annualGoal.setHighestBoulderWorked(bWorked);
+        annualGoal.setHighestSportWorked(sWorked);
+    }
+    private void getNewAnnualGoalFromForm() {
+        Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();
+        Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
+        Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
+        Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
+        annualGoal = new GoalAnnual(user.getId(),bOs,sOs,bWorked,sWorked,LocalDateTime.now());
+    }
 }

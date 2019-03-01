@@ -485,15 +485,15 @@ public class DaoRepository {
         return goalSeasonalDAO.getMostRecentSeasonalGoalForUser(userId);
     }
 
-    //endregion
-
-    public void closeGoalSetWasAnnualOrSeasonalGoalMet(GoalSeasonal seasonalGoal) {
-        new CloseGoalSetWasAnnualOrSeasonalGoalMetAsyncTask(routeDAO).execute(seasonalGoal);
+    public void closeGoalSetWasSeasonalGoalMet(GoalSeasonal seasonalGoal) {
+        new CloseGoalSetWasSeasonalGoalMetAsyncTask(routeDAO,goalSeasonalDAO).execute(seasonalGoal);
     }
-    private static class CloseGoalSetWasAnnualOrSeasonalGoalMetAsyncTask extends AsyncTask<GoalSeasonal,Void,Void>{
+    private static class CloseGoalSetWasSeasonalGoalMetAsyncTask extends AsyncTask<GoalSeasonal,Void,Void>{
+        private GoalSeasonalDAO goalSeasonalDAO;
         private RouteDAO routeDAO;
-        public CloseGoalSetWasAnnualOrSeasonalGoalMetAsyncTask(RouteDAO routeDAO) {
+        public CloseGoalSetWasSeasonalGoalMetAsyncTask(RouteDAO routeDAO,GoalSeasonalDAO goalSeasonalDAO) {
             this.routeDAO = routeDAO;
+            this.goalSeasonalDAO = goalSeasonalDAO;
         }
 
         @Override
@@ -554,14 +554,95 @@ public class DaoRepository {
                 wasComplete = false;
                 Log.d("gwyd","highest Sport Worked Goal Was NOT met");
             }
-
+            //Update Current Goal
+            gs.setGoalAchieved(wasComplete);
+            goalSeasonalDAO.update(gs);
             return null;
         }
     }
+    //endregion
+
+
 
     //region [GoalAnnual Get]
     public LiveData<GoalAnnual> getMostRecentGoalAnnual(long userId){
         return goalAnnualDAO.getMostRecentAnnualGoalForUser(userId);
+    }
+
+    public void closeGoalSetWasAnnualGoalMet(GoalAnnual goalAnnual) {
+        new CloseGoalSetWasAnnualGoalMetAsyncTask(routeDAO,goalAnnualDAO).execute(goalAnnual);
+    }
+    private static class CloseGoalSetWasAnnualGoalMetAsyncTask extends AsyncTask<GoalAnnual,Void,Void>{
+        private GoalAnnualDAO goalAnnualDAO;
+        private RouteDAO routeDAO;
+        public CloseGoalSetWasAnnualGoalMetAsyncTask(RouteDAO routeDAO,GoalAnnualDAO goalAnnualDAO) {
+            this.routeDAO = routeDAO;
+            this.goalAnnualDAO = goalAnnualDAO;
+        }
+
+        @Override
+        protected Void doInBackground(GoalAnnual... goalAnnuals) {
+            Boolean wasComplete = true;
+            //============Get Data
+            GoalAnnual ga = goalAnnuals[0];
+            List<Route> routesInPeriod = routeDAO.getAllRoutesForUserInPeriod(ga.getUserId(),ga.getDateCreated(),ga.getDateExpires());
+
+            int highestBoulderOSValue = 0;
+            int highestBoulderWorkedValue = 0;
+            int highestSportOSValue = 0;
+            int highestSportWorkedValue = 0;
+            //organize Routes
+            for (Route r:routesInPeriod) {
+                //Sport Routes
+                if (r.getRouteType() == RouteType.SPORT){
+                    if (r.getStyleDone() == StyleDone.Onsight){
+                        if (r.getGrade().getValue() > highestSportOSValue) {
+                            highestSportOSValue = r.getGrade().getValue();
+                        }
+                    }
+                    if(r.getStyleDone() == StyleDone.Worked){
+                        if (r.getGrade().getValue() > highestSportWorkedValue){
+                            highestSportWorkedValue = r.getGrade().getValue();
+                        }
+                    }
+                }
+                //Boulder Routes
+                else if(r.getRouteType() == RouteType.BOULDER){
+                    if (r.getStyleDone() == StyleDone.Onsight){
+                        if (r.getGrade().getValue() > highestBoulderOSValue){
+                            highestBoulderOSValue = r.getGrade().getValue();
+                        }
+                    }
+                    if(r.getStyleDone() == StyleDone.Worked){
+                        if (r.getGrade().getValue() >highestBoulderWorkedValue){
+                            highestBoulderWorkedValue = r.getGrade().getValue();
+                        }
+                    }
+                }
+            }
+            //check goal progress
+            if (highestBoulderOSValue < ga.getHighestBoulderOnsight().getValue()) {
+                wasComplete = false;
+                Log.d("gwyd","highest Boulder OS Goal Was NOT met");
+            }
+            if (highestBoulderWorkedValue < ga.getHighestBoulderWorked().getValue()) {
+                wasComplete = false;
+                Log.d("gwyd","highest Boulder Worked Goal Was NOT met");
+
+            }
+            if (highestSportOSValue < ga.getHighestSportOnsight().getValue()) {
+                wasComplete = false;
+                Log.d("gwyd","highest Sport OS Goal Was NOT met");
+            }
+            if (highestSportWorkedValue < ga.getHighestSportWorked().getValue()) {
+                wasComplete = false;
+                Log.d("gwyd","highest Sport Worked Goal Was NOT met");
+            }
+//Update Current Goal
+            ga.setGoalAchieved(wasComplete);
+            goalAnnualDAO.update(ga);
+            return null;
+        }
     }
     //endregion
 }
