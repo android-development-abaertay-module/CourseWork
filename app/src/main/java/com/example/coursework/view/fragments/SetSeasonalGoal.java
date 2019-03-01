@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.coursework.R;
 import com.example.coursework.model.GoalSeasonal;
-import com.example.coursework.model.GoalWeekly;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetSeasonalGoalViewModel;
@@ -62,8 +61,8 @@ public class SetSeasonalGoal extends Fragment {
             if (intent.hasExtra(USER_ID)){
                 user = new User(intent.getStringExtra(USERNAME));
                 user.setId(intent.getLongExtra(USER_ID,0));
-                mViewModel.getUserById(user.getId());
-                mViewModel.getMostRecentSeasonalGoal(user.getId());
+                mViewModel.getUserLD(user.getId());
+                mViewModel.getSeasonalGoalLD(user.getId());
             }
         }
 
@@ -82,13 +81,13 @@ public class SetSeasonalGoal extends Fragment {
         expiresOnTxt = getView().findViewById(R.id.seasonalExpiresOnTxt);
         resetSeasonalGoalBtn = getView().findViewById(R.id.resetSeasonalGoalBtn);
 
-        mViewModel.getUserById(user.getId()).observe(this, new Observer<User>() {
+        mViewModel.getUserLD(user.getId()).observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable User userVal) {
                 user = userVal;
             }
         });
-        mViewModel.getMostRecentSeasonalGoal(user.getId()).observe(this, new Observer<GoalSeasonal>() {
+        mViewModel.getSeasonalGoalLD(user.getId()).observe(this, new Observer<GoalSeasonal>() {
             @Override
             public void onChanged(@Nullable GoalSeasonal goalSeasonal) {
                 seasonalGoal = goalSeasonal;

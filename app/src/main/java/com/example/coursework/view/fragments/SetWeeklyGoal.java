@@ -64,8 +64,8 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
             if (intent.hasExtra(USER_ID)){
                 user = new User(intent.getStringExtra(USERNAME));
                 user.setId(intent.getLongExtra(USER_ID,0));
-                mViewModel.getUserById(user.getId());
-                mViewModel.getMostRecentWeeklyGoal(user.getId());
+                mViewModel.getUserLD(user.getId());
+                mViewModel.getWeeklyGoalLD(user.getId());
             }
         }
 
@@ -81,7 +81,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         resetWeeklyGoalBtn = getView().findViewById(R.id.resetWeeklyGoalBtn);
         resetWeeklyGoalBtn.setOnClickListener(this);
 
-        mViewModel.getUserById(user.getId()).observe(this, new Observer<User>() {
+        mViewModel.getUserLD(user.getId()).observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable User userVal) {
                 user = userVal;
@@ -89,7 +89,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         });
 
 
-        mViewModel.getMostRecentWeeklyGoal(user.getId()).observe(this, new Observer<GoalWeekly>() {
+        mViewModel.getWeeklyGoalLD(user.getId()).observe(this, new Observer<GoalWeekly>() {
             @Override
             public void onChanged(@Nullable GoalWeekly goalWeekly) {
                 weeklyGoal = goalWeekly;
@@ -134,7 +134,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                         mViewModel.closeGoalSetWasMet(weeklyGoal);
                         getNewGoalFromForm();
                         mViewModel.createGoalWeekly(weeklyGoal);
-                        mViewModel.getMostRecentWeeklyGoal(user.getId());
+                        mViewModel.getWeeklyGoalLD(user.getId());
                     }else{
                         //update current goal
                         updateWeeklyGoalFromForm();
@@ -146,7 +146,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                     getNewGoalFromForm();
                     mViewModel.createGoalWeekly(weeklyGoal);
                 }
-                mViewModel.getMostRecentWeeklyGoal(user.getId());
+                mViewModel.getWeeklyGoalLD(user.getId());
                 break;
         }
     }

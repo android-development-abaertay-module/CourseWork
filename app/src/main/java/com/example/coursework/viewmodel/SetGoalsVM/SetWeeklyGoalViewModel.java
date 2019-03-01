@@ -12,25 +12,24 @@ import com.example.coursework.model.data.DaoRepository;
 
 public class SetWeeklyGoalViewModel extends AndroidViewModel {
     private DaoRepository daoRepository;
-    private LiveData<GoalWeekly> weeklyGoalLiveData;
-    private LiveData<User> user;
+    private LiveData<GoalWeekly> weeklyGoalLD;
+    private LiveData<User> userLD;
 
-    public LiveData<GoalWeekly> getWeeklyGoalLiveData() {
-        return weeklyGoalLiveData;
-    }
 
     public SetWeeklyGoalViewModel(@NonNull Application application) {
         super(application);
         daoRepository = new DaoRepository(application);
-        weeklyGoalLiveData = new MutableLiveData<>();
-        user = new MutableLiveData<>();
+        weeklyGoalLD = new MutableLiveData<>();
+        userLD = new MutableLiveData<>();
     }
 
-    public LiveData<User>getUserById(long userId){
-        return daoRepository.getUserById(userId);
+    public LiveData<User> getUserLD(long userId){
+        userLD =  daoRepository.getUserById(userId);
+        return  userLD;
     }
-    public LiveData<GoalWeekly> getMostRecentWeeklyGoal(long userId) {
-        return daoRepository.getMostRecentGoalWeekly(userId);
+    public LiveData<GoalWeekly> getWeeklyGoalLD(long userId) {
+        weeklyGoalLD = daoRepository.getMostRecentGoalWeekly(userId);
+        return weeklyGoalLD;
     }
 
     public void closeGoalSetWasMet(GoalWeekly weeklyGoal) {
