@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,7 +124,29 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.resetSeasonalGoalBtn:
-                //TODO: implemente on click
+                Log.d("gwyd","btn clicked");
+                if (seasonalGoal != null){
+                    //user Has a goal
+                    //check if goal expired
+                    if (seasonalGoal.getDateExpires().isBefore(LocalDateTime.now())){
+                        //goal Expired - Close it and create a new one
+                        mViewModel.closeSeasonalGoalSetWasMet(seasonalGoal);
+                        getNewSeasonalGoalFromForm();
+                        mViewModel.createGoalSeasonal(seasonalGoal);
+                        mViewModel.getSeasonalGoalLD(user.getId());
+                    }else{
+                        //update current goal
+                        updateSeasonalGoalFromForm();
+                        mViewModel.updateGoalSeasonal(seasonalGoal);
+                    }
+
+                }else{
+                    //user doesn't have a goal - create one
+                    getNewSeasonalGoalFromForm();
+                    mViewModel.createGoalSeasonal(seasonalGoal);
+                }
+                //refresh the view
+                mViewModel.getSeasonalGoalLD(user.getId());
                 break;
         }
     }

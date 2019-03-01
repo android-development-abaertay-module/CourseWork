@@ -29,4 +29,16 @@ public class SetSeasonalGoalViewModel extends AndroidViewModel {
         seasonalGoalLD = daoRepository.getMostRecentGoalSeasonal(userId);
         return seasonalGoalLD;
     }
+
+    public void createGoalSeasonal(GoalSeasonal seasonalGoal) {
+        daoRepository.insertSeasonalGoal(seasonalGoal);
+    }
+
+    public void updateGoalSeasonal(GoalSeasonal seasonalGoal) {
+        daoRepository.updateSeasonalGoal(seasonalGoal);
+    }
+
+    public void closeSeasonalGoalSetWasMet(GoalSeasonal seasonalGoal) {
+        daoRepository.closeGoalSetWasAnnualOrSeasonalGoalMet(seasonalGoal);
+    }
 }
