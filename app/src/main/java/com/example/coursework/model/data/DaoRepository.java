@@ -486,4 +486,9 @@ public class DaoRepository {
         return goalSeasonalDAO.getMostRecentSeasonalGoalForUser(userId);
     }
     //region
+    //region [GoalAnnual Get]
+    public LiveData<GoalAnnual> getMostRecentGoalAnnual(long userId){
+        return goalAnnualDAO.getMostRecentAnnualGoalForUser(userId);
+    }
+    //endregion
 }

@@ -69,6 +69,12 @@
         android:id="@+id/annualExpiresOnTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/resetAnnualGoalBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="Reset Annual Goal" />
 </LinearLayout>
 
 </FrameLayout>
