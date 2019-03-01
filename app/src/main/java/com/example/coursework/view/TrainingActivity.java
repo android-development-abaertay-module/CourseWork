@@ -52,7 +52,5 @@ public class TrainingActivity extends AppCompatActivity {
             user = new User(intent.getStringExtra(USERNAME));
             user.setId(intent.getLongExtra(USER_ID,0));
         }
-
     }
-
 }

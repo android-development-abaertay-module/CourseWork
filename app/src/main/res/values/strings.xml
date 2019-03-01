@@ -60,4 +60,11 @@
     <string name="title_start_session">Start Session</string>
     <string name="title_add_route">Add Route</string>
     <string name="title_end_session">End Session</string>
+    <string name="sport">Sport</string>
+    <string name="boulder">Boulder</string>
+    <string name="style_done">Style Done</string>
+    <string name="dogged">Dogged</string>
+    <string name="worked">Worked</string>
+    <string name="onsight">Onsight</string>
+    <string name="grade">Grade</string>
 </resources>
