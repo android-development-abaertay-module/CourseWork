@@ -8,6 +8,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.example.coursework.model.Route;
+import com.example.coursework.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,4 +30,7 @@ public interface RouteDAO {
 
     @Query("SELECT * FROM Route WHERE userId ==:userId ORDER BY timeDone ASC")
     List<Route> getAllRoutesForUserOrderASC(long userId);
+
+    @Query("SELECT * FROM Route WHERE sessionId ==:sessionId ORDER BY timeDone ASC LIMIT :numberOfRoutes")
+    LiveData<List<Route>> getRecentRoutesForSession(int numberOfRoutes, long sessionId);
 }

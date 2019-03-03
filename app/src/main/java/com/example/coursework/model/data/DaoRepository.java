@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.coursework.R;
 import com.example.coursework.model.GoalAnnual;
 import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.GoalWeekly;
@@ -42,6 +43,7 @@ public class DaoRepository {
     public  void insertAnnualGoal(GoalAnnual goalAnnual){
         new InsertGoalAnnualAsyncTask(goalAnnualDAO).execute(goalAnnual);
     }
+
     private static  class InsertGoalAnnualAsyncTask extends AsyncTask<GoalAnnual,Void,Void> {
         GoalAnnualDAO anGoalDao;
         public InsertGoalAnnualAsyncTask(GoalAnnualDAO goalAnnualDAO) {
@@ -410,6 +412,7 @@ public class DaoRepository {
     }
 
     //endregion
+
     //region [GoalWeekly Get]
     public LiveData<GoalWeekly>getMostRecentGoalWeekly(long userId){
         return goalWeeklyDAO.getMostRecentWeeklyGoalForUser(userId);
@@ -562,8 +565,6 @@ public class DaoRepository {
     }
     //endregion
 
-
-
     //region [GoalAnnual Get]
     public LiveData<GoalAnnual> getMostRecentGoalAnnual(long userId){
         return goalAnnualDAO.getMostRecentAnnualGoalForUser(userId);
@@ -643,6 +644,18 @@ public class DaoRepository {
             goalAnnualDAO.update(ga);
             return null;
         }
+    }
+    //endregion
+
+    //region [Routes Get]
+    public LiveData<List<Route>> getRecentRoutesForSession(int numberOfRoutes, long sessionId) {
+        return routeDAO.getRecentRoutesForSession(numberOfRoutes, sessionId);
+    }
+    //endregion
+
+    //region [Session Get]
+    public LiveData<List<Session>> getRecentSessionsForUser(int numberOfSessions, long userId) {
+        return sessionDAO.getRecentSessionsForUser(numberOfSessions,userId);
     }
     //endregion
 }

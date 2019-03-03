@@ -22,6 +22,12 @@
             android:layout_height="wrap_content"
             android:text="@string/title_start_session" />
 
+        <ListView
+            android:id="@+id/displayRecentLV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ListView>
         <include
             android:id="@+id/addRouteLayout"
             layout="@layout/add_route_form_layout"/>
