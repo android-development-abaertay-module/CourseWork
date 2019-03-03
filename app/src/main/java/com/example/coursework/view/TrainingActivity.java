@@ -6,10 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.coursework.R;
 import com.example.coursework.model.User;
+import com.example.coursework.model.enums.Grades;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
@@ -17,6 +20,7 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 public class TrainingActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+    private Spinner gradeAchivedSpinner;
     private User user;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -45,6 +49,9 @@ public class TrainingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_training);
 
         mTextMessage = (TextView) findViewById(R.id.message);
+        gradeAchivedSpinner = findViewById(R.id.gradeAchievedSpinner);
+        gradeAchivedSpinner.setAdapter(new ArrayAdapter<Grades>(this, android.R.layout.simple_list_item_1, Grades.values()));
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Intent intent = getIntent();

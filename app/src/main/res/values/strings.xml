@@ -67,4 +67,5 @@
     <string name="worked">Worked</string>
     <string name="onsight">Onsight</string>
     <string name="grade">Grade</string>
+    <string name="add_route">Add Route</string>
 </resources>

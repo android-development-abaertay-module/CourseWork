@@ -12,7 +12,8 @@
         android:id="@+id/routeTypeBtnGrp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +31,8 @@
         android:id="@+id/styleDoneBtnGrp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
         <RadioButton
             android:id="@+id/styleDoneOnsightRB"
             android:layout_width="wrap_content"
@@ -58,7 +60,9 @@
         </Spinner>
         <Button
             android:id="@+id/addRouteBtn"
+            android:text="@string/add_route"
+            android:background="@color/aqua"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"/>
+            android:layout_gravity="center"/>
 </LinearLayout>
