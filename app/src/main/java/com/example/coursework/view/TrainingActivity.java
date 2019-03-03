@@ -99,6 +99,7 @@ public class TrainingActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Route> routes) {
                 recentRoutes = routes;
+
             }
         });
 
