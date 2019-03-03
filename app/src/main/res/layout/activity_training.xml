@@ -29,9 +29,9 @@
 
         </ListView>
         <include
+            android:visibility="gone"
             android:id="@+id/addRouteLayout"
-            layout="@layout/add_route_form_layout"
-            android:visibility="gone"/>
+            layout="@layout/add_route_form_layout" />
 
     </LinearLayout>
 

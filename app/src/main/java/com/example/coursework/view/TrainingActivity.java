@@ -31,11 +31,14 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 public class TrainingActivity extends AppCompatActivity {
 
     private TrainingActivityViewModel trainingActivityViewModel;
+    BottomNavigationView navigation;
+    MenuItem startMenuItem;
+    MenuItem endMenuItem;
     private TextView mTextMessage;
     private Spinner gradeAchievedSpinner;
     private ListView displayRecentLV;
     private User user;
-    private Session currentSesion;
+    private Session currentSession;
     private List<Session> recentSessions;
     private List<Route> recentRoutes;
 
@@ -51,9 +54,6 @@ public class TrainingActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_add_route:
                     mTextMessage.setText(R.string.title_add_route);
-                    return true;
-                case R.id.navigation_end_session:
-                    mTextMessage.setText(R.string.title_end_session);
                     return true;
             }
             return false;
@@ -72,11 +72,15 @@ public class TrainingActivity extends AppCompatActivity {
             user = new User(intent.getStringExtra(USERNAME));
             user.setId(intent.getLongExtra(USER_ID,0));
             trainingActivityViewModel.getUserLD(user.getId());
-            trainingActivityViewModel.updateRecentSessions(6,user.getId());
             trainingActivityViewModel.getCurrentSession(user.getId());
         }
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        startMenuItem = navigation.getMenu().findItem(R.id.navigation_start_session);
+        endMenuItem = navigation.getMenu().findItem(R.id.navigation_end_session);
+
+        mTextMessage =  findViewById(R.id.message);
         gradeAchievedSpinner = findViewById(R.id.gradeAchievedSpinner);
         gradeAchievedSpinner.setAdapter(new ArrayAdapter<Grades>(this, android.R.layout.simple_list_item_1, Grades.values()));
         displayRecentLV = findViewById(R.id.displayRecentLV);
@@ -94,7 +98,18 @@ public class TrainingActivity extends AppCompatActivity {
         trainingActivityViewModel.getCurrentSession(user.getId()).observe(this, new Observer<Session>() {
             @Override
             public void onChanged(@Nullable Session session) {
-                currentSesion = session;
+                currentSession = session;
+                if (currentSession == null){
+                    //Display Start Session stuff
+                    startMenuItem.setChecked(true);
+                    endMenuItem.setVisible(false);
+                    trainingActivityViewModel.updateRecentSessions(6,user.getId());
+                }else{
+                    //We have a Current Session. display add route stuff
+                    endMenuItem.setChecked(true);
+                    startMenuItem.setVisible(false);
+                    trainingActivityViewModel.updateRecentRoutes(6,user.getId());
+                }
             }
         });
         trainingActivityViewModel.getRecentSessionsLD().observe(this, new Observer<List<Session>>() {
@@ -113,11 +128,5 @@ public class TrainingActivity extends AppCompatActivity {
                 displayRecentLV.setAdapter(adapter);
             }
         });
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.getMenu().findItem(R.id.navigation_end_session).setChecked(true);
-
-
     }
 }

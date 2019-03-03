@@ -43,9 +43,9 @@ public class TrainingActivityViewModel extends AndroidViewModel {
         recentRoutesLD = new MutableLiveData<>();
         recentSessionsLD = new MutableLiveData<>();
     }
-    public LiveData<List<Route>> updateRecentRoutes(int numberOfRoutes, long sessionId){
+    public void updateRecentRoutes(int numberOfRoutes, long sessionId){
         recentRoutesLD = daoRepository.getRecentRoutesForSession( numberOfRoutes,  sessionId);
-        return getRecentRoutesLD();
+       // return getRecentRoutesLD();
     }
     public LiveData<List<Session>> updateRecentSessions(int numberOfSessions, long userId){
         recentSessionsLD = daoRepository.getRecentSessionsForUser(numberOfSessions,userId);
