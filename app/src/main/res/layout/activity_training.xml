@@ -30,7 +30,8 @@
         </ListView>
         <include
             android:id="@+id/addRouteLayout"
-            layout="@layout/add_route_form_layout"/>
+            layout="@layout/add_route_form_layout"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

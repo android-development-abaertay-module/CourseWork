@@ -44,6 +44,7 @@ public class DaoRepository {
         new InsertGoalAnnualAsyncTask(goalAnnualDAO).execute(goalAnnual);
     }
 
+
     private static  class InsertGoalAnnualAsyncTask extends AsyncTask<GoalAnnual,Void,Void> {
         GoalAnnualDAO anGoalDao;
         public InsertGoalAnnualAsyncTask(GoalAnnualDAO goalAnnualDAO) {
@@ -657,5 +658,9 @@ public class DaoRepository {
     public LiveData<List<Session>> getRecentSessionsForUser(int numberOfSessions, long userId) {
         return sessionDAO.getRecentSessionsForUser(numberOfSessions,userId);
     }
+    public LiveData<Session> getCurrentSession(long userId) {
+        return sessionDAO.getCurrentSessionForLogbook(userId);
+    }
+
     //endregion
 }

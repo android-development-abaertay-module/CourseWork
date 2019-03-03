@@ -17,13 +17,16 @@ import java.util.List;
 public class TrainingActivityViewModel extends AndroidViewModel {
     DaoRepository daoRepository;
     LiveData<User> userLD;
+    LiveData<Session> currentSessionLD;
     LiveData<List<Route>> recentRoutesLD;
     LiveData<List<Session>> recentSessionsLD;
 
     public LiveData<User> getUserLD(long userId) {
         return daoRepository.getUserById(userId);
     }
-
+    public LiveData<Session> getCurrentSession(long userId) {
+        return daoRepository.getCurrentSession(userId);
+    }
     public LiveData<List<Route>> getRecentRoutesLD() {
         return recentRoutesLD;
     }
@@ -36,6 +39,7 @@ public class TrainingActivityViewModel extends AndroidViewModel {
         super(application);
         daoRepository = new DaoRepository(application);
         userLD = new MutableLiveData<>();
+        currentSessionLD = new MutableLiveData<>();
         recentRoutesLD = new MutableLiveData<>();
         recentSessionsLD = new MutableLiveData<>();
     }
@@ -46,5 +50,14 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     public LiveData<List<Session>> updateRecentSessions(int numberOfSessions, long userId){
         recentSessionsLD = daoRepository.getRecentSessionsForUser(numberOfSessions,userId);
         return getRecentSessionsLD();
+    }
+
+    public void updateCurrentSession(Session session){
+        daoRepository.updateSession(session);
+        currentSessionLD = getCurrentSession(userLD.getValue().getId());
+    }
+    public void CreateNewSession(Session session){
+        daoRepository.insertSession(session);
+        currentSessionLD = getCurrentSession(userLD.getValue().getId());
     }
 }

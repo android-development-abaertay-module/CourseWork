@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.se.omapi.SEService;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -20,11 +19,10 @@ import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.view.adapters.RouteAdapter;
 import com.example.coursework.view.adapters.SessionAdapter;
 import com.example.coursework.viewmodel.TrainingActivityViewModel;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
@@ -37,6 +35,7 @@ public class TrainingActivity extends AppCompatActivity {
     private Spinner gradeAchievedSpinner;
     private ListView displayRecentLV;
     private User user;
+    private Session currentSesion;
     private List<Session> recentSessions;
     private List<Route> recentRoutes;
 
@@ -47,13 +46,13 @@ public class TrainingActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_start_session:
                     mTextMessage.setText(R.string.title_start_session);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_add_route:
                     mTextMessage.setText(R.string.title_add_route);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_end_session:
                     mTextMessage.setText(R.string.title_end_session);
                     return true;
             }
@@ -74,6 +73,7 @@ public class TrainingActivity extends AppCompatActivity {
             user.setId(intent.getLongExtra(USER_ID,0));
             trainingActivityViewModel.getUserLD(user.getId());
             trainingActivityViewModel.updateRecentSessions(6,user.getId());
+            trainingActivityViewModel.getCurrentSession(user.getId());
         }
 
         mTextMessage = (TextView) findViewById(R.id.message);
@@ -81,10 +81,20 @@ public class TrainingActivity extends AppCompatActivity {
         gradeAchievedSpinner.setAdapter(new ArrayAdapter<Grades>(this, android.R.layout.simple_list_item_1, Grades.values()));
         displayRecentLV = findViewById(R.id.displayRecentLV);
 
+        //Initially load Sessions
+
+
+
         trainingActivityViewModel.getUserLD(user.getId()).observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable User userVal) {
                 user = userVal;
+            }
+        });
+        trainingActivityViewModel.getCurrentSession(user.getId()).observe(this, new Observer<Session>() {
+            @Override
+            public void onChanged(@Nullable Session session) {
+                currentSesion = session;
             }
         });
         trainingActivityViewModel.getRecentSessionsLD().observe(this, new Observer<List<Session>>() {
@@ -99,13 +109,15 @@ public class TrainingActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Route> routes) {
                 recentRoutes = routes;
-
+                RouteAdapter adapter = new RouteAdapter(getApplicationContext(),recentRoutes);
+                displayRecentLV.setAdapter(adapter);
             }
         });
 
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.getMenu().findItem(R.id.navigation_end_session).setChecked(true);
+
 
     }
 }

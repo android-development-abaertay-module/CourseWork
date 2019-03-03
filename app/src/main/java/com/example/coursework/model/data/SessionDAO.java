@@ -21,8 +21,9 @@ public interface SessionDAO {
     @Delete
     void delete(Session session);
 
-    @Query("SELECT * FROM Session WHERE logbookId ==:logbookId AND endTime = NULL LIMIT 1")
-    LiveData<Session> getCurrentSessionForLogbook(int logbookId);
+    @Query("SELECT * FROM Session s INNER JOIN Logbook l ON s.logbookId = l.id" +
+            " WHERE l.userId ==:userId AND endTime IS NULL ORDER BY startTime ASC LIMIT 1")
+    LiveData<Session> getCurrentSessionForLogbook(long userId);
 
     @Query("SELECT * FROM Session WHERE logbookId ==:logbookId")
     LiveData<Session> getAllSessionsInLogbook(int logbookId);
