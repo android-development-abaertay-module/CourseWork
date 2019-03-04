@@ -23,10 +23,14 @@
             android:text="@string/title_start_session" />
 
         <ListView
-            android:id="@+id/displayRecentLV"
+            android:id="@+id/displayRecentRoutesLV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+        </ListView>
+        <ListView
+            android:id="@+id/displayRecentSessionsLV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         </ListView>
         <include
             android:visibility="gone"

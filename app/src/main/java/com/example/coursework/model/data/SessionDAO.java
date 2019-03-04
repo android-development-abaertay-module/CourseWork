@@ -32,7 +32,7 @@ public interface SessionDAO {
     LiveData<Session> getAllSessionsInLogbookForPeriod(long logbookId, LocalDateTime statTime, LocalDateTime endTime);
 
     @Query("SELECT * FROM Session " +
-            "INNER JOIN Logbook l on l.userId ==:userId " +
+            "INNER JOIN Logbook l on l.id == logbookId " +
             "INNER JOIN User u on u.id ==l.userId " +
             "WHERE u.id ==:userId   ORDER BY startTime ASC LIMIT :numberOfSessions")
     LiveData<List<Session>> getRecentSessionsForUser(int numberOfSessions, long userId);

@@ -2,11 +2,9 @@ package com.example.coursework.model.data;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.coursework.R;
 import com.example.coursework.model.GoalAnnual;
 import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.GoalWeekly;
@@ -44,7 +42,6 @@ public class DaoRepository {
     public  void insertAnnualGoal(GoalAnnual goalAnnual){
         new InsertGoalAnnualAsyncTask(goalAnnualDAO).execute(goalAnnual);
     }
-
 
     private static  class InsertGoalAnnualAsyncTask extends AsyncTask<GoalAnnual,Void,Void> {
         GoalAnnualDAO anGoalDao;
@@ -650,8 +647,8 @@ public class DaoRepository {
     //endregion
 
     //region [Routes Get]
-    public LiveData<List<Route>> getRecentRoutesForSession(int numberOfRoutes, long sessionId) {
-        return routeDAO.getRecentRoutesForSession(numberOfRoutes, sessionId);
+    public LiveData<List<Route>> getRecentRoutesForUser(int numberOfRoutes, long userId) {
+        return routeDAO.getRecentRoutesForUser(numberOfRoutes, userId);
     }
     //endregion
 
@@ -663,5 +660,11 @@ public class DaoRepository {
         return sessionDAO.getCurrentSessionForLogbook(userId);
     }
 
+    //endregion
+
+    //region [Logbook Gets]
+    public LiveData<Logbook> getLogbookForUser(long userId) {
+        return logbookDAO.getLogbookForUser(userId);
+    }
     //endregion
 }
