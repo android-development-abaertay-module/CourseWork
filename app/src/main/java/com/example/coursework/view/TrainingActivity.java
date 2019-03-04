@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -123,9 +124,14 @@ public class TrainingActivity extends AppCompatActivity {
         trainingActivityViewModel.getRecentRoutesLD().observe(this, new Observer<List<Route>>() {
             @Override
             public void onChanged(@Nullable List<Route> routes) {
-                recentRoutes = routes;
-                RouteAdapter adapter = new RouteAdapter(getApplicationContext(),recentRoutes);
-                displayRecentLV.setAdapter(adapter);
+                if (routes != null){
+                    recentRoutes = routes;
+                    RouteAdapter adapter = new RouteAdapter(getApplicationContext(),recentRoutes);
+                    displayRecentLV.setAdapter(adapter);
+                }else{
+                    Log.d("gwyd","no routes returned");
+                    //TODO:display something here
+                }
             }
         });
     }

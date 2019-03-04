@@ -17,7 +17,7 @@ import java.util.List;
 public class TrainingActivityViewModel extends AndroidViewModel {
     DaoRepository daoRepository;
     LiveData<User> userLD;
-    LiveData<Session> currentSessionLD;
+    public LiveData<Session> currentSessionLD;
     LiveData<List<Route>> recentRoutesLD;
     LiveData<List<Session>> recentSessionsLD;
 
@@ -44,8 +44,8 @@ public class TrainingActivityViewModel extends AndroidViewModel {
         recentSessionsLD = new MutableLiveData<>();
     }
     public void updateRecentRoutes(int numberOfRoutes, long sessionId){
-        recentRoutesLD = daoRepository.getRecentRoutesForSession( numberOfRoutes,  sessionId);
-       // return getRecentRoutesLD();
+        recentRoutesLD =  daoRepository.getRecentRoutesForSession( numberOfRoutes,  sessionId);
+        //return getRecentRoutesLD();
     }
     public LiveData<List<Session>> updateRecentSessions(int numberOfSessions, long userId){
         recentSessionsLD = daoRepository.getRecentSessionsForUser(numberOfSessions,userId);
