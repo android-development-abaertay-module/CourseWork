@@ -71,8 +71,11 @@ public class TrainingActivity extends AppCompatActivity {
                     startSession_Click();
                     return true;
                 case R.id.navigation_add_route:
-                    mTextMessage.setText(R.string.title_add_route);
-                    addRouteForm.setVisibility(View.VISIBLE);
+                    mTextMessage.setText("");
+                    if(addRouteForm.getVisibility() != View.VISIBLE)
+                        addRouteForm.setVisibility(View.VISIBLE);
+                    else
+                        addRouteForm.setVisibility(View.GONE);
                     return true;
                 case R.id.navigation_end_session:
                     endSession_Click();
