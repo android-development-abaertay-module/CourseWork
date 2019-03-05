@@ -19,6 +19,8 @@ public class User
     @Ignore
     private ArrayList<Session> sessionsList;
     @Ignore
+    private Session currentSession;
+    @Ignore
     private GoalWeekly weeklyGoal;
     @Ignore
     private GoalSeasonal seasonalGoal;
@@ -37,6 +39,13 @@ public class User
     }
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Session getCurrentSession() {
+        return currentSession;
+    }
+    public void setCurrentSession(Session currentSession) {
+        this.currentSession = currentSession;
     }
 
     public ArrayList<Session> getSessionsList() {
@@ -69,7 +78,7 @@ public class User
 
     //-----Constructor
     public User() {
-
+        sessionsList = new ArrayList<>();
     }
     @Ignore
     public User(String  userName)

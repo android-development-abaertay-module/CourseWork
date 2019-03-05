@@ -31,6 +31,7 @@ import com.example.coursework.view.adapters.SessionAdapter;
 import com.example.coursework.viewmodel.TrainingActivityViewModel;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
@@ -49,9 +50,6 @@ public class TrainingActivity extends AppCompatActivity {
     private ListView displayRecentSessionsLV;
     private View addRouteForm;
     private User user;
-    private Session currentSession;
-    private List<Session> recentSessions;
-    private List<Route> recentRoutes;
 
     private RadioGroup routeTypeRG;
     private RadioGroup routeStyleRG;
@@ -102,6 +100,7 @@ public class TrainingActivity extends AppCompatActivity {
             trainingActivityViewModel.getCurrentSession(user.getId());
         }
 
+
         //region [declare Properties]
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -131,8 +130,8 @@ public class TrainingActivity extends AppCompatActivity {
         trainingActivityViewModel.getCurrentSession(user.getId()).observe(this, new Observer<Session>() {
             @Override
             public void onChanged(@Nullable Session session) {
-                currentSession = session;
-                if (currentSession == null){
+                user.setCurrentSession(session);
+                if (user.getCurrentSession() == null){
                     //Display Start Session stuff
                     startMenuItem.setChecked(false);
                     startMenuItem.setVisible(true);
@@ -156,8 +155,8 @@ public class TrainingActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Session> sessions) {
                 if (sessions != null) {
-                    recentSessions = sessions;
-                    SessionAdapter adapter = new SessionAdapter(getApplicationContext(), recentSessions);
+                    user.setSessionsList((ArrayList)sessions);
+                    SessionAdapter adapter = new SessionAdapter(getApplicationContext(), user.getSessionsList());
                     displayRecentSessionsLV.setAdapter(adapter);
                     mTextMessage.setVisibility(View.GONE);
                 }else{
@@ -170,6 +169,7 @@ public class TrainingActivity extends AppCompatActivity {
         trainingActivityViewModel.getRecentRoutesForUserLD(user.getId()).observe(this, new Observer<List<Route>>() {
             @Override
             public void onChanged(@Nullable List<Route> routes) {
+                user.getCurrentSession().setRouteLog(new ArrayList<Route>());
                 if (routes != null){
                     if (routes.size() ==0){
                         //no recent routes to display:
@@ -178,8 +178,12 @@ public class TrainingActivity extends AppCompatActivity {
                     }else{
                         mTextMessage.setVisibility(View.GONE);
                     }
-                    recentRoutes = routes;
-                    RouteAdapter adapter = new RouteAdapter(getApplicationContext(),recentRoutes);
+
+                    for (Route r: routes) {
+                        if (r.getSessionId() == user.getCurrentSession().getId())
+                            user.getCurrentSession().getRouteLog().add(r);
+                    }
+                    RouteAdapter adapter = new RouteAdapter(getApplicationContext(),user.getCurrentSession().getRouteLog());
                     displayRecentRoutesLV.setAdapter(adapter);
                 }else{
                     Log.d("gwyd","no routes returned");
@@ -193,8 +197,8 @@ public class TrainingActivity extends AppCompatActivity {
 
 
     private void startSession_Click() {
-        currentSession = new Session(LocalDateTime.now(),user.getId());
-        trainingActivityViewModel.CreateNewSession(currentSession);
+        user.setCurrentSession( new Session(LocalDateTime.now(),user.getId()));
+        trainingActivityViewModel.CreateNewSession(user.getCurrentSession());
     }
 
     public void addRouteBtn_Click(View view) {
@@ -205,19 +209,19 @@ public class TrainingActivity extends AppCompatActivity {
         StyleDone styleDone = StyleDone.getFromInteger(Integer.parseInt(findViewById(selectedStyleTypeID).getTag().toString()));
         Grades grade =(Grades) gradeAchievedSpinner.getSelectedItem();
 
-        Route newRoute = new Route(currentSession.getId(),user.getId(),grade,routeType,styleDone,LocalDateTime.now());
+        Route newRoute = new Route(user.getCurrentSession().getId(),user.getId(),grade,routeType,styleDone,LocalDateTime.now());
         trainingActivityViewModel.addRoute(newRoute);
         addRouteForm.setVisibility(View.GONE);
+        displayRecentRoutesLV.setVisibility(View.VISIBLE);
     }
     private void endSession_Click() {
         if (addRouteForm.getVisibility() == View.VISIBLE)
             addRouteForm.setVisibility(View.GONE);
-        if (currentSession != null){
-            currentSession.setEndTime(LocalDateTime.now());
-            trainingActivityViewModel.updateCurrentSession(currentSession);
+        if (user.getCurrentSession() != null){
+            user.getCurrentSession().setEndTime(LocalDateTime.now());
+            trainingActivityViewModel.updateCurrentSession(user.getCurrentSession());
         }else {
             Toast.makeText(this,"No Active Session",Toast.LENGTH_SHORT).show();
         }
-
     }
 }

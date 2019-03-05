@@ -65,7 +65,7 @@ public class Session
 
     //---Constructor
     public Session(){
-
+        routeLog = new ArrayList<>();
     }
     @Ignore
     public Session(LocalDateTime startTime, long userId)
