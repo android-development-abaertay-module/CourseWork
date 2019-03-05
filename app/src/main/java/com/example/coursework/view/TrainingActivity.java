@@ -70,10 +70,14 @@ public class TrainingActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_add_route:
                     mTextMessage.setText(R.string.add_route);
-                    if(addRouteForm.getVisibility() != View.VISIBLE)
+                    if(addRouteForm.getVisibility() != View.VISIBLE) {
                         addRouteForm.setVisibility(View.VISIBLE);
-                    else
+                        displayRecentRoutesLV.setVisibility(View.GONE);
+                    }
+                    else {
                         addRouteForm.setVisibility(View.GONE);
+                        displayRecentRoutesLV.setVisibility(View.VISIBLE);
+                    }
                     return true;
                 case R.id.navigation_end_session:
                     endSession_Click();
@@ -134,7 +138,7 @@ public class TrainingActivity extends AppCompatActivity {
                     startMenuItem.setVisible(true);
                     endMenuItem.setVisible(false);
                     addRouteMenuItem.setEnabled(false);
-                    displayRecentRoutesLV.setVisibility(View.INVISIBLE);
+                    displayRecentRoutesLV.setVisibility(View.GONE);
                     displayRecentSessionsLV.setVisibility(View.VISIBLE);
                 }else{
                     //We have a Current Session. display add route stuff
@@ -142,7 +146,7 @@ public class TrainingActivity extends AppCompatActivity {
                     startMenuItem.setVisible(false);
                     addRouteMenuItem.setEnabled(true);
                     endMenuItem.setVisible(true);
-                    displayRecentSessionsLV.setVisibility(View.INVISIBLE);
+                    displayRecentSessionsLV.setVisibility(View.GONE);
                     displayRecentRoutesLV.setVisibility(View.VISIBLE);
                 }
             }
