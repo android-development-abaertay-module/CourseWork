@@ -8,7 +8,6 @@ import android.util.Log;
 import com.example.coursework.model.GoalAnnual;
 import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.GoalWeekly;
-import com.example.coursework.model.Logbook;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
@@ -22,7 +21,6 @@ public class DaoRepository {
     private GoalAnnualDAO goalAnnualDAO;
     private GoalSeasonalDAO goalSeasonalDAO;
     private GoalWeeklyDAO goalWeeklyDAO;
-    private LogbookDAO logbookDAO;
     private RouteDAO routeDAO;
     private SessionDAO sessionDAO;
     private UserDAO userDAO;
@@ -32,7 +30,6 @@ public class DaoRepository {
         goalAnnualDAO = appDatabase.goalAnnualDAO();
         goalSeasonalDAO = appDatabase.goalSeasonalDAO();
         goalWeeklyDAO = appDatabase.goalWeeklyDAO();
-        logbookDAO = appDatabase.logbookDAO();
         routeDAO = appDatabase.routeDAO();
         sessionDAO = appDatabase.sessionDAO();
         userDAO = appDatabase.userDAO();
@@ -88,24 +85,7 @@ public class DaoRepository {
         }
     }
 
-    public  long insertLogbook(Logbook logbook){
-        InsertLogbookAsyncTask task = new InsertLogbookAsyncTask(logbookDAO);
-        task.execute(logbook);
-        return task.newLogbookId;
-    }
-    private static  class InsertLogbookAsyncTask extends AsyncTask<Logbook,Void,Void> {
-        LogbookDAO logbookDAO;
-        long newLogbookId;
-        public InsertLogbookAsyncTask(LogbookDAO logbookDAO) {
-            this.logbookDAO = logbookDAO;
-        }
 
-        @Override
-        protected Void doInBackground(Logbook... logbooks) {
-            newLogbookId = logbookDAO.insert(logbooks[0]);
-            return  null;
-        }
-    }
 
     public  void insertRoute(Route route){
         new InsertRouteAsyncTask(routeDAO).execute(route);
@@ -139,18 +119,16 @@ public class DaoRepository {
         }
     }
 
-    public  long insertUserWithLogbook(User user){
-        InsertUserWithLogbookAsyncTask task = new InsertUserWithLogbookAsyncTask(userDAO,logbookDAO);
+    public  long insertUser(User user){
+        InsertUserAsyncTask task = new InsertUserAsyncTask(userDAO);
          task.execute(user);
          return task.newUserId;
     }
-    private static class InsertUserWithLogbookAsyncTask extends AsyncTask<User,Void,Long> {
+    private static class InsertUserAsyncTask extends AsyncTask<User,Void,Long> {
         UserDAO userDAO;
-        LogbookDAO logbookDAO;
         long newUserId;
-        public InsertUserWithLogbookAsyncTask(UserDAO userDAO,LogbookDAO logbookDAO) {
+        public InsertUserAsyncTask(UserDAO userDAO) {
             this.userDAO = userDAO;
-            this.logbookDAO = logbookDAO;
         }
 
         @Override
@@ -158,10 +136,7 @@ public class DaoRepository {
             Log.d("gwyd",users[0].getId() + " - no user id generated at this stage");
             newUserId = userDAO.insert(users[0]);
             Log.d("gwyd",newUserId + " - user insert ran, we have this id");
-            Logbook logbook = new Logbook(newUserId);
-            Log.d("gwyd",logbook.getId() + " - logbook object created with this id. and above user id");
-            long newLbId = logbookDAO.insert(logbook);
-            Log.d("gwyd",newLbId + " - the id of the new logbook");
+
             return  newUserId;
         }
     }
@@ -217,21 +192,6 @@ public class DaoRepository {
         }
     }
 
-    public  void updateLogbook(Logbook logbook){
-        new UpdateLogbookAsyncTask(logbookDAO).execute(logbook);
-    }
-    private static  class UpdateLogbookAsyncTask extends AsyncTask<Logbook,Void,Void> {
-        LogbookDAO logbookDAO;
-        public UpdateLogbookAsyncTask(LogbookDAO logbookDAO) {
-            this.logbookDAO = logbookDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Logbook... logbooks) {
-            logbookDAO.update(logbooks[0]);
-            return  null;
-        }
-    }
 
     public  void updateRoute(Route route){
         new UpdateRouteAsyncTask(routeDAO).execute(route);
@@ -329,22 +289,6 @@ public class DaoRepository {
         @Override
         protected Void doInBackground(GoalWeekly... weeklyGoal) {
             goalWeeklyDAO.delete(weeklyGoal[0]);
-            return  null;
-        }
-    }
-
-    public  void deleteLogbook(Logbook logbook){
-        new DeleteLogbookAsyncTask(logbookDAO).execute(logbook);
-    }
-    private static  class DeleteLogbookAsyncTask extends AsyncTask<Logbook,Void,Void> {
-        LogbookDAO logbookDAO;
-        public DeleteLogbookAsyncTask(LogbookDAO logbookDAO) {
-            this.logbookDAO = logbookDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Logbook... logbooks) {
-            logbookDAO.delete(logbooks[0]);
             return  null;
         }
     }
@@ -658,14 +602,9 @@ public class DaoRepository {
         return sessionDAO.getRecentSessionsForUser(numberOfSessions,userId);
     }
     public LiveData<Session> getCurrentSession(long userId) {
-        return sessionDAO.getCurrentSessionForLogbook(userId);
+        return sessionDAO.getCurrentSessionForUser(userId);
     }
 
     //endregion
 
-    //region [Logbook Gets]
-    public LiveData<Logbook> getLogbookForUser(long userId) {
-        return logbookDAO.getLogbookForUser(userId);
-    }
-    //endregion
 }

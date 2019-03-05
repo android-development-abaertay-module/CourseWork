@@ -13,7 +13,6 @@ import android.util.Log;
 import com.example.coursework.model.GoalAnnual;
 import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.GoalWeekly;
-import com.example.coursework.model.Logbook;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
@@ -31,7 +30,6 @@ import java.time.LocalDateTime;
         GoalAnnual.class,
         GoalSeasonal.class,
         GoalWeekly.class,
-        Logbook.class,
         Route.class,
         Session.class,
         User.class}, version = 1)
@@ -43,7 +41,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public  abstract GoalAnnualDAO goalAnnualDAO();
     public abstract GoalSeasonalDAO goalSeasonalDAO();
     public abstract GoalWeeklyDAO goalWeeklyDAO();
-    public abstract LogbookDAO logbookDAO();
     public abstract RouteDAO routeDAO();
     public abstract SessionDAO sessionDAO();
     public abstract UserDAO userDAO();
@@ -84,7 +81,6 @@ public abstract class AppDatabase extends RoomDatabase {
         private GoalAnnualDAO goalAnnualDAO;
         private GoalSeasonalDAO goalSeasonalDAO;
         private GoalWeeklyDAO goalWeeklyDAO;
-        private LogbookDAO logbookDAO;
         private RouteDAO routeDAO;
         private SessionDAO sessionDAO;
         private UserDAO userDAO;
@@ -93,7 +89,6 @@ public abstract class AppDatabase extends RoomDatabase {
             goalAnnualDAO = appDatabase.goalAnnualDAO();
             goalSeasonalDAO = appDatabase.goalSeasonalDAO();
             goalWeeklyDAO = appDatabase.goalWeeklyDAO();
-            logbookDAO = appDatabase.logbookDAO();
             routeDAO = appDatabase.routeDAO();
             sessionDAO = appDatabase.sessionDAO();
             userDAO = appDatabase.userDAO();
@@ -113,10 +108,7 @@ public abstract class AppDatabase extends RoomDatabase {
             GoalAnnual goalAnnual = new GoalAnnual(user.getId(),Grades.SEVEN_A,Grades.SEVEN_A,Grades.SEVEN_B,Grades.SEVEN_B,LocalDateTime.now().minusMonths(2));
             goalAnnual.setId(goalAnnualDAO.insert(goalAnnual));
 
-            Logbook logbook = new Logbook(1);
-            logbook.setId(logbookDAO.insert(logbook));
-
-            Session oldSession = new Session(LocalDateTime.now().minusDays(1).minusHours(3),1);
+            Session oldSession = new Session(LocalDateTime.now().minusDays(1).minusHours(3),user.getId());
             oldSession.setEndTime(LocalDateTime.now());
             oldSession.setId(sessionDAO.insert(oldSession));
 
@@ -127,7 +119,7 @@ public abstract class AppDatabase extends RoomDatabase {
             oldRouteTwo.setId(routeDAO.insert(oldRouteTwo));
             oldRouteThree.setId(routeDAO.insert(oldRouteThree));
 
-            Session currentSession = new Session(LocalDateTime.now(),1);
+            Session currentSession = new Session(LocalDateTime.now(),user.getId());
             currentSession.setId(sessionDAO.insert(currentSession));
 
             Route cRouteOne = new Route(currentSession.getId(),user.getId(),Grades.SIX_A,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(20));

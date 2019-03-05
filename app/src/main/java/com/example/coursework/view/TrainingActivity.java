@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coursework.R;
-import com.example.coursework.model.Logbook;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
@@ -31,7 +30,6 @@ import com.example.coursework.view.adapters.RouteAdapter;
 import com.example.coursework.view.adapters.SessionAdapter;
 import com.example.coursework.viewmodel.TrainingActivityViewModel;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -51,7 +49,6 @@ public class TrainingActivity extends AppCompatActivity {
     private ListView displayRecentSessionsLV;
     private View addRouteForm;
     private User user;
-    private Logbook logbook;
     private Session currentSession;
     private List<Session> recentSessions;
     private List<Route> recentRoutes;
@@ -97,7 +94,6 @@ public class TrainingActivity extends AppCompatActivity {
             user = new User(intent.getStringExtra(USERNAME));
             user.setId(intent.getLongExtra(USER_ID,0));
             trainingActivityViewModel.getUserLD(user.getId());
-            trainingActivityViewModel.getLogbookLD(user.getId());
             trainingActivityViewModel.getCurrentSession(user.getId());
         }
 
@@ -125,12 +121,6 @@ public class TrainingActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable User userVal) {
                 user = userVal;
-            }
-        });
-        trainingActivityViewModel.getLogbookLD(user.getId()).observe(this, new Observer<Logbook>() {
-            @Override
-            public void onChanged(@Nullable Logbook logbookVal) {
-                logbook = logbookVal;
             }
         });
         trainingActivityViewModel.getCurrentSession(user.getId()).observe(this, new Observer<Session>() {
@@ -198,7 +188,7 @@ public class TrainingActivity extends AppCompatActivity {
 
 
     private void startSession_Click() {
-        currentSession = new Session(LocalDateTime.now(),logbook.getId());
+        currentSession = new Session(LocalDateTime.now(),user.getId());
         trainingActivityViewModel.CreateNewSession(currentSession);
     }
 

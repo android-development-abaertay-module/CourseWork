@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coursework.R;
-import com.example.coursework.model.Logbook;
 import com.example.coursework.model.User;
 import com.example.coursework.view.adapters.UsersAdapter;
 import com.example.coursework.viewmodel.LandingActivityViewModel;
@@ -144,7 +143,7 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         //create user, get id then create logbook for user
         //create user logbook
         try{
-            user.setId(landingActivityViewModel.getDaoRepository().insertUserWithLogbook(user));
+            user.setId(landingActivityViewModel.getDaoRepository().insertUser(user));
             //refresh loaded list
             landingActivityViewModel.updateUsersList();
         }catch (Exception ex){

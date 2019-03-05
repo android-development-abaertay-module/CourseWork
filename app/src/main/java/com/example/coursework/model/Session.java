@@ -11,15 +11,15 @@ import java.util.ArrayList;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "Session",foreignKeys = @ForeignKey(entity = Logbook.class,parentColumns = "id",childColumns = "logbookId", onDelete = CASCADE))
+@Entity(tableName = "Session",foreignKeys = @ForeignKey(entity = User.class,parentColumns = "id",childColumns = "userId", onDelete = CASCADE))
 public class Session
 {
     //---------------------------------------------------Attributes-----------------------------
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private long id;
-    @ColumnInfo(name = "logbookId", index = true)
-    private long logbookId;
+    @ColumnInfo(name = "userId", index = true)
+    private long userId;
 
     @ColumnInfo(name = "startTime")
     private LocalDateTime startTime;
@@ -35,11 +35,11 @@ public class Session
         this.id = id;
     }
 
-    public long getLogbookId() {
-        return logbookId;
+    public long getUserId() {
+        return userId;
     }
-    public void setLogbookId(long logbookId) {
-        this.logbookId = logbookId;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public LocalDateTime getStartTime() {
@@ -68,9 +68,9 @@ public class Session
 
     }
     @Ignore
-    public Session(LocalDateTime startTime, long idLogbookFK)
+    public Session(LocalDateTime startTime, long userId)
     {
-        logbookId = idLogbookFK;
+        this.userId = userId;
         this.startTime = startTime;
         routeLog = new ArrayList<>();
     }

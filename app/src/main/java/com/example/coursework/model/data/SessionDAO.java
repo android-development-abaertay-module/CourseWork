@@ -21,19 +21,11 @@ public interface SessionDAO {
     @Delete
     void delete(Session session);
 
-    @Query("SELECT * FROM Session s INNER JOIN Logbook l ON s.logbookId = l.id" +
-            " WHERE l.userId ==:userId AND endTime IS NULL ORDER BY startTime DESC LIMIT 1")
-    LiveData<Session> getCurrentSessionForLogbook(long userId);
-
-    @Query("SELECT * FROM Session WHERE logbookId ==:logbookId")
-    LiveData<Session> getAllSessionsInLogbook(int logbookId);
-
-    @Query("SELECT * FROM Session WHERE logbookId ==:logbookId AND startTime between :statTime AND :endTime")
-    LiveData<Session> getAllSessionsInLogbookForPeriod(long logbookId, LocalDateTime statTime, LocalDateTime endTime);
+    @Query("SELECT * FROM Session s WHERE userId ==:userId AND endTime IS NULL ORDER BY startTime DESC LIMIT 1")
+    LiveData<Session> getCurrentSessionForUser(long userId);
 
     @Query("SELECT * FROM Session " +
-            "INNER JOIN Logbook l on l.id == logbookId " +
-            "INNER JOIN User u on u.id ==l.userId " +
+            "INNER JOIN User u on u.id == userId " +
             "WHERE u.id ==:userId   ORDER BY startTime DESC LIMIT :numberOfSessions")
     LiveData<List<Session>> getRecentSessionsForUser(int numberOfSessions, long userId);
 

@@ -1,13 +1,12 @@
 package com.example.coursework.model;
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.example.coursework.model.data.DaoRepository;
-import com.example.coursework.model.data.UserDAO;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(tableName = "User")
 public class User
@@ -18,7 +17,7 @@ public class User
     @ColumnInfo(name = "userName")
     private String userName;
     @Ignore
-    private Logbook logBook;
+    private ArrayList<Session> sessionsList;
     @Ignore
     private GoalWeekly weeklyGoal;
     @Ignore
@@ -40,11 +39,11 @@ public class User
         this.userName = userName;
     }
 
-    public Logbook getLogBook() {
-        return logBook;
+    public ArrayList<Session> getSessionsList() {
+        return sessionsList;
     }
-    public void setLogBook(Logbook logBook) {
-        this.logBook = logBook;
+    public void setSessionsList(ArrayList<Session> sessionsList) {
+        this.sessionsList = sessionsList;
     }
 
     public GoalWeekly getWeeklyGoal() {
@@ -76,7 +75,7 @@ public class User
     public User(String  userName)
     {
         this.userName = userName;
-        logBook = new Logbook(id);
+        sessionsList = new ArrayList<>();
         weeklyGoal = new GoalWeekly();
         seasonalGoal = new GoalSeasonal();
         annualGoal = new GoalAnnual();
