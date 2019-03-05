@@ -26,7 +26,7 @@ public class Session
     @ColumnInfo(name = "endTime")
     private LocalDateTime endTime;
     @Ignore
-    private ArrayList<Route> routeLog;
+    private ArrayList<Route> routes;
 
     public long getId() {
         return id;
@@ -56,22 +56,22 @@ public class Session
         this.endTime = endTime;
     }
 
-    public ArrayList<Route> getRouteLog() {
-        return routeLog;
+    public ArrayList<Route> getRoutes() {
+        return routes;
     }
-    public void setRouteLog(ArrayList<Route> routeLog) {
-        this.routeLog = routeLog;
+    public void setRoutes(ArrayList<Route> routes) {
+        this.routes = routes;
     }
 
     //---Constructor
     public Session(){
-        routeLog = new ArrayList<>();
+        routes = new ArrayList<>();
     }
     @Ignore
     public Session(LocalDateTime startTime, long userId)
     {
         this.userId = userId;
         this.startTime = startTime;
-        routeLog = new ArrayList<>();
+        routes = new ArrayList<>();
     }
 }

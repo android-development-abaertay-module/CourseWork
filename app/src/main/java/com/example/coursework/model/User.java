@@ -6,7 +6,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity(tableName = "User")
 public class User
@@ -19,7 +18,7 @@ public class User
     @Ignore
     private ArrayList<Session> sessionsList;
     @Ignore
-    private Session currentSession;
+    private Session curSesh;
     @Ignore
     private GoalWeekly weeklyGoal;
     @Ignore
@@ -41,11 +40,11 @@ public class User
         this.userName = userName;
     }
 
-    public Session getCurrentSession() {
-        return currentSession;
+    public Session getCurSesh() {
+        return curSesh;
     }
-    public void setCurrentSession(Session currentSession) {
-        this.currentSession = currentSession;
+    public void setCurSesh(Session curSesh) {
+        this.curSesh = curSesh;
     }
 
     public ArrayList<Session> getSessionsList() {

@@ -130,8 +130,8 @@ public class TrainingActivity extends AppCompatActivity {
         trainingActivityViewModel.getCurrentSession(user.getId()).observe(this, new Observer<Session>() {
             @Override
             public void onChanged(@Nullable Session session) {
-                user.setCurrentSession(session);
-                if (user.getCurrentSession() == null){
+                user.setCurSesh(session);
+                if (user.getCurSesh() == null){
                     //Display Start Session stuff
                     startMenuItem.setChecked(false);
                     startMenuItem.setVisible(true);
@@ -169,26 +169,30 @@ public class TrainingActivity extends AppCompatActivity {
         trainingActivityViewModel.getRecentRoutesForUserLD(user.getId()).observe(this, new Observer<List<Route>>() {
             @Override
             public void onChanged(@Nullable List<Route> routes) {
-                user.getCurrentSession().setRouteLog(new ArrayList<Route>());
-                if (routes != null){
-                    if (routes.size() ==0){
-                        //no recent routes to display:
+                //if user has no current session then they have no routes to display in session
+                if (user.getCurSesh() != null) {
+                    user.getCurSesh().getRoutes().clear();
+
+                    if (routes != null) {
+
+                        for (Route r : routes) {
+                            if (r.getSessionId() == user.getCurSesh().getId())
+                                user.getCurSesh().getRoutes().add(r);
+                        }
+                        if (user.getCurSesh().getRoutes().size() == 0) {
+                            //no recent routes to display:
+                            mTextMessage.setVisibility(View.VISIBLE);
+                            mTextMessage.setText(R.string.no_routes_to_display);
+                        } else {
+                            mTextMessage.setVisibility(View.GONE);
+                        }
+                        RouteAdapter adapter = new RouteAdapter(getApplicationContext(), user.getCurSesh().getRoutes());
+                        displayRecentRoutesLV.setAdapter(adapter);
+                    } else {
+                        Log.d("gwyd", "no routes returned");
                         mTextMessage.setVisibility(View.VISIBLE);
                         mTextMessage.setText(R.string.no_routes_to_display);
-                    }else{
-                        mTextMessage.setVisibility(View.GONE);
                     }
-
-                    for (Route r: routes) {
-                        if (r.getSessionId() == user.getCurrentSession().getId())
-                            user.getCurrentSession().getRouteLog().add(r);
-                    }
-                    RouteAdapter adapter = new RouteAdapter(getApplicationContext(),user.getCurrentSession().getRouteLog());
-                    displayRecentRoutesLV.setAdapter(adapter);
-                }else{
-                    Log.d("gwyd","no routes returned");
-                    mTextMessage.setVisibility(View.VISIBLE);
-                    mTextMessage.setText(R.string.no_routes_to_display);
                 }
             }
         });
@@ -197,8 +201,8 @@ public class TrainingActivity extends AppCompatActivity {
 
 
     private void startSession_Click() {
-        user.setCurrentSession( new Session(LocalDateTime.now(),user.getId()));
-        trainingActivityViewModel.CreateNewSession(user.getCurrentSession());
+        user.setCurSesh( new Session(LocalDateTime.now(),user.getId()));
+        trainingActivityViewModel.CreateNewSession(user.getCurSesh());
     }
 
     public void addRouteBtn_Click(View view) {
@@ -209,7 +213,7 @@ public class TrainingActivity extends AppCompatActivity {
         StyleDone styleDone = StyleDone.getFromInteger(Integer.parseInt(findViewById(selectedStyleTypeID).getTag().toString()));
         Grades grade =(Grades) gradeAchievedSpinner.getSelectedItem();
 
-        Route newRoute = new Route(user.getCurrentSession().getId(),user.getId(),grade,routeType,styleDone,LocalDateTime.now());
+        Route newRoute = new Route(user.getCurSesh().getId(),user.getId(),grade,routeType,styleDone,LocalDateTime.now());
         trainingActivityViewModel.addRoute(newRoute);
         addRouteForm.setVisibility(View.GONE);
         displayRecentRoutesLV.setVisibility(View.VISIBLE);
@@ -217,9 +221,9 @@ public class TrainingActivity extends AppCompatActivity {
     private void endSession_Click() {
         if (addRouteForm.getVisibility() == View.VISIBLE)
             addRouteForm.setVisibility(View.GONE);
-        if (user.getCurrentSession() != null){
-            user.getCurrentSession().setEndTime(LocalDateTime.now());
-            trainingActivityViewModel.updateCurrentSession(user.getCurrentSession());
+        if (user.getCurSesh() != null){
+            user.getCurSesh().setEndTime(LocalDateTime.now());
+            trainingActivityViewModel.updateCurrentSession(user.getCurSesh());
         }else {
             Toast.makeText(this,"No Active Session",Toast.LENGTH_SHORT).show();
         }
