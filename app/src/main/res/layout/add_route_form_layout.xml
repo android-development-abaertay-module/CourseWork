@@ -13,15 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:checkedButton="@id/routeTypeBoulderRadioBtn">
         <RadioButton
+            android:id="@+id/routTypeSportRadioBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sport"/>
+            android:text="@string/sport"
+            android:tag="1"/>
         <RadioButton
+            android:id="@+id/routeTypeBoulderRadioBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/boulder"/>
+            android:text="@string/boulder"
+            android:tag="2"/>
     </RadioGroup>
     <TextView
         android:layout_width="match_parent"
@@ -32,22 +37,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:checkedButton="@id/styleDoneOnsightRB">
         <RadioButton
             android:id="@+id/styleDoneOnsightRB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/onsight"/>
+            android:text="@string/onsight"
+            android:tag="1"/>
         <RadioButton
             android:id="@+id/styleDoneWorkedRB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/worked"/>
+            android:text="@string/worked"
+            android:tag="2"/>
         <RadioButton
             android:id="@+id/styleDoneDoggedRB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dogged"/>
+            android:text="@string/dogged"
+            android:tag="3"/>
     </RadioGroup>
         <TextView
             android:layout_width="match_parent"
@@ -60,6 +69,7 @@
         </Spinner>
         <Button
             android:id="@+id/addRouteBtn"
+            android:onClick="addRouteBtn_Click"
             android:text="@string/add_route"
             android:background="@color/aqua"
             android:layout_width="wrap_content"

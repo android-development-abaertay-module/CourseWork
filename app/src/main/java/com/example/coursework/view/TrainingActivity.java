@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +25,8 @@ import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.enums.RouteType;
+import com.example.coursework.model.enums.StyleDone;
 import com.example.coursework.view.adapters.RouteAdapter;
 import com.example.coursework.view.adapters.SessionAdapter;
 import com.example.coursework.viewmodel.TrainingActivityViewModel;
@@ -43,14 +47,20 @@ public class TrainingActivity extends AppCompatActivity {
     MenuItem endMenuItem;
     MenuItem addRouteMenuItem;
     private TextView mTextMessage;
-    private Spinner gradeAchievedSpinner;
     private ListView displayRecentRoutesLV;
     private ListView displayRecentSessionsLV;
+    private View addRouteForm;
     private User user;
     private Logbook logbook;
     private Session currentSession;
     private List<Session> recentSessions;
     private List<Route> recentRoutes;
+
+    private RadioGroup routeTypeRG;
+    private RadioGroup routeStyleRG;
+    private Spinner gradeAchievedSpinner;
+
+
     //endregion
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -65,6 +75,9 @@ public class TrainingActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_add_route:
                     mTextMessage.setText(R.string.title_add_route);
+                    addRouteForm.setVisibility(View.VISIBLE);
+                    return true;
+                case R.id.navigation_end_session:
                     return true;
             }
             return false;
@@ -86,6 +99,7 @@ public class TrainingActivity extends AppCompatActivity {
             trainingActivityViewModel.getLogbookLD(user.getId());
             trainingActivityViewModel.getCurrentSession(user.getId());
         }
+
         //region [declare Properties]
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -94,10 +108,15 @@ public class TrainingActivity extends AppCompatActivity {
         addRouteMenuItem = navigation.getMenu().findItem(R.id.navigation_add_route);
 
         mTextMessage =  findViewById(R.id.message);
-        gradeAchievedSpinner = findViewById(R.id.gradeAchievedSpinner);
-        gradeAchievedSpinner.setAdapter(new ArrayAdapter<Grades>(this, android.R.layout.simple_list_item_1, Grades.values()));
+
         displayRecentRoutesLV = findViewById(R.id.displayRecentRoutesLV);
         displayRecentSessionsLV = findViewById(R.id.displayRecentSessionsLV);
+        addRouteForm = findViewById(R.id.addRouteLayout);
+
+        routeTypeRG = findViewById(R.id.routeTypeBtnGrp);
+        routeStyleRG = findViewById(R.id.styleDoneBtnGrp);
+        gradeAchievedSpinner = findViewById(R.id.gradeAchievedSpinner);
+        gradeAchievedSpinner.setAdapter(new ArrayAdapter<Grades>(this, android.R.layout.simple_list_item_1, Grades.values()));
         //endregion
 
         //region [Register Observers]
@@ -144,9 +163,11 @@ public class TrainingActivity extends AppCompatActivity {
                     recentSessions = sessions;
                     SessionAdapter adapter = new SessionAdapter(getApplicationContext(), recentSessions);
                     displayRecentSessionsLV.setAdapter(adapter);
+                    mTextMessage.setVisibility(View.INVISIBLE);
                 }else{
                     Log.d("gwyd","no sessions found");
-                    //TODO:sort display
+                    mTextMessage.setVisibility(View.VISIBLE);
+                    mTextMessage.setText("No Recent Sessions to Display");
                 }
             }
         });
@@ -156,15 +177,18 @@ public class TrainingActivity extends AppCompatActivity {
                 if (routes != null){
                     if (routes.size() ==0){
                         //no recent routes to display:
-                        Log.d("gwyd","no routes to display");
-                        Toast.makeText(getApplicationContext(),"Start Training to See Routes",Toast.LENGTH_SHORT).show();
+                        mTextMessage.setVisibility(View.VISIBLE);
+                        mTextMessage.setText("No Recent Routes to Display. Add Some");
+                    }else{
+                        mTextMessage.setVisibility(View.INVISIBLE);
                     }
                     recentRoutes = routes;
                     RouteAdapter adapter = new RouteAdapter(getApplicationContext(),recentRoutes);
                     displayRecentRoutesLV.setAdapter(adapter);
                 }else{
                     Log.d("gwyd","no routes returned");
-                    //TODO:display something here
+                    mTextMessage.setVisibility(View.VISIBLE);
+                    mTextMessage.setText("No Recent Routes to Display");
                 }
             }
         });
@@ -175,5 +199,18 @@ public class TrainingActivity extends AppCompatActivity {
     private void startSession() {
         currentSession = new Session(LocalDateTime.now(),logbook.getId());
         trainingActivityViewModel.CreateNewSession(currentSession);
+    }
+
+    public void addRouteBtn_Click(View view) {
+        int selectedRouteTypeID =  routeTypeRG.getCheckedRadioButtonId();
+        RadioButton RTRadioBtn = findViewById(selectedRouteTypeID);
+        RouteType routeType = RouteType.getFromInteger(Integer.parseInt(RTRadioBtn.getTag().toString()));
+        int selectedStyleTypeID = routeStyleRG.getCheckedRadioButtonId();
+        StyleDone styleDone = StyleDone.getFromInteger(Integer.parseInt(findViewById(selectedStyleTypeID).getTag().toString()));
+        Grades grade =(Grades) gradeAchievedSpinner.getSelectedItem();
+
+        Route newRoute = new Route(currentSession.getId(),user.getId(),grade,routeType,styleDone,LocalDateTime.now());
+        trainingActivityViewModel.addRoute(newRoute);
+        addRouteForm.setVisibility(View.GONE);
     }
 }

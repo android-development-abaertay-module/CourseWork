@@ -29,9 +29,9 @@ public interface RouteDAO {
     @Query("SELECT * FROM Route WHERE userId ==:userId")
     List<Route> getAllRoutesForUser(long userId);
 
-    @Query("SELECT * FROM Route WHERE userId ==:userId ORDER BY timeDone ASC")
+    @Query("SELECT * FROM Route WHERE userId ==:userId ORDER BY timeDone DESC")
     List<Route> getAllRoutesForUserOrderASC(long userId);
 
-    @Query("SELECT * FROM Route WHERE userId ==:userId ORDER BY timeDone ASC LIMIT :numberOfRoutes")
+    @Query("SELECT * FROM Route WHERE userId ==:userId ORDER BY timeDone DESC LIMIT :numberOfRoutes")
     LiveData<List<Route>> getRecentRoutesForUser(int numberOfRoutes, long userId);
 }

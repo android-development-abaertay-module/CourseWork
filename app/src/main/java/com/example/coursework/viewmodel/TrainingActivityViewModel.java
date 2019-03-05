@@ -79,10 +79,13 @@ public class TrainingActivityViewModel extends AndroidViewModel {
         //save new session to database
         daoRepository.insertSession(session);
         //add new session to our VMs list of sessions.
-
+            //TODO:Investigate how best to do this
         //set this to be our new current session
         currentSessionLD = getCurrentSession(userLD.getValue().getId());
     }
 
 
+    public void addRoute(Route routeToAdd) {
+        daoRepository.insertRoute(routeToAdd);
+    }
 }
