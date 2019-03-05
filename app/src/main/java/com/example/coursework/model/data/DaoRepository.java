@@ -155,13 +155,13 @@ public class DaoRepository {
 
         @Override
         protected Long doInBackground(User... users) {
-            Log.d("gwyd",users[0].getId() + "");
+            Log.d("gwyd",users[0].getId() + " - no user id generated at this stage");
             newUserId = userDAO.insert(users[0]);
-            Log.d("gwyd",newUserId + "");
+            Log.d("gwyd",newUserId + " - user insert ran, we have this id");
             Logbook logbook = new Logbook(newUserId);
-            Log.d("gwyd",logbook.getId() + "");
+            Log.d("gwyd",logbook.getId() + " - logbook object created with this id. and above user id");
             long newLbId = logbookDAO.insert(logbook);
-            Log.d("gwyd",newLbId + "");
+            Log.d("gwyd",newLbId + " - the id of the new logbook");
             return  newUserId;
         }
     }
@@ -260,7 +260,8 @@ public class DaoRepository {
 
         @Override
         protected Void doInBackground(Session... sessions) {
-            sessionDAO.update(sessions[0]);
+           int numRowsUpdated = sessionDAO.update(sessions[0]);
+           Log.d("gwyd","number of rows updated " + numRowsUpdated);
             return  null;
         }
     }

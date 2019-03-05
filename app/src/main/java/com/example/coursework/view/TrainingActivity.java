@@ -71,13 +71,14 @@ public class TrainingActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_start_session:
                     mTextMessage.setText(R.string.title_start_session);
-                    startSession();
+                    startSession_Click();
                     return true;
                 case R.id.navigation_add_route:
                     mTextMessage.setText(R.string.title_add_route);
                     addRouteForm.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_end_session:
+                    endSession_Click();
                     return true;
             }
             return false;
@@ -196,7 +197,7 @@ public class TrainingActivity extends AppCompatActivity {
     }
 
 
-    private void startSession() {
+    private void startSession_Click() {
         currentSession = new Session(LocalDateTime.now(),logbook.getId());
         trainingActivityViewModel.CreateNewSession(currentSession);
     }
@@ -212,5 +213,16 @@ public class TrainingActivity extends AppCompatActivity {
         Route newRoute = new Route(currentSession.getId(),user.getId(),grade,routeType,styleDone,LocalDateTime.now());
         trainingActivityViewModel.addRoute(newRoute);
         addRouteForm.setVisibility(View.GONE);
+    }
+    private void endSession_Click() {
+        if (addRouteForm.getVisibility() == View.VISIBLE)
+            addRouteForm.setVisibility(View.GONE);
+        if (currentSession != null){
+            currentSession.setEndTime(LocalDateTime.now());
+            trainingActivityViewModel.updateCurrentSession(currentSession);
+        }else {
+            Toast.makeText(this,"No Active Session",Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

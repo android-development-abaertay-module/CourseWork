@@ -73,7 +73,7 @@ public class TrainingActivityViewModel extends AndroidViewModel {
 
     public void updateCurrentSession(Session session){
         daoRepository.updateSession(session);
-        currentSessionLD = getCurrentSession(userLD.getValue().getId());
+        currentSessionLD = null;
     }
     public void CreateNewSession(Session session){
         //save new session to database
@@ -81,7 +81,7 @@ public class TrainingActivityViewModel extends AndroidViewModel {
         //add new session to our VMs list of sessions.
             //TODO:Investigate how best to do this
         //set this to be our new current session
-        currentSessionLD = getCurrentSession(userLD.getValue().getId());
+        currentSessionLD = daoRepository.getCurrentSession(userLD.getValue().getId());
     }
 
 
