@@ -26,10 +26,12 @@ public class RouteAdapter extends ArrayAdapter<Route> {
             convertView.setTag(route.getId());
         }
         // Lookup view for data population
-        TextView routeItemType = (TextView) convertView.findViewById(R.id.routeItemTypeTxt);
-        TextView routeItemGrade = (TextView) convertView.findViewById(R.id.routeItemGradeTxt);
-        TextView routeItemStyle = (TextView) convertView.findViewById(R.id.routeItemStyleTxt);
+        TextView routeTimeDone =  convertView.findViewById(R.id.routeItemTimeDone);
+        TextView routeItemType =  convertView.findViewById(R.id.routeItemTypeTxt);
+        TextView routeItemGrade =  convertView.findViewById(R.id.routeItemGradeTxt);
+        TextView routeItemStyle =  convertView.findViewById(R.id.routeItemStyleTxt);
         // Populate the data into the template view using the data object
+        routeTimeDone.setText(route.getTimeDone().toString());
         routeItemType.setText(route.getRouteType().toString());
         routeItemGrade.setText(route.getGrade().toString());
         routeItemStyle.setText(route.getStyleDone().toString());

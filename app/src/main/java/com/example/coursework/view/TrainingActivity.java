@@ -56,8 +56,6 @@ public class TrainingActivity extends AppCompatActivity {
     private RadioGroup routeTypeRG;
     private RadioGroup routeStyleRG;
     private Spinner gradeAchievedSpinner;
-
-
     //endregion
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -71,7 +69,7 @@ public class TrainingActivity extends AppCompatActivity {
                     startSession_Click();
                     return true;
                 case R.id.navigation_add_route:
-                    mTextMessage.setText("");
+                    mTextMessage.setText(R.string.add_route);
                     if(addRouteForm.getVisibility() != View.VISIBLE)
                         addRouteForm.setVisibility(View.VISIBLE);
                     else
@@ -157,7 +155,7 @@ public class TrainingActivity extends AppCompatActivity {
                     recentSessions = sessions;
                     SessionAdapter adapter = new SessionAdapter(getApplicationContext(), recentSessions);
                     displayRecentSessionsLV.setAdapter(adapter);
-                    mTextMessage.setVisibility(View.INVISIBLE);
+                    mTextMessage.setVisibility(View.GONE);
                 }else{
                     Log.d("gwyd","no sessions found");
                     mTextMessage.setVisibility(View.VISIBLE);
@@ -174,7 +172,7 @@ public class TrainingActivity extends AppCompatActivity {
                         mTextMessage.setVisibility(View.VISIBLE);
                         mTextMessage.setText("No Recent Routes to Display. Add Some");
                     }else{
-                        mTextMessage.setVisibility(View.INVISIBLE);
+                        mTextMessage.setVisibility(View.GONE);
                     }
                     recentRoutes = routes;
                     RouteAdapter adapter = new RouteAdapter(getApplicationContext(),recentRoutes);
