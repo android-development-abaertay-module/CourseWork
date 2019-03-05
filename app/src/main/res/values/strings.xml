@@ -68,4 +68,6 @@
     <string name="onsight">Onsight</string>
     <string name="grade">Grade</string>
     <string name="add_route">Add Route</string>
+    <string name="no_routes_to_display">No Recent Routes to Display</string>
+    <string name="no_recent_sesions_to_display">No Recent Sessions to Display</string>
 </resources>

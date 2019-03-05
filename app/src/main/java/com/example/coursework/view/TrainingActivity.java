@@ -163,7 +163,7 @@ public class TrainingActivity extends AppCompatActivity {
                 }else{
                     Log.d("gwyd","no sessions found");
                     mTextMessage.setVisibility(View.VISIBLE);
-                    mTextMessage.setText("No Recent Sessions to Display");
+                    mTextMessage.setText(R.string.no_recent_sesions_to_display);
                 }
             }
         });
@@ -174,7 +174,7 @@ public class TrainingActivity extends AppCompatActivity {
                     if (routes.size() ==0){
                         //no recent routes to display:
                         mTextMessage.setVisibility(View.VISIBLE);
-                        mTextMessage.setText("No Recent Routes to Display. Add Some");
+                        mTextMessage.setText(R.string.no_routes_to_display);
                     }else{
                         mTextMessage.setVisibility(View.GONE);
                     }
@@ -184,7 +184,7 @@ public class TrainingActivity extends AppCompatActivity {
                 }else{
                     Log.d("gwyd","no routes returned");
                     mTextMessage.setVisibility(View.VISIBLE);
-                    mTextMessage.setText("No Recent Routes to Display");
+                    mTextMessage.setText(R.string.no_routes_to_display);
                 }
             }
         });
