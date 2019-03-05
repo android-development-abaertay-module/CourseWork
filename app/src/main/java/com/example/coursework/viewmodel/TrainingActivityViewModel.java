@@ -33,14 +33,15 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     }
     public LiveData<List<Route>> getRecentRoutesForUserLD(long userId) {
         if (recentRoutesLD == null)
-            updateRecentRoutes(6,userId);
+            recentRoutesLD =  daoRepository.getRecentRoutesForUser( 6,  userId);
 
         return recentRoutesLD;
     }
 
     public LiveData<List<Session>> getRecentSessionsLD(long userId) {
+        //if null check the database as it may be first load
         if (recentSessionsLD == null)
-            updateRecentSessions(6,userId);
+            recentSessionsLD = daoRepository.getRecentSessionsForUser(6,userId);
 
         return recentSessionsLD;
     }
@@ -48,13 +49,6 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     public TrainingActivityViewModel(@NonNull Application application) {
         super(application);
         daoRepository = new DaoRepository(application);
-    }
-    public void updateRecentRoutes(int numberOfRoutes, long userId){
-        recentRoutesLD =  daoRepository.getRecentRoutesForUser( numberOfRoutes,  userId);
-        //return getRecentRoutesForUserLD();
-    }
-    public void updateRecentSessions(int numberOfSessions, long userId){
-        recentSessionsLD = daoRepository.getRecentSessionsForUser(numberOfSessions,userId);
     }
 
     public void updateCurrentSession(Session session){
