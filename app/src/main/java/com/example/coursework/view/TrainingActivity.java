@@ -147,6 +147,16 @@ public class TrainingActivity extends AppCompatActivity {
                     endMenuItem.setVisible(true);
                     displayRecentSessionsLV.setVisibility(View.GONE);
                     displayRecentRoutesLV.setVisibility(View.VISIBLE);
+
+                    if (user.getCurSesh().getRoutes().size() == 0) {
+                        //no recent routes to display:
+                        mTextMessage.setVisibility(View.VISIBLE);
+                        mTextMessage.setText(R.string.no_routes_to_display);
+                    } else {
+                        mTextMessage.setVisibility(View.GONE);
+                    }
+                    RouteAdapter adapter = new RouteAdapter(getApplicationContext(), user.getCurSesh().getRoutes());
+                    displayRecentRoutesLV.setAdapter(adapter);
                 }
             }
         });
