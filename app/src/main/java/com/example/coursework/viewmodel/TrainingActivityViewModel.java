@@ -3,12 +3,14 @@ package com.example.coursework.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.data.DaoRepository;
+import com.example.coursework.model.enums.PermissionCheck;
 
 import java.util.List;
 
@@ -18,6 +20,19 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     LiveData<Session> currentSessionLD;
     LiveData<List<Route>> recentRoutesLD;
     LiveData<List<Session>> recentSessionsLD;
+
+    MutableLiveData<PermissionCheck> locationPermissionGranted;
+    public MutableLiveData<PermissionCheck> getLocationPermissionGranted() {
+        if (locationPermissionGranted == null){
+            locationPermissionGranted = new MutableLiveData<>();
+            locationPermissionGranted.setValue(PermissionCheck.NOT_REQUESTED);
+        }
+        return locationPermissionGranted;
+    }
+
+    public void setLocationPermissionGranted(PermissionCheck locationPermissionGranted) {
+        this.locationPermissionGranted.setValue(locationPermissionGranted);
+    }
 
     public LiveData<User> getUserLD(long userId) {
         if (userLD ==null)

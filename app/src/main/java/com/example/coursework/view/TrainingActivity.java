@@ -1,12 +1,16 @@
 package com.example.coursework.view;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,6 +28,7 @@ import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.enums.PermissionCheck;
 import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
 import com.example.coursework.view.adapters.RouteAdapter;
@@ -39,6 +44,7 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class TrainingActivity extends AppCompatActivity {
 
+    private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     //region [Properties]
     private TrainingActivityViewModel trainingActivityViewModel;
     BottomNavigationView navigation;
@@ -54,6 +60,8 @@ public class TrainingActivity extends AppCompatActivity {
     private RadioGroup routeTypeRG;
     private RadioGroup routeStyleRG;
     private Spinner gradeAchievedSpinner;
+
+
     //endregion
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -100,7 +108,6 @@ public class TrainingActivity extends AppCompatActivity {
             trainingActivityViewModel.getCurrentSession(user.getId());
         }
 
-
         //region [declare Properties]
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -121,6 +128,15 @@ public class TrainingActivity extends AppCompatActivity {
         //endregion
 
         //region [Register Observers]
+        trainingActivityViewModel.getLocationPermissionGranted().observe(this, new Observer<PermissionCheck>() {
+            @Override
+            public void onChanged(@Nullable PermissionCheck permissionCheckVal) {
+                //if permissions already denied by user on this visit to TrainingActivity don't show dialog again.
+                if (permissionCheckVal == PermissionCheck.NOT_REQUESTED || permissionCheckVal == null) {
+                    checkPermissions();
+                }
+            }
+        });
         trainingActivityViewModel.getUserLD(user.getId()).observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable User userVal) {
@@ -236,6 +252,40 @@ public class TrainingActivity extends AppCompatActivity {
             trainingActivityViewModel.updateCurrentSession(user.getCurSesh());
         }else {
             Toast.makeText(this,"No Active Session",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    ACCESS_FINE_LOCATION_REQUEST);
+
+        } else {
+            Log.d("gwyd","access fine location permission already granted");
+            //permissions already granted
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case ACCESS_FINE_LOCATION_REQUEST:
+                Log.d("gwyd","ACCESS_FINE_LOCATION_REQUEST received");
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //permissions granted
+                    Log.d("gs", "granted");
+                    trainingActivityViewModel.setLocationPermissionGranted(PermissionCheck.GRANTED);
+                } else {
+                    //permission denied
+                    Log.d("gs", "denied");
+                    Toast.makeText(this,"Session Location will not be stored unless Location Permissions are granted",Toast.LENGTH_LONG).show();
+                    trainingActivityViewModel.setLocationPermissionGranted(PermissionCheck.DENIED);
+                }
+                break;
         }
     }
 }
