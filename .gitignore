@@ -75,3 +75,6 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+# gwyd edits
+.idea/misc.xml
