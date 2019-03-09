@@ -20,11 +20,14 @@ public class Session
     private long id;
     @ColumnInfo(name = "userId", index = true)
     private long userId;
-
     @ColumnInfo(name = "startTime")
     private LocalDateTime startTime;
     @ColumnInfo(name = "endTime")
     private LocalDateTime endTime;
+    @ColumnInfo(name = "latitude")
+    private double lat;
+    @ColumnInfo(name = "longitude")
+    private double lon;
     @Ignore
     private ArrayList<Route> routes;
 
@@ -56,6 +59,20 @@ public class Session
         this.endTime = endTime;
     }
 
+    public double getLat() {
+        return lat;
+    }
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
     public ArrayList<Route> getRoutes() {
         return routes;
     }
@@ -72,6 +89,14 @@ public class Session
     {
         this.userId = userId;
         this.startTime = startTime;
+        routes = new ArrayList<>();
+    }
+    public Session(LocalDateTime startTime, long userId,double latitude, double longitude)
+    {
+        this.userId = userId;
+        this.startTime = startTime;
+        this.lat = latitude;
+        this.lon = longitude;
         routes = new ArrayList<>();
     }
 }

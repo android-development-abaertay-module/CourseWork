@@ -5,6 +5,9 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -42,7 +45,7 @@ import java.util.List;
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
-public class TrainingActivity extends AppCompatActivity {
+public class TrainingActivity extends AppCompatActivity implements LocationListener {
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     //region [Properties]
@@ -56,11 +59,15 @@ public class TrainingActivity extends AppCompatActivity {
     private ListView displayRecentSessionsLV;
     private View addRouteForm;
     private User user;
+    private PermissionCheck permissionChecked;
 
     private RadioGroup routeTypeRG;
     private RadioGroup routeStyleRG;
     private Spinner gradeAchievedSpinner;
 
+    LocationManager locationManager;
+    private double latitude;
+    private double longditude;
 
     //endregion
 
@@ -76,11 +83,10 @@ public class TrainingActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_add_route:
                     mTextMessage.setText(R.string.add_route);
-                    if(addRouteForm.getVisibility() != View.VISIBLE) {
+                    if (addRouteForm.getVisibility() != View.VISIBLE) {
                         addRouteForm.setVisibility(View.VISIBLE);
                         displayRecentRoutesLV.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         addRouteForm.setVisibility(View.GONE);
                         displayRecentRoutesLV.setVisibility(View.VISIBLE);
                     }
@@ -101,9 +107,9 @@ public class TrainingActivity extends AppCompatActivity {
         trainingActivityViewModel = ViewModelProviders.of(this).get(TrainingActivityViewModel.class);
 
         Intent intent = getIntent();
-        if (intent.hasExtra(USER_ID) && intent.hasExtra(USERNAME)){
+        if (intent.hasExtra(USER_ID) && intent.hasExtra(USERNAME)) {
             user = new User(intent.getStringExtra(USERNAME));
-            user.setId(intent.getLongExtra(USER_ID,0));
+            user.setId(intent.getLongExtra(USER_ID, 0));
             trainingActivityViewModel.getUserLD(user.getId());
             trainingActivityViewModel.getCurrentSession(user.getId());
         }
@@ -115,7 +121,7 @@ public class TrainingActivity extends AppCompatActivity {
         endMenuItem = navigation.getMenu().findItem(R.id.navigation_end_session);
         addRouteMenuItem = navigation.getMenu().findItem(R.id.navigation_add_route);
 
-        mTextMessage =  findViewById(R.id.message);
+        mTextMessage = findViewById(R.id.message);
 
         displayRecentRoutesLV = findViewById(R.id.displayRecentRoutesLV);
         displayRecentSessionsLV = findViewById(R.id.displayRecentSessionsLV);
@@ -125,12 +131,16 @@ public class TrainingActivity extends AppCompatActivity {
         routeStyleRG = findViewById(R.id.styleDoneBtnGrp);
         gradeAchievedSpinner = findViewById(R.id.gradeAchievedSpinner);
         gradeAchievedSpinner.setAdapter(new ArrayAdapter<Grades>(this, android.R.layout.simple_list_item_1, Grades.values()));
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         //endregion
 
         //region [Register Observers]
         trainingActivityViewModel.getLocationPermissionGranted().observe(this, new Observer<PermissionCheck>() {
             @Override
             public void onChanged(@Nullable PermissionCheck permissionCheckVal) {
+                permissionChecked = permissionCheckVal;
                 //if permissions already denied by user on this visit to TrainingActivity don't show dialog again.
                 if (permissionCheckVal == PermissionCheck.NOT_REQUESTED || permissionCheckVal == null) {
                     checkPermissions();
@@ -147,7 +157,7 @@ public class TrainingActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable Session session) {
                 user.setCurSesh(session);
-                if (user.getCurSesh() == null){
+                if (user.getCurSesh() == null) {
                     //Display Start Session stuff
                     startMenuItem.setChecked(false);
                     startMenuItem.setVisible(true);
@@ -155,7 +165,7 @@ public class TrainingActivity extends AppCompatActivity {
                     addRouteMenuItem.setEnabled(false);
                     displayRecentRoutesLV.setVisibility(View.GONE);
                     displayRecentSessionsLV.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     //We have a Current Session. display add route stuff
                     endMenuItem.setChecked(true);
                     startMenuItem.setVisible(false);
@@ -181,12 +191,12 @@ public class TrainingActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Session> sessions) {
                 if (sessions != null) {
-                    user.setSessionsList((ArrayList)sessions);
+                    user.setSessionsList((ArrayList) sessions);
                     SessionAdapter adapter = new SessionAdapter(getApplicationContext(), user.getSessionsList());
                     displayRecentSessionsLV.setAdapter(adapter);
                     mTextMessage.setVisibility(View.GONE);
-                }else{
-                    Log.d("gwyd","no sessions found");
+                } else {
+                    Log.d("gwyd", "no sessions found");
                     mTextMessage.setVisibility(View.VISIBLE);
                     mTextMessage.setText(R.string.no_recent_sesions_to_display);
                 }
@@ -225,67 +235,131 @@ public class TrainingActivity extends AppCompatActivity {
         //endregion
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("gwyd","Removing location update from the location manager");
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (permissionChecked == null){
+            checkPermissions();
+        }
+        else if (permissionChecked == PermissionCheck.GRANTED) {
+            turnOnLocationTracking();
+        }
+        else{
+            //permission already denied.
+            Log.d("gwyd","location permissions already denied by user in this activity");
+        }
+    }
 
     private void startSession_Click() {
-        user.setCurSesh( new Session(LocalDateTime.now(),user.getId()));
+        user.setCurSesh(new Session(LocalDateTime.now(), user.getId()));
+        if (permissionChecked != null)
+            if (permissionChecked == PermissionCheck.GRANTED) {
+                // user.getCurSesh().setLat();
+                // user.getCurSesh().setLon();
+            }
         trainingActivityViewModel.CreateNewSession(user.getCurSesh());
     }
 
     public void addRouteBtn_Click(View view) {
-        int selectedRouteTypeID =  routeTypeRG.getCheckedRadioButtonId();
+        int selectedRouteTypeID = routeTypeRG.getCheckedRadioButtonId();
         RadioButton RTRadioBtn = findViewById(selectedRouteTypeID);
         RouteType routeType = RouteType.getFromInteger(Integer.parseInt(RTRadioBtn.getTag().toString()));
         int selectedStyleTypeID = routeStyleRG.getCheckedRadioButtonId();
         StyleDone styleDone = StyleDone.getFromInteger(Integer.parseInt(findViewById(selectedStyleTypeID).getTag().toString()));
-        Grades grade =(Grades) gradeAchievedSpinner.getSelectedItem();
+        Grades grade = (Grades) gradeAchievedSpinner.getSelectedItem();
 
-        Route newRoute = new Route(user.getCurSesh().getId(),user.getId(),grade,routeType,styleDone,LocalDateTime.now());
+        Route newRoute = new Route(user.getCurSesh().getId(), user.getId(), grade, routeType, styleDone, LocalDateTime.now());
         trainingActivityViewModel.addRoute(newRoute);
         addRouteForm.setVisibility(View.GONE);
         displayRecentRoutesLV.setVisibility(View.VISIBLE);
     }
+
     private void endSession_Click() {
         if (addRouteForm.getVisibility() == View.VISIBLE)
             addRouteForm.setVisibility(View.GONE);
-        if (user.getCurSesh() != null){
+        if (user.getCurSesh() != null) {
             user.getCurSesh().setEndTime(LocalDateTime.now());
             trainingActivityViewModel.updateCurrentSession(user.getCurSesh());
-        }else {
-            Toast.makeText(this,"No Active Session",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "No Active Session", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("gwyd", "access fine location permission not granted. Requesting permission");
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_REQUEST);
 
         } else {
-            Log.d("gwyd","access fine location permission already granted");
-            //permissions already granted
+            Log.d("gwyd", "access fine location permission already granted");
+            //permissions already granted turn on location listening...
+            turnOnLocationTracking();
+        }
+    }
+    private void turnOnLocationTracking() {
+        //passive provider to save battery as this is not a live update
+        //(5 * 60 * 1000) time = every 5 minutes again to save battery
+        //0 = don't care about refreshing on distance
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Log.d("gwyd", "granted");
+            trainingActivityViewModel.setLocationPermissionGranted(PermissionCheck.GRANTED);
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, (5 * 60 * 1000),0, this);
+        }
+        else{
+            Log.d("gwyd", "location manager requesting updates skipped because of lack or permissions. shouldn't get hit");
+            throw new RuntimeException("location manager requesting updates skipped because of lack or permissions. shouldn't get hit");
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case ACCESS_FINE_LOCATION_REQUEST:
-                Log.d("gwyd","ACCESS_FINE_LOCATION_REQUEST received");
+                Log.d("gwyd", "ACCESS_FINE_LOCATION_REQUEST received");
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //permissions granted
-                    Log.d("gs", "granted");
-                    trainingActivityViewModel.setLocationPermissionGranted(PermissionCheck.GRANTED);
+                    turnOnLocationTracking();
+
                 } else {
                     //permission denied
-                    Log.d("gs", "denied");
+                    Log.d("gwyd", "denied");
                     Toast.makeText(this,"Session Location will not be stored unless Location Permissions are granted",Toast.LENGTH_LONG).show();
                     trainingActivityViewModel.setLocationPermissionGranted(PermissionCheck.DENIED);
                 }
                 break;
         }
     }
+
+    //region [Location Listener Methods]
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+    //endregion
 }
