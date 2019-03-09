@@ -311,7 +311,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
     private void turnOnLocationTracking() {
         //passive provider to save battery as this is not a live update
-        //(5 * 60 * 1000) time = every 5 minutes again to save battery
+        //(1 * 60 * 1000) time = every minute again to save battery
         //0 = don't care about refreshing on distance
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.d("gwyd", "granted");
