@@ -238,7 +238,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("gwyd","Removing location update from the location manager");
+        Log.d("gwyd","onPause: Removing location update from the location manager");
         locationManager.removeUpdates(this);
     }
 
@@ -246,14 +246,16 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     protected void onResume() {
         super.onResume();
         if (permissionChecked == null){
+            Log.d("gwyd","onResume: location permissions not requested yet. ");
             checkPermissions();
         }
         else if (permissionChecked == PermissionCheck.GRANTED) {
+            Log.d("gwyd","onResume: location permissions already granted. Re assigning listener");
             turnOnLocationTracking();
         }
         else{
             //permission already denied.
-            Log.d("gwyd","location permissions already denied by user in this activity");
+            Log.d("gwyd","onResume: location permissions already denied by user in this activity");
         }
     }
 
