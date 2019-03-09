@@ -316,7 +316,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.d("gwyd", "granted");
             trainingActivityViewModel.setLocationPermissionGranted(PermissionCheck.GRANTED);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, (5 * 60 * 1000),0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, (1 * 60 * 1000),0, this);
         }
         else{
             Log.d("gwyd", "location manager requesting updates skipped because of lack or permissions. shouldn't get hit");
@@ -352,11 +352,13 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         double oldLong = longditude;
         if (oldLat == 0 && oldLong ==0){
             //session was started before location update received (it takes a second or two)
-            //update the current session
             if (user.getCurSesh() != null){
-                user.getCurSesh().setLon(location.getLongitude());
-                user.getCurSesh().setLat(location.getLatitude());
-                trainingActivityViewModel.updateCurrentSession(user.getCurSesh());
+                //update the current session if it doesn't already have a location associated (eg session ststartednd then location enabled)
+                if (user.getCurSesh().getLon() == 0 || user.getCurSesh().getLat() == 0) {
+                    user.getCurSesh().setLon(location.getLongitude());
+                    user.getCurSesh().setLat(location.getLatitude());
+                    trainingActivityViewModel.updateCurrentSession(user.getCurSesh());
+                }
             }
         }
         //updating hte current latitude and longitude
