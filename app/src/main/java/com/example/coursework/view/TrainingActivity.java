@@ -238,33 +238,33 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("gwyd","onPause: Removing location update from the location manager");
+        Log.d("gwyd", "onPause: Removing location update from the location manager");
         locationManager.removeUpdates(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (permissionChecked == null){
-            Log.d("gwyd","onResume: location permissions not requested yet. ");
+        if (permissionChecked == null) {
+            Log.d("gwyd", "onResume: location permissions not requested yet. ");
             checkPermissions();
-        }
-        else if (permissionChecked == PermissionCheck.GRANTED) {
-            Log.d("gwyd","onResume: location permissions already granted. Re assigning listener");
+        } else if (permissionChecked == PermissionCheck.GRANTED) {
+            Log.d("gwyd", "onResume: location permissions already granted. Re assigning listener");
             turnOnLocationTracking();
-        }
-        else{
+        } else {
             //permission already denied.
-            Log.d("gwyd","onResume: location permissions already denied by user in this activity");
+            Log.d("gwyd", "onResume: location permissions already denied by user in this activity");
         }
     }
 
     private void startSession_Click() {
         user.setCurSesh(new Session(LocalDateTime.now(), user.getId()));
+        Location location;
         if (permissionChecked != null)
             if (permissionChecked == PermissionCheck.GRANTED) {
-                // user.getCurSesh().setLat();
-                // user.getCurSesh().setLon();
+                //if location services are disabled on the phone latitude and longitude are defaulted to 0.0
+                user.getCurSesh().setLat(latitude);
+                user.getCurSesh().setLon(longditude);
             }
         trainingActivityViewModel.CreateNewSession(user.getCurSesh());
     }
@@ -308,6 +308,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             turnOnLocationTracking();
         }
     }
+
     private void turnOnLocationTracking() {
         //passive provider to save battery as this is not a live update
         //(5 * 60 * 1000) time = every 5 minutes again to save battery
@@ -315,7 +316,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.d("gwyd", "granted");
             trainingActivityViewModel.setLocationPermissionGranted(PermissionCheck.GRANTED);
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, (5 * 60 * 1000),0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, (5 * 60 * 1000),0, this);
         }
         else{
             Log.d("gwyd", "location manager requesting updates skipped because of lack or permissions. shouldn't get hit");
@@ -346,21 +347,37 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     //region [Location Listener Methods]
     @Override
     public void onLocationChanged(Location location) {
-
+        Log.d("gwyd","onLocationChanged hit");
+        double oldLat = latitude;
+        double oldLong = longditude;
+        if (oldLat == 0 && oldLong ==0){
+            //session was started before location update received (it takes a second or two)
+            //update the current session
+            if (user.getCurSesh() != null){
+                user.getCurSesh().setLon(location.getLongitude());
+                user.getCurSesh().setLat(location.getLatitude());
+                trainingActivityViewModel.updateCurrentSession(user.getCurSesh());
+            }
+        }
+        //updating hte current latitude and longitude
+        latitude = location.getLatitude();
+        longditude = location.getLongitude();
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
+        Log.d("gwyd","onStatusChanged hit");
     }
 
     @Override
     public void onProviderEnabled(String provider) {
+        Log.d("gwyd","onProviderEnabled hit");
 
     }
 
     @Override
     public void onProviderDisabled(String provider) {
+        Log.d("gwyd","onProviderDisabled hit");
 
     }
     //endregion
