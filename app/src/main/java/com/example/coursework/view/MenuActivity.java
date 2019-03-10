@@ -101,7 +101,10 @@ public class MenuActivity extends AppCompatActivity
             intent.putExtra(USERNAME,user.getUserName());
             startActivity(intent);
         } else if (id == R.id.nav_check_goals) {
-
+            Intent intent = new Intent(MenuActivity.this,CheckGoalsActivity.class );
+            intent.putExtra(USER_ID,user.getId());
+            intent.putExtra(USERNAME,user.getUserName());
+            startActivity(intent);
         } else if (id == R.id.nav_start_training) {
             Intent intent = new Intent(MenuActivity.this,TrainingActivity.class );
             intent.putExtra(USER_ID,user.getId());

@@ -8,9 +8,9 @@ import com.example.coursework.view.fragments.SetAnnualGoal;
 import com.example.coursework.view.fragments.SetSeasonalGoal;
 import com.example.coursework.view.fragments.SetWeeklyGoal;
 
-public class TabsAdapter extends FragmentStatePagerAdapter {
+public class TabsAdapterSetGoals extends FragmentStatePagerAdapter {
     int mNumOfTabs;
-    public TabsAdapter(FragmentManager fm, int NoofTabs){
+    public TabsAdapterSetGoals(FragmentManager fm, int NoofTabs){
         super(fm);
         this.mNumOfTabs = NoofTabs;
     }
