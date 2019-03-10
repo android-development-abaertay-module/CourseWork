@@ -1,78 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginTop="30dp"
     android:orientation="vertical">
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Route Type"/>
+        android:layout_height="wrap_content"
+        android:text="Route Type"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
     <RadioGroup
         android:id="@+id/routeTypeBtnGrp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
-        android:checkedButton="@id/routeTypeBoulderRadioBtn">
+        android:layout_marginBottom="30dp"
+        android:checkedButton="@id/routeTypeBoulderRadioBtn"
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <RadioButton
             android:id="@+id/routTypeSportRadioBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sport"
-            android:tag="1"/>
+            android:layout_marginEnd="10dp"
+            android:tag="1"
+            android:text="@string/sport" />
+
         <RadioButton
             android:id="@+id/routeTypeBoulderRadioBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/boulder"
-            android:tag="2"/>
+            android:layout_marginStart="10dp"
+            android:tag="2"
+            android:text="@string/boulder" />
     </RadioGroup>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/style_done"/>
+        android:text="@string/style_done"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
     <RadioGroup
         android:id="@+id/styleDoneBtnGrp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
-        android:checkedButton="@id/styleDoneOnsightRB">
+        android:layout_marginBottom="30dp"
+        android:checkedButton="@id/styleDoneOnsightRB"
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <RadioButton
             android:id="@+id/styleDoneOnsightRB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/onsight"
-            android:tag="1"/>
+            android:layout_marginEnd="10dp"
+            android:tag="1"
+            android:text="@string/onsight" />
+
         <RadioButton
             android:id="@+id/styleDoneWorkedRB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/worked"
-            android:tag="2"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:tag="2"
+            android:text="@string/worked" />
+
         <RadioButton
             android:id="@+id/styleDoneDoggedRB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dogged"
-            android:tag="3"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:tag="3"
+            android:text="@string/dogged" />
     </RadioGroup>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/grade"/>
-        <Spinner
-            android:id="@+id/gradeAchievedSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </Spinner>
-        <Button
-            android:id="@+id/addRouteBtn"
-            android:onClick="addRouteBtn_Click"
-            android:text="@string/add_route"
-            android:background="@color/aqua"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/grade"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <Spinner
+        android:id="@+id/gradeAchievedSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:minHeight="40dp"
+        android:gravity="center"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/addRouteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/aqua"
+        android:onClick="addRouteBtn_Click"
+        android:text="@string/add_route" />
 </LinearLayout>
