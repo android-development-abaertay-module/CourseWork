@@ -22,6 +22,29 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     LiveData<List<Session>> recentSessionsLD;
 
     MutableLiveData<PermissionCheck> locationPermissionGranted;
+    MutableLiveData<Double> currentLatitudeLD;
+    MutableLiveData<Double> currentLongitudeLD;
+
+    public MutableLiveData<Double> getCurrentLatitudeLD() {
+        if (currentLatitudeLD == null)
+            currentLatitudeLD = new MutableLiveData<>();
+        return currentLatitudeLD;
+    }
+
+    public void setCurrentLatitudeLD(double currentLatitude) {
+        this.currentLatitudeLD.setValue(currentLatitude);
+    }
+
+    public MutableLiveData<Double> getCurrentLongitudeLD() {
+        if (currentLongitudeLD == null)
+            currentLongitudeLD = new MutableLiveData<>();
+        return currentLongitudeLD;
+    }
+
+    public void setCurrentLongitudeLD(double currentLongitude) {
+        this.currentLongitudeLD.setValue(currentLongitude);
+    }
+
     public MutableLiveData<PermissionCheck> getLocationPermissionGranted() {
         if (locationPermissionGranted == null){
             locationPermissionGranted = new MutableLiveData<>();

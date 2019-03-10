@@ -67,7 +67,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
     LocationManager locationManager;
     private double latitude;
-    private double longditude;
+    private double longitude;
 
     //endregion
 
@@ -137,6 +137,19 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         //endregion
 
         //region [Register Observers]
+        trainingActivityViewModel.getCurrentLatitudeLD().observe(this, new Observer<Double>() {
+            @Override
+            public void onChanged(@Nullable Double latitudeVal) {
+                latitude = latitudeVal;
+            }
+        });
+        trainingActivityViewModel.getCurrentLongitudeLD().observe(this, new Observer<Double>() {
+            @Override
+            public void onChanged(@Nullable Double longitudeVal) {
+                longitude = longitudeVal;
+            }
+        });
+
         trainingActivityViewModel.getLocationPermissionGranted().observe(this, new Observer<PermissionCheck>() {
             @Override
             public void onChanged(@Nullable PermissionCheck permissionCheckVal) {
@@ -264,7 +277,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             if (permissionChecked == PermissionCheck.GRANTED) {
                 //if location services are disabled on the phone latitude and longitude are defaulted to 0.0
                 user.getCurSesh().setLat(latitude);
-                user.getCurSesh().setLon(longditude);
+                user.getCurSesh().setLon(longitude);
             }
         trainingActivityViewModel.CreateNewSession(user.getCurSesh());
     }
@@ -349,7 +362,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     public void onLocationChanged(Location location) {
         Log.d("gwyd","onLocationChanged hit");
         double oldLat = latitude;
-        double oldLong = longditude;
+        double oldLong = longitude;
         if (oldLat == 0 && oldLong ==0){
             //session was started before location update received (it takes a second or two)
             if (user.getCurSesh() != null){
@@ -361,9 +374,9 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 }
             }
         }
-        //updating hte current latitude and longitude
-        latitude = location.getLatitude();
-        longditude = location.getLongitude();
+        //store the current latitude and longitude in the View Model
+        trainingActivityViewModel.setCurrentLatitudeLD(location.getLatitude());
+        trainingActivityViewModel.setCurrentLongitudeLD(location.getLongitude());
     }
 
     @Override
