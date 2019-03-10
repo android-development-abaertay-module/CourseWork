@@ -5,9 +5,54 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.CheckWeeklyGoal">
 
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <TextView
+        android:id="@+id/checkGoalWeeklyNoSportTxt"
+        android:text="@string/number_of_sport_routes_to_complete"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="wrap_content" />
+    <ProgressBar
+        android:id="@+id/checkGoalWeeklyNoSportPB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:progressBarStyleHorizontal"/>
+    <TextView
+        android:id="@+id/checkGoalWeeklyNoBoulderTxt"
+        android:text="@string/number_of_boulder_problems_to_complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ProgressBar
+        android:id="@+id/checkGoalWeeklyNoBoulderPB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:progressBarStyleHorizontal"/>
+    <TextView
+        android:id="@+id/checkGoalWeeklyAvgSportTxt"
+        android:text="@string/average_sport_grade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ProgressBar
+        android:id="@+id/checkGoalWeeklyAvgSportPB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:progressBarStyleHorizontal"/>
+    <TextView
+        android:id="@+id/checkGoalWeeklyAvgBoulderTxt"
+        android:text="@string/average_boulder_grade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ProgressBar
+        android:id="@+id/checkGoalWeeklyAvgBoulderPB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:progressBarStyleHorizontal"/>
+    <TextView
+        android:id="@+id/isWeeklyGoalActiveTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
 
 </FrameLayout>

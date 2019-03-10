@@ -5,9 +5,54 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.CheckAnnualGoal">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/checkGoalAnnualBoulderOSTxt"
+            android:text="@string/boulder_onsight_goal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:id="@+id/checkGoalAnnualBoulderOSPB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:progressBarStyleHorizontal"/>
+        <TextView
+            android:id="@+id/checkGoalAnnualSportOSTxt"
+            android:text="@string/sport_onsight_goal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:id="@+id/checkGoalAnnualSportOSPB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:progressBarStyleHorizontal"/>
+        <TextView
+            android:id="@+id/checkGoalAnnualBoulderWorkedTxt"
+            android:text="@string/boulder_worked_goal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:id="@+id/checkGoalAnnualBoulderWorkedPB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:progressBarStyleHorizontal"/>
+        <TextView
+            android:id="@+id/checkGoalAnnualSportWorkedTxt"
+            android:text="@string/sport_worked_goal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:id="@+id/checkGoalAnnualSportWorkedPB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:progressBarStyleHorizontal"/>
+        <TextView
+            android:id="@+id/isAnnualGoalActiveTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </FrameLayout>
