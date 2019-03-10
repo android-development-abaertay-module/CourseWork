@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface SessionDAO {
     @Insert
-    long  insert(Session session);
+    long insert(Session session);
     @Update
     int update(Session session);
     @Delete
@@ -24,10 +24,7 @@ public interface SessionDAO {
     @Query("SELECT * FROM Session s WHERE userId ==:userId AND endTime IS NULL ORDER BY startTime DESC LIMIT 1")
     LiveData<Session> getCurrentSessionForUser(long userId);
 
-    @Query("SELECT * FROM Session " +
-            "INNER JOIN User u on u.id == userId " +
-            "WHERE u.id ==:userId   ORDER BY startTime DESC LIMIT :numberOfSessions")
+    @Query("SELECT * FROM Session WHERE userId ==:userId   ORDER BY startTime DESC LIMIT :numberOfSessions")
     LiveData<List<Session>> getRecentSessionsForUser(int numberOfSessions, long userId);
-
 
 }
