@@ -363,7 +363,8 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "Failed to Find Address";
+        Log.d("gwyd","Failed to Find Address");
+        return address;
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
