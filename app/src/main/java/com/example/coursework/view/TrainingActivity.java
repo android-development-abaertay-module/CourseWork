@@ -366,7 +366,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         if (oldLat == 0 && oldLong ==0){
             //session was started before location update received (it takes a second or two)
             if (user.getCurSesh() != null){
-                //update the current session if it doesn't already have a location associated (eg session ststartednd then location enabled)
+                //update the current session if it doesn't already have a location associated (eg session started and then location enabled)
                 if (user.getCurSesh().getLon() == 0 || user.getCurSesh().getLat() == 0) {
                     user.getCurSesh().setLon(location.getLongitude());
                     user.getCurSesh().setLat(location.getLatitude());
