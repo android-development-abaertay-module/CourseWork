@@ -282,6 +282,9 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 //if location services are disabled on the phone latitude and longitude are defaulted to 0.0
                 user.getCurSesh().setLat(latitude);
                 user.getCurSesh().setLon(longitude);
+                if (user.getCurSesh().getLon() != 0){
+                   user.getCurSesh().setLocation(getAddressFromLocation(user.getCurSesh()));
+                }
             }
         trainingActivityViewModel.CreateNewSession(user.getCurSesh());
     }
@@ -354,6 +357,8 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 //            country = localAddress.get(0).getCountryName();
 //            postalCode = localAddress.get(0).getPostalCode();
 //            knownName = localAddress.get(0).getFeatureName();
+            Log.d("gwyd","lat and lon used for below address was: " + session.getLat() + "   " + session.getLon());
+            Log.d("gwyd","address found for location was : " + address);
             return address;
         } catch (IOException e) {
             e.printStackTrace();
@@ -383,7 +388,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     //region [Location Listener Methods]
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("gwyd","onLocationChanged hit");
+        Log.d("gwyd","onLocationChanged hit: lat" + location.getLatitude() + " -   lon" + location.getLongitude());
         double oldLat = latitude;
         double oldLong = longitude;
         if (oldLat == 0 && oldLong ==0){
@@ -399,6 +404,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 }
             }
         }
+
         //store the current latitude and longitude in the View Model
         trainingActivityViewModel.setCurrentLatitudeLD(location.getLatitude());
         trainingActivityViewModel.setCurrentLongitudeLD(location.getLongitude());

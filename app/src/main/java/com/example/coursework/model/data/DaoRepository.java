@@ -615,5 +615,4 @@ public class DaoRepository {
         return routeDAO.getAvgGradeRouteInPeriod(userId, periodStart,periodEnd,routeType);
     }
     //endregion
-
 }
