@@ -11,9 +11,11 @@ import com.example.coursework.model.GoalWeekly;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
+import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -605,6 +607,13 @@ public class DaoRepository {
         return sessionDAO.getCurrentSessionForUser(userId);
     }
 
+    public LiveData<Integer> getNumberRoutesInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType) {
+        return routeDAO.getNumberRoutesInPeriod(userId, periodStart,periodEnd,routeType);
+    }
+
+    public LiveData<Grades> getAvgGradeRouteInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType) {
+        return routeDAO.getAvgGradeRouteInPeriod(userId, periodStart,periodEnd,routeType);
+    }
     //endregion
 
 }

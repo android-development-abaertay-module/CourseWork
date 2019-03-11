@@ -10,6 +10,8 @@ import android.arch.persistence.room.Update;
 
 import com.example.coursework.model.Route;
 import com.example.coursework.model.User;
+import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.enums.RouteType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,4 +36,12 @@ public interface RouteDAO {
 
     @Query("SELECT * FROM Route WHERE userId ==:userId ORDER BY timeDone DESC LIMIT :numberOfRoutes")
     LiveData<List<Route>> getRecentRoutesForUser(int numberOfRoutes, long userId);
+
+    @Query("SELECT count(id) FROM Route WHERE userId ==:userId " +
+            "and timeDone BETWEEN datetime(:periodStart) AND datetime(:periodEnd) " +
+            "AND routeType ==:routeType")
+    LiveData<Integer> getNumberRoutesInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType);
+
+    @Query("")
+    LiveData<Grades> getAvgGradeRouteInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType);
 }
