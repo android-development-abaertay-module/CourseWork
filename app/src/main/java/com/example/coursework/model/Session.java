@@ -28,6 +28,8 @@ public class Session
     private double lat;
     @ColumnInfo(name = "longitude")
     private double lon;
+    @ColumnInfo(name = "location")
+    private String location;
     @Ignore
     private ArrayList<Route> routes;
 
@@ -71,6 +73,13 @@ public class Session
     }
     public void setLon(double lon) {
         this.lon = lon;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public ArrayList<Route> getRoutes() {

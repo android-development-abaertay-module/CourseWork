@@ -5,6 +5,8 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -38,9 +40,11 @@ import com.example.coursework.view.adapters.RouteAdapter;
 import com.example.coursework.view.adapters.SessionAdapter;
 import com.example.coursework.viewmodel.TrainingActivityViewModel;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
@@ -337,6 +341,25 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         }
     }
 
+    private String getAddressFromLocation(Session session) {
+        String address = "";
+        try {
+            Geocoder geocoder;
+            geocoder = new Geocoder(this, Locale.getDefault());
+
+            List<Address> localAddress = geocoder.getFromLocation(session.getLat(), session.getLon(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            address = localAddress.get(0).getAddressLine(0);
+//            city = localAddress.get(0).getLocality();
+//            state = localAddress.get(0).getAdminArea();
+//            country = localAddress.get(0).getCountryName();
+//            postalCode = localAddress.get(0).getPostalCode();
+//            knownName = localAddress.get(0).getFeatureName();
+            return address;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Failed to Find Address";
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -370,6 +393,8 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 if (user.getCurSesh().getLon() == 0 || user.getCurSesh().getLat() == 0) {
                     user.getCurSesh().setLon(location.getLongitude());
                     user.getCurSesh().setLat(location.getLatitude());
+                    user.getCurSesh().setLocation(getAddressFromLocation(user.getCurSesh()));
+
                     trainingActivityViewModel.updateCurrentSession(user.getCurSesh());
                 }
             }
