@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.coursework.R;
 import com.example.coursework.view.adapters.TabsAdapterCheckGoals;
-import com.example.coursework.view.adapters.TabsAdapterSetGoals;
 
 public class CheckGoalsActivity extends AppCompatActivity {
     Toolbar toolbar;
