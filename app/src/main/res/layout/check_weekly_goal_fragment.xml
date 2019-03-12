@@ -34,8 +34,8 @@
         android:text="@string/average_sport_grade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <ProgressBar
-        android:id="@+id/checkGoalWeeklyAvgSportPB"
+    <TextView
+        android:id="@+id/checkGoalWeeklyAvgSportTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="?android:progressBarStyleHorizontal"/>
@@ -44,8 +44,8 @@
         android:text="@string/average_boulder_grade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <ProgressBar
-        android:id="@+id/checkGoalWeeklyAvgBoulderPB"
+    <TextView
+        android:id="@+id/checkGoalWeeklyAvgBoulderTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="?android:progressBarStyleHorizontal"/>
