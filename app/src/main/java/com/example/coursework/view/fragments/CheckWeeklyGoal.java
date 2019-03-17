@@ -94,12 +94,16 @@ public class CheckWeeklyGoal extends Fragment {
             }
         });
         checkWeeklyViewModel.getAverageBoulderGradeLD(user.getId()).observe(this, avgBoulderGradeVal -> {
-            avgBoulderAchived = avgBoulderGradeVal;
-            avgBoulderAchivedDisplay.setText(avgBoulderAchived.toString());
+            if (avgBoulderGradeVal != null) {
+                avgBoulderAchived = avgBoulderGradeVal;
+                avgBoulderAchivedDisplay.setText(avgBoulderAchived.toString());
+            }
         });
         checkWeeklyViewModel.getAverageSportGradeLD(user.getId()).observe(this, avgSportGradeVal -> {
-            avgSportAchived = avgSportGradeVal;
-            avgSportAchivedDisplay.setText(avgSportAchived.toString());
+            if (avgSportGradeVal != null) {
+                avgSportAchived = avgSportGradeVal;
+                avgSportAchivedDisplay.setText(avgSportAchived.toString());
+            }
         });
         //endregion
     }
