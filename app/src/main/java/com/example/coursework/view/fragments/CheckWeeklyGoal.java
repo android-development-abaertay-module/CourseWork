@@ -40,7 +40,7 @@ public class CheckWeeklyGoal extends Fragment {
     private ProgressBar noBoulderAchievedPb;
     private TextView avgSportAchievedDisplay;
     private TextView avgBoulderAchievedDisplay;
-    private TextView timeRemainingTxt;
+    private TextView weeklyGoalSummaryTxt;
 
 
     public static CheckWeeklyGoal newInstance() {
@@ -73,7 +73,7 @@ public class CheckWeeklyGoal extends Fragment {
         noBoulderAchievedPb = getView().findViewById(R.id.checkGoalWeeklyNoBoulderPB);
         avgSportAchievedDisplay = getView().findViewById(R.id.checkGoalWeeklyAvgSportTV);
         avgBoulderAchievedDisplay = getView().findViewById(R.id.checkGoalWeeklyAvgBoulderTV);
-        timeRemainingTxt = getView().findViewById(R.id.timeRemainingWeeklyGoalActiveTxt);
+        weeklyGoalSummaryTxt = getView().findViewById(R.id.weeklyGoalSummaryTxt);
         //endregion
 
 
@@ -89,16 +89,19 @@ public class CheckWeeklyGoal extends Fragment {
                 goalWeekly = goalWeeklyVal;
                 if (goalWeekly.getDateExpires().isBefore(LocalDateTime.now())){
                     //goal has expired...
-                    timeRemainingTxt.setText("Goal Has Expired. Please Set a new Weekly goal");
+                    weeklyGoalSummaryTxt.setText("Goal Has Expired. Please Set a new Weekly goal");
                 }else{
                     //display days remaining
                     int daysRemaining = (int)Duration.between(LocalDateTime.now(),goalWeekly.getDateExpires()).toDays();
                     if (daysRemaining == 0)
-                        timeRemainingTxt.setText(R.string.goal_expires_today);
+                        weeklyGoalSummaryTxt.setText(R.string.goal_expires_today);
                     else
-                        timeRemainingTxt.setText(daysRemaining + " Days Remaining");
+                        weeklyGoalSummaryTxt.setText(daysRemaining + " Days Remaining");
 
                 }
+            }else{
+                //No Goal Set
+                weeklyGoalSummaryTxt.setText("No Weekly goal found. \n Set a Goals First");
             }
         });
         checkWeeklyViewModel.getNumberBoulderProgressLD(user.getId()).observe(this, numBoulderAchievedVal -> {
