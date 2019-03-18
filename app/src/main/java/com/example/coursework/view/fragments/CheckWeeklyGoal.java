@@ -39,7 +39,7 @@ public class CheckWeeklyGoal extends Fragment {
     private ProgressBar noBoulderAchievedPb;
     private TextView avgSportAchievedDisplay;
     private TextView avgBoulderAchievedDisplay;
-    private TextView timeRemaingTxt;
+    private TextView timeRemainingTxt;
 
 
     public static CheckWeeklyGoal newInstance() {
@@ -72,7 +72,7 @@ public class CheckWeeklyGoal extends Fragment {
         noBoulderAchievedPb = getView().findViewById(R.id.checkGoalWeeklyNoBoulderPB);
         avgSportAchievedDisplay = getView().findViewById(R.id.checkGoalWeeklyAvgSportTV);
         avgBoulderAchievedDisplay = getView().findViewById(R.id.checkGoalWeeklyAvgBoulderTV);
-        timeRemaingTxt = getView().findViewById(R.id.timeRemainingWeeklyGoalActiveTxt);
+        timeRemainingTxt = getView().findViewById(R.id.timeRemainingWeeklyGoalActiveTxt);
         //endregion
 
 
@@ -88,14 +88,14 @@ public class CheckWeeklyGoal extends Fragment {
                 goalWeekly = goalWeeklyVal;
                 if (goalWeekly.getDateExpires().isBefore(LocalDateTime.now())){
                     //goal has expired...
-                    timeRemaingTxt.setText("Goal Has Expired. Please Set a new Weekly goal");
+                    timeRemainingTxt.setText("Goal Has Expired. Please Set a new Weekly goal");
                 }else{
                     //display days remaining
                     int daysRemaining = (int)Duration.between(LocalDateTime.now(),goalWeekly.getDateExpires()).toDays();
                     if (daysRemaining == 0)
-                        timeRemaingTxt.setText(R.string.goal_expires_today);
+                        timeRemainingTxt.setText(R.string.goal_expires_today);
                     else
-                        timeRemaingTxt.setText(daysRemaining + " Days Remaining");
+                        timeRemainingTxt.setText(daysRemaining + " Days Remaining");
 
                 }
             }
@@ -135,9 +135,11 @@ public class CheckWeeklyGoal extends Fragment {
                 avgSportAchieved = avgSportGradeVal;
 
                 String output = avgSportAchieved.toString() + " : " + goalWeekly.getAverageBoulderGrade().toString();
-                avgBoulderAchievedDisplay.setText(output);
+                avgSportAchievedDisplay.setText(output);
             }
         });
         //endregion
+
+
     }
 }
