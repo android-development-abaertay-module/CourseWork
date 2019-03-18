@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,6 +127,8 @@ public class CheckWeeklyGoal extends Fragment {
                 avgBoulderAchieved = avgBoulderGradeVal;
                 String output = avgBoulderAchieved.toString() + " : " + goalWeekly.getAverageBoulderGrade().toString();
                 avgBoulderAchievedDisplay.setText(output);
+                if (avgBoulderAchieved.getValue() > goalWeekly.getAverageBoulderGrade().getValue())
+                    avgBoulderAchievedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
             }else{
                 Log.d("gwyd", "getAverageBoulderGradeLD returned null");
             }
@@ -134,8 +137,11 @@ public class CheckWeeklyGoal extends Fragment {
             if (avgSportGradeVal != null && goalWeekly != null) {
                 avgSportAchieved = avgSportGradeVal;
 
-                String output = avgSportAchieved.toString() + " : " + goalWeekly.getAverageBoulderGrade().toString();
+                String output = avgSportAchieved.toString() + " : " + goalWeekly.getAverageSportGrade().toString();
                 avgSportAchievedDisplay.setText(output);
+
+                if (avgSportAchieved.getValue() > goalWeekly.getAverageSportGrade().getValue())
+                    avgSportAchievedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
             }
         });
         //endregion
