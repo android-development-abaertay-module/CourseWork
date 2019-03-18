@@ -14,6 +14,7 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.enums.RouteType;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Dao
@@ -26,7 +27,7 @@ public interface RouteDAO {
     void delete(Route route);
 
     @Query("SELECT * FROM Route WHERE userId ==:userId and timeDone BETWEEN datetime(:periodStart) AND datetime(:periodEnd)")
-    List<Route> getAllRoutesForUserInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd);
+    List<Route> getAllRoutesForUserInPeriod(long userId, OffsetDateTime periodStart, OffsetDateTime periodEnd);
 
     @Query("SELECT * FROM Route WHERE userId ==:userId")
     List<Route> getAllRoutesForUser(long userId);
@@ -40,12 +41,12 @@ public interface RouteDAO {
     @Query("SELECT count(id) FROM Route WHERE userId ==:userId " +
             "and timeDone BETWEEN datetime(:periodStart) AND datetime(:periodEnd) " +
             "AND routeType ==:routeType")
-    LiveData<Integer> getNumberRoutesInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType);
+    LiveData<Integer> getNumberRoutesInPeriod(long userId, OffsetDateTime periodStart, OffsetDateTime periodEnd, RouteType routeType);
 
     @Query("SELECT avg(grade) FROM Route WHERE userId ==:userId " +
             "and timeDone BETWEEN datetime(:periodStart) AND datetime(:periodEnd) " +
             "AND routeType ==:routeType")
-    LiveData<Grades> getAvgGradeRouteInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType);
+    LiveData<Grades> getAvgGradeRouteInPeriod(long userId, OffsetDateTime periodStart, OffsetDateTime periodEnd, RouteType routeType);
 
     @Query("SELECT null FROM Route")
     LiveData<Grades> noGoalSetReturnNull();

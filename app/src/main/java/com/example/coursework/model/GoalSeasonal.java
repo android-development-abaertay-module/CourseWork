@@ -7,6 +7,7 @@ import android.arch.persistence.room.ForeignKey;
 import com.example.coursework.model.enums.Grades;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -51,7 +52,7 @@ public class GoalSeasonal extends Goal {
     }
 
 //------------------------------------------------------------------------------------Constructor----------------------------------------------------
-public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestSportOnsight, Grades highestBoulderWorked, Grades highestSportWorked, LocalDateTime dateCreated)//6 Months
+public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestSportOnsight, Grades highestBoulderWorked, Grades highestSportWorked, OffsetDateTime dateCreated)//6 Months
     {
         super(iDUserFK);
         this.goalDuration = 6;// 6 Months

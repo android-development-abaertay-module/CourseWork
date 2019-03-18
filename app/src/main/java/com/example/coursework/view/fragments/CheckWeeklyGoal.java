@@ -23,6 +23,7 @@ import com.example.coursework.viewmodel.CheckGoalsVM.CheckWeeklyGoalViewModel;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
@@ -87,7 +88,7 @@ public class CheckWeeklyGoal extends Fragment {
         checkWeeklyViewModel.getGoalWeeklyLD(user.getId()).observe(this, goalWeeklyVal -> {
             if (goalWeeklyVal != null){
                 goalWeekly = goalWeeklyVal;
-                if (goalWeekly.getDateExpires().isBefore(LocalDateTime.now())){
+                if (goalWeekly.getDateExpires().isBefore(OffsetDateTime.now())){
                     //goal has expired...
                     weeklyGoalSummaryTxt.setText("Goal Has Expired. Please Set a new Weekly goal");
                 }else{

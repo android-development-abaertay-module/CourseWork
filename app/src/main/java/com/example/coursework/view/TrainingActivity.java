@@ -42,6 +42,7 @@ import com.example.coursework.viewmodel.TrainingActivityViewModel;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -275,7 +276,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     }
 
     private void startSession_Click() {
-        user.setCurSesh(new Session(LocalDateTime.now(), user.getId()));
+        user.setCurSesh(new Session(OffsetDateTime.now(), user.getId()));
         Location location;
         if (permissionChecked != null)
             if (permissionChecked == PermissionCheck.GRANTED) {
@@ -297,7 +298,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         StyleDone styleDone = StyleDone.getFromInteger(Integer.parseInt(findViewById(selectedStyleTypeID).getTag().toString()));
         Grades grade = (Grades) gradeAchievedSpinner.getSelectedItem();
 
-        Route newRoute = new Route(user.getCurSesh().getId(), user.getId(), grade, routeType, styleDone, LocalDateTime.now());
+        Route newRoute = new Route(user.getCurSesh().getId(), user.getId(), grade, routeType, styleDone, OffsetDateTime.now());
         trainingActivityViewModel.addRoute(newRoute);
         addRouteForm.setVisibility(View.GONE);
         displayRecentRoutesLV.setVisibility(View.VISIBLE);
@@ -307,7 +308,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         if (addRouteForm.getVisibility() == View.VISIBLE)
             addRouteForm.setVisibility(View.GONE);
         if (user.getCurSesh() != null) {
-            user.getCurSesh().setEndTime(LocalDateTime.now());
+            user.getCurSesh().setEndTime(OffsetDateTime.now());
             trainingActivityViewModel.updateCurrentSession(user.getCurSesh());
         } else {
             Toast.makeText(this, "No Active Session", Toast.LENGTH_SHORT).show();

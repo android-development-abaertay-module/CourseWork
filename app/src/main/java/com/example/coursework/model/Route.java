@@ -14,6 +14,7 @@ import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -32,7 +33,7 @@ public  class Route
     @ColumnInfo(name = "styleDone")
     private StyleDone styleDone;
     @ColumnInfo(name = "timeDone")
-    private LocalDateTime timeDone;
+    private OffsetDateTime timeDone;
     @ColumnInfo(name = "routeType")
     private RouteType routeType;
     @ColumnInfo(name = "grade")
@@ -69,10 +70,10 @@ public  class Route
         this.styleDone = styleDone;
     }
 
-    public LocalDateTime getTimeDone() {
+    public OffsetDateTime getTimeDone() {
         return timeDone;
     }
-    public void setTimeDone(LocalDateTime timeDone) {
+    public void setTimeDone(OffsetDateTime timeDone) {
         this.timeDone = timeDone;
     }
 
@@ -104,7 +105,7 @@ public  class Route
     }
 
     @Ignore
-    public Route(long sessionIDFK,long userId, Grades grade,RouteType routeType, StyleDone styleDone, LocalDateTime dateAndtime)
+    public Route(long sessionIDFK,long userId, Grades grade,RouteType routeType, StyleDone styleDone, OffsetDateTime dateAndtime)
     {
         this.userId = userId;
         this.grade = grade;

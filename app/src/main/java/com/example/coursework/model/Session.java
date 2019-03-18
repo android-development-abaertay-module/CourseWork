@@ -7,6 +7,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -21,9 +22,9 @@ public class Session
     @ColumnInfo(name = "userId", index = true)
     private long userId;
     @ColumnInfo(name = "startTime")
-    private LocalDateTime startTime;
+    private OffsetDateTime startTime;
     @ColumnInfo(name = "endTime")
-    private LocalDateTime endTime;
+    private OffsetDateTime endTime;
     @ColumnInfo(name = "latitude")
     private double lat;
     @ColumnInfo(name = "longitude")
@@ -47,17 +48,17 @@ public class Session
         this.userId = userId;
     }
 
-    public LocalDateTime getStartTime() {
+    public OffsetDateTime getStartTime() {
         return startTime;
     }
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public OffsetDateTime getEndTime() {
         return endTime;
     }
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -94,13 +95,13 @@ public class Session
         routes = new ArrayList<>();
     }
     @Ignore
-    public Session(LocalDateTime startTime, long userId)
+    public Session(OffsetDateTime startTime, long userId)
     {
         this.userId = userId;
         this.startTime = startTime;
         routes = new ArrayList<>();
     }
-    public Session(LocalDateTime startTime, long userId,double latitude, double longitude)
+    public Session(OffsetDateTime startTime, long userId,double latitude, double longitude)
     {
         this.userId = userId;
         this.startTime = startTime;

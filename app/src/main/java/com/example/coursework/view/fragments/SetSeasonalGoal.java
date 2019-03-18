@@ -24,6 +24,7 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetSeasonalGoalViewModel;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
@@ -112,7 +113,7 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         createdOnTxt.setText(goalSeasonal.getDateCreated().toLocalDate().toString());
         expiresOnTxt.setText(goalSeasonal.getDateExpires().toLocalDate().toString());
         resetSeasonalGoalBtn.setText("RESET SEASONAL GOAL");
-        if (goalSeasonal.getDateExpires().isBefore(LocalDateTime.now())) {
+        if (goalSeasonal.getDateExpires().isBefore(OffsetDateTime.now())) {
             //Weekly Goal Expired.
             resetSeasonalGoalBtn.setBackgroundColor(Color.RED);
         }else{
@@ -128,7 +129,7 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
                 if (seasonalGoal != null){
                     //user Has a goal
                     //check if goal expired
-                    if (seasonalGoal.getDateExpires().isBefore(LocalDateTime.now())){
+                    if (seasonalGoal.getDateExpires().isBefore(OffsetDateTime.now())){
                         //goal Expired - Close it and create a new one
                         mViewModel.closeSeasonalGoalSetWasMet(seasonalGoal);
                         getNewSeasonalGoalFromForm();
@@ -166,6 +167,6 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
         Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
         Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
-        seasonalGoal = new GoalSeasonal(user.getId(),bOs,sOs,bWorked,sWorked,LocalDateTime.now());
+        seasonalGoal = new GoalSeasonal(user.getId(),bOs,sOs,bWorked,sWorked,OffsetDateTime.now());
     }
 }

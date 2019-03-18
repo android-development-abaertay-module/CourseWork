@@ -24,6 +24,7 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetWeeklyGoalViewModel;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
@@ -113,7 +114,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         createdOnTxt.setText(goalWeekly.getDateCreated().toLocalDate().toString());
         expiresOnTxt.setText(goalWeekly.getDateExpires().toLocalDate().toString());
         resetWeeklyGoalBtn.setText("RESET WEEKLY GOAL");
-        if (goalWeekly.getDateExpires().isBefore(LocalDateTime.now())) {
+        if (goalWeekly.getDateExpires().isBefore(OffsetDateTime.now())) {
             //Weekly Goal Expired.
             resetWeeklyGoalBtn.setBackgroundColor(Color.RED);
         }else{
@@ -129,7 +130,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                 if (weeklyGoal != null){
                     //user Has a goal
                     //check if goal expired
-                    if (weeklyGoal.getDateExpires().isBefore(LocalDateTime.now())){
+                    if (weeklyGoal.getDateExpires().isBefore(OffsetDateTime.now())){
                         //goal Expired - Close it and create a new one
                         mViewModel.closeGoalSetWasMet(weeklyGoal);
                         getNewWeeklyGoalFromForm();
@@ -166,6 +167,6 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         int numBoulder = Integer.parseInt(numBoulderSpinner.getSelectedItem().toString());
         Grades avgSport = (Grades) avgSportSpinner.getSelectedItem();
         Grades avgBoulder = (Grades) avgBoulderSpinner.getSelectedItem();
-        weeklyGoal = new GoalWeekly(user.getId(),numSport,numBoulder,avgSport,avgBoulder, LocalDateTime.now());
+        weeklyGoal = new GoalWeekly(user.getId(),numSport,numBoulder,avgSport,avgBoulder, OffsetDateTime.now());
     }
 }

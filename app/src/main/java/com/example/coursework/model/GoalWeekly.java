@@ -7,6 +7,7 @@ import android.arch.persistence.room.ForeignKey;
 import com.example.coursework.model.enums.Grades;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -69,7 +70,7 @@ public class GoalWeekly extends Goal {
     }
 
     //--------------------------------------------------------------------------Constructor----------------------------------------------------
-    public GoalWeekly(long iDUserFK, int numberOfSport, int numberOfBoulder, Grades averageSportGrade, Grades averageBoulderGrade, LocalDateTime dateCreated)
+    public GoalWeekly(long iDUserFK, int numberOfSport, int numberOfBoulder, Grades averageSportGrade, Grades averageBoulderGrade, OffsetDateTime dateCreated)
         {
             super(iDUserFK);
             goalDuration = 7;//7 Days

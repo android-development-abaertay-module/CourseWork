@@ -17,6 +17,7 @@ import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -598,11 +599,11 @@ public class DaoRepository {
     public LiveData<List<Route>> getRecentRoutesForUser(int numberOfRoutes, long userId) {
         return routeDAO.getRecentRoutesForUser(numberOfRoutes, userId);
     }
-    public LiveData<Integer> getNumberRoutesInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType) {
+    public LiveData<Integer> getNumberRoutesInPeriod(long userId, OffsetDateTime periodStart, OffsetDateTime periodEnd, RouteType routeType) {
         return routeDAO.getNumberRoutesInPeriod(userId, periodStart,periodEnd,routeType);
     }
 
-    public LiveData<Grades> getAvgGradeRouteInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType) {
+    public LiveData<Grades> getAvgGradeRouteInPeriod(long userId, OffsetDateTime periodStart, OffsetDateTime periodEnd, RouteType routeType) {
         return routeDAO.getAvgGradeRouteInPeriod(userId, periodStart,periodEnd,routeType);
     }
     public LiveData<Grades> noGoalSetReturnNull(){

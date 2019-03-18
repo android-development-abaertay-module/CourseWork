@@ -24,6 +24,7 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetAnnualGoalViewModel;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
@@ -112,7 +113,7 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         createdOnTxt.setText(goalAnnual.getDateCreated().toLocalDate().toString());
         expiresOnTxt.setText(goalAnnual.getDateExpires().toLocalDate().toString());
         resetAnnualGoalBtn.setText("RESET SEASONAL GOAL");
-        if (goalAnnual.getDateExpires().isBefore(LocalDateTime.now())) {
+        if (goalAnnual.getDateExpires().isBefore(OffsetDateTime.now())) {
             //Weekly Goal Expired.
             resetAnnualGoalBtn.setBackgroundColor(Color.RED);
         }else{
@@ -128,7 +129,7 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
                 if (annualGoal != null){
                     //user Has a goal
                     //check if goal expired
-                    if (annualGoal.getDateExpires().isBefore(LocalDateTime.now())){
+                    if (annualGoal.getDateExpires().isBefore(OffsetDateTime.now())){
                         //goal Expired - Close it and create a new one
                         mViewModel.closeAnnualGoalSetWasMet(annualGoal);
                         getNewAnnualGoalFromForm();
@@ -165,6 +166,6 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
         Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
         Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
-        annualGoal = new GoalAnnual(user.getId(),bOs,sOs,bWorked,sWorked,LocalDateTime.now());
+        annualGoal = new GoalAnnual(user.getId(),bOs,sOs,bWorked,sWorked, OffsetDateTime.now());
     }
 }

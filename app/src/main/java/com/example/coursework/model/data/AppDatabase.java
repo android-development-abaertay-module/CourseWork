@@ -17,7 +17,7 @@ import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.data.converters.GradeConverter;
-import com.example.coursework.model.data.converters.LocalDateTimeConverter;
+import com.example.coursework.model.data.converters.OffsetDateTimeConverter;
 import com.example.coursework.model.data.converters.RouteTypeConverter;
 import com.example.coursework.model.data.converters.StyleConverter;
 import com.example.coursework.model.enums.Grades;
@@ -25,6 +25,7 @@ import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Database(entities = {
         GoalAnnual.class,
@@ -35,7 +36,7 @@ import java.time.LocalDateTime;
         User.class}, version = 1)
 @TypeConverters({GradeConverter.class,
         StyleConverter.class,
-        LocalDateTimeConverter.class,
+        OffsetDateTimeConverter.class,
         RouteTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public  abstract GoalAnnualDAO goalAnnualDAO();
@@ -99,32 +100,32 @@ public abstract class AppDatabase extends RoomDatabase {
             User user = new User("gwyd");
             user.setId(userDAO.insert(user));
 
-            GoalWeekly goalWeekly = new GoalWeekly(user.getId(),10,20,Grades.SIX_A,Grades.SIX_B,LocalDateTime.now());
+            GoalWeekly goalWeekly = new GoalWeekly(user.getId(),10,20,Grades.SIX_A,Grades.SIX_B, OffsetDateTime.now());
             goalWeekly.setId(goalWeeklyDAO.insert(goalWeekly));
 
-            GoalSeasonal goalSeasonal = new GoalSeasonal(user.getId(),Grades.SEVEN_A,Grades.SEVEN_A,Grades.SEVEN_B,Grades.SEVEN_B,LocalDateTime.now().minusWeeks(5));
+            GoalSeasonal goalSeasonal = new GoalSeasonal(user.getId(),Grades.SEVEN_A,Grades.SEVEN_A,Grades.SEVEN_B,Grades.SEVEN_B,OffsetDateTime.now().minusWeeks(5));
             goalSeasonal.setId(goalSeasonalDAO.insert(goalSeasonal));
 
-            GoalAnnual goalAnnual = new GoalAnnual(user.getId(),Grades.SEVEN_A,Grades.SEVEN_A,Grades.SEVEN_B,Grades.SEVEN_B,LocalDateTime.now().minusMonths(2));
+            GoalAnnual goalAnnual = new GoalAnnual(user.getId(),Grades.SEVEN_A,Grades.SEVEN_A,Grades.SEVEN_B,Grades.SEVEN_B,OffsetDateTime.now().minusMonths(2));
             goalAnnual.setId(goalAnnualDAO.insert(goalAnnual));
 
-            Session oldSession = new Session(LocalDateTime.now().minusDays(1).minusHours(3),user.getId());
-            oldSession.setEndTime(LocalDateTime.now());
+            Session oldSession = new Session(OffsetDateTime.now().minusDays(1).minusHours(3),user.getId());
+            oldSession.setEndTime(OffsetDateTime.now());
             oldSession.setId(sessionDAO.insert(oldSession));
 
-            Route oldRouteOne = new Route(oldSession.getId(),user.getId(),Grades.FIVE_A, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(30));
-            Route oldRouteTwo = new Route(oldSession.getId(),user.getId(),Grades.FIVE_B, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(20));
-            Route oldRouteThree = new Route(oldSession.getId(),user.getId(),Grades.FIVE_C, RouteType.BOULDER, StyleDone.Onsight,LocalDateTime.now().minusDays(1).minusHours(2).minusMinutes(10));
+            Route oldRouteOne = new Route(oldSession.getId(),user.getId(),Grades.FIVE_A, RouteType.BOULDER, StyleDone.Onsight,OffsetDateTime.now().minusDays(1).minusHours(2).minusMinutes(30));
+            Route oldRouteTwo = new Route(oldSession.getId(),user.getId(),Grades.FIVE_B, RouteType.BOULDER, StyleDone.Onsight,OffsetDateTime.now().minusDays(1).minusHours(2).minusMinutes(20));
+            Route oldRouteThree = new Route(oldSession.getId(),user.getId(),Grades.FIVE_C, RouteType.BOULDER, StyleDone.Onsight,OffsetDateTime.now().minusDays(1).minusHours(2).minusMinutes(10));
             oldRouteOne.setId(routeDAO.insert(oldRouteOne));
             oldRouteTwo.setId(routeDAO.insert(oldRouteTwo));
             oldRouteThree.setId(routeDAO.insert(oldRouteThree));
 
-            Session currentSession = new Session(LocalDateTime.now(),user.getId());
+            Session currentSession = new Session(OffsetDateTime.now(),user.getId());
             currentSession.setId(sessionDAO.insert(currentSession));
 
-            Route cRouteOne = new Route(currentSession.getId(),user.getId(),Grades.SIX_A,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(20));
-            Route cRouteTwo = new Route(currentSession.getId(),user.getId(),Grades.SIX_B,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(10));
-            Route cRouteThree = new Route(currentSession.getId(),user.getId(),Grades.SIX_C,RouteType.SPORT,StyleDone.Onsight,LocalDateTime.now().minusMinutes(5));
+            Route cRouteOne = new Route(currentSession.getId(),user.getId(),Grades.SIX_A,RouteType.SPORT,StyleDone.Onsight,OffsetDateTime.now().minusMinutes(20));
+            Route cRouteTwo = new Route(currentSession.getId(),user.getId(),Grades.SIX_B,RouteType.SPORT,StyleDone.Onsight,OffsetDateTime.now().minusMinutes(10));
+            Route cRouteThree = new Route(currentSession.getId(),user.getId(),Grades.SIX_C,RouteType.SPORT,StyleDone.Onsight,OffsetDateTime.now().minusMinutes(5));
             cRouteOne.setId(routeDAO.insert(cRouteOne));
             cRouteTwo.setId(routeDAO.insert(cRouteTwo));
             cRouteThree.setId(routeDAO.insert(cRouteThree));

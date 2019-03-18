@@ -7,6 +7,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -17,9 +18,9 @@ public abstract class Goal {
     @ColumnInfo(name = "userId")
     protected long userId;
     @ColumnInfo(name = "dateCreated")
-    protected LocalDateTime dateCreated;
+    protected OffsetDateTime dateCreated;
     @ColumnInfo(name = "dateExpires")
-    protected LocalDateTime dateExpires;
+    protected OffsetDateTime dateExpires;
     @ColumnInfo(name = "goalAchieved")
     protected Boolean goalAchieved;
     @ColumnInfo(name = "goalDuration")
@@ -39,17 +40,17 @@ public abstract class Goal {
         this.userId = userId;
     }
 
-    public LocalDateTime getDateCreated() {
+    public OffsetDateTime getDateCreated() {
         return dateCreated;
     }
-    public void setDateCreated(LocalDateTime dateCreated) {
+    public void setDateCreated(OffsetDateTime dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public LocalDateTime getDateExpires() {
+    public OffsetDateTime getDateExpires() {
         return dateExpires;
     }
-    public void setDateExpires(LocalDateTime dateExpires) {
+    public void setDateExpires(OffsetDateTime dateExpires) {
         this.dateExpires = dateExpires;
     }
 
