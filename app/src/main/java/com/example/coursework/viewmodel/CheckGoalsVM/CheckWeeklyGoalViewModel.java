@@ -69,7 +69,7 @@ public class CheckWeeklyGoalViewModel extends AndroidViewModel {
                 daoRepository.getMostRecentGoalWeekly(user.getId()));
 
         numberSportProgressLD = Transformations.switchMap(goalWeeklyLD,goal ->
-                daoRepository.getNumberRoutesInPeriod(userLD.getValue().getId(),goal.getDateCreated(),goal.getDateExpires(),RouteType.SPORT));
+		daoRepository.getNumberRoutesInPeriod(userLD.getValue().getId(),goal.getDateCreated(),goal.getDateExpires(),RouteType.SPORT));
         numberBoulderProgressLD = Transformations.switchMap(goalWeeklyLD,goal ->
                 daoRepository.getNumberRoutesInPeriod(userLD.getValue().getId(),goal.getDateCreated(),goal.getDateExpires(),RouteType.BOULDER));
         averageSportGradeLD = Transformations.switchMap(goalWeeklyLD,goal ->
