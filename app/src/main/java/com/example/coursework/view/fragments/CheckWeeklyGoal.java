@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,7 +101,7 @@ public class CheckWeeklyGoal extends Fragment {
             }
         });
         checkWeeklyViewModel.getNumberBoulderProgressLD(user.getId()).observe(this, numBoulderAchievedVal -> {
-            if (numBoulderAchievedVal != null){
+            if (numBoulderAchievedVal != null && goalWeekly != null){
                 if (numBoulderAchievedVal > goalWeekly.getNumberOfBoulder()) {
                     numBoulderAchievedVal = goalWeekly.getNumberOfBoulder();
                 }
@@ -125,6 +126,8 @@ public class CheckWeeklyGoal extends Fragment {
                 avgBoulderAchieved = avgBoulderGradeVal;
                 String output = avgBoulderAchieved.toString() + " : " + goalWeekly.getAverageBoulderGrade().toString();
                 avgBoulderAchievedDisplay.setText(output);
+            }else{
+                Log.d("gwyd", "getAverageBoulderGradeLD returned null");
             }
         });
         checkWeeklyViewModel.getAverageSportGradeLD(user.getId()).observe(this, avgSportGradeVal -> {

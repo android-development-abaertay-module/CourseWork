@@ -69,12 +69,32 @@ public class CheckWeeklyGoalViewModel extends AndroidViewModel {
                 daoRepository.getMostRecentGoalWeekly(user.getId()));
 
         numberSportProgressLD = Transformations.switchMap(goalWeeklyLD,goal ->
-		daoRepository.getNumberRoutesInPeriod(userLD.getValue().getId(),goal.getDateCreated(),goal.getDateExpires(),RouteType.SPORT));
+        {
+            if (goal != null)
+                return daoRepository.getNumberRoutesInPeriod(userLD.getValue().getId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.SPORT);
+            else
+                return daoRepository.noGoalSetReturnZeroCount();
+        });
         numberBoulderProgressLD = Transformations.switchMap(goalWeeklyLD,goal ->
-                daoRepository.getNumberRoutesInPeriod(userLD.getValue().getId(),goal.getDateCreated(),goal.getDateExpires(),RouteType.BOULDER));
+        {
+            if (goal != null)
+                return daoRepository.getNumberRoutesInPeriod(userLD.getValue().getId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.BOULDER);
+            else
+                return daoRepository.noGoalSetReturnZeroCount();
+        });
         averageSportGradeLD = Transformations.switchMap(goalWeeklyLD,goal ->
-                daoRepository.getAvgGradeRouteInPeriod(userLD.getValue().getId(),goal.getDateCreated(),goal.getDateExpires(),RouteType.SPORT));
+        {
+            if (goal != null)
+                return daoRepository.getAvgGradeRouteInPeriod(userLD.getValue().getId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.SPORT);
+            else
+                return daoRepository.noGoalSetReturnNull();
+        });
         averageBoulderGradeLD = Transformations.switchMap(goalWeeklyLD,goal ->
-                daoRepository.getAvgGradeRouteInPeriod(userLD.getValue().getId(),goal.getDateCreated(),goal.getDateExpires(),RouteType.BOULDER));
+        {
+            if (goal != null)
+                return daoRepository.getAvgGradeRouteInPeriod(userLD.getValue().getId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.BOULDER);
+            else
+                return daoRepository.noGoalSetReturnNull();
+        });
     }
 }

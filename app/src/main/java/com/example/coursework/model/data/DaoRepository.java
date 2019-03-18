@@ -3,6 +3,7 @@ package com.example.coursework.model.data;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.support.v4.app.INotificationSideChannel;
 import android.util.Log;
 
 import com.example.coursework.model.GoalAnnual;
@@ -597,6 +598,19 @@ public class DaoRepository {
     public LiveData<List<Route>> getRecentRoutesForUser(int numberOfRoutes, long userId) {
         return routeDAO.getRecentRoutesForUser(numberOfRoutes, userId);
     }
+    public LiveData<Integer> getNumberRoutesInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType) {
+        return routeDAO.getNumberRoutesInPeriod(userId, periodStart,periodEnd,routeType);
+    }
+
+    public LiveData<Grades> getAvgGradeRouteInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType) {
+        return routeDAO.getAvgGradeRouteInPeriod(userId, periodStart,periodEnd,routeType);
+    }
+    public LiveData<Grades> noGoalSetReturnNull(){
+        return routeDAO.noGoalSetReturnNull();
+    }
+    public LiveData<Integer> noGoalSetReturnZeroCount(){
+        return routeDAO.noGoalSetReturnZeroCount();
+    }
     //endregion
 
     //region [Session Get]
@@ -607,12 +621,6 @@ public class DaoRepository {
         return sessionDAO.getCurrentSessionForUser(userId);
     }
 
-    public LiveData<Integer> getNumberRoutesInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType) {
-        return routeDAO.getNumberRoutesInPeriod(userId, periodStart,periodEnd,routeType);
-    }
 
-    public LiveData<Grades> getAvgGradeRouteInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType) {
-        return routeDAO.getAvgGradeRouteInPeriod(userId, periodStart,periodEnd,routeType);
-    }
     //endregion
 }

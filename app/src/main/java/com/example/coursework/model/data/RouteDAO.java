@@ -46,4 +46,10 @@ public interface RouteDAO {
             "and timeDone BETWEEN datetime(:periodStart) AND datetime(:periodEnd) " +
             "AND routeType ==:routeType")
     LiveData<Grades> getAvgGradeRouteInPeriod(long userId, LocalDateTime periodStart, LocalDateTime periodEnd, RouteType routeType);
+
+    @Query("SELECT null FROM Route")
+    LiveData<Grades> noGoalSetReturnNull();
+
+    @Query("SELECT 0 FROM Route")
+    LiveData<Integer> noGoalSetReturnZeroCount();
 }
