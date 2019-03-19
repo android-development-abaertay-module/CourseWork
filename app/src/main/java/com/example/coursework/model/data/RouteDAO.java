@@ -53,4 +53,9 @@ public interface RouteDAO {
 
     @Query("SELECT 0 FROM Route")
     LiveData<Integer> noGoalSetReturnZeroCount();
+
+    @Query("SELECT MAX(grade) FROM Route WHERE userId ==:userId " +
+            "and timeDone BETWEEN datetime(:periodStart) AND datetime(:periodEnd) " +
+            "AND routeType ==:routeType")
+    LiveData<Grades> getHighestRouteInPeriod(long userId, OffsetDateTime periodStart, OffsetDateTime periodEnd, RouteType routeType);
 }

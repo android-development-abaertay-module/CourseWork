@@ -606,6 +606,9 @@ public class DaoRepository {
     public LiveData<Grades> getAvgGradeRouteInPeriod(long userId, OffsetDateTime periodStart, OffsetDateTime periodEnd, RouteType routeType) {
         return routeDAO.getAvgGradeRouteInPeriod(userId, periodStart,periodEnd,routeType);
     }
+    public LiveData<Grades> getHighestRouteInPeriod(long userId, OffsetDateTime periodStart, OffsetDateTime periodEnd, RouteType routeType){
+        return routeDAO.getHighestRouteInPeriod(userId,periodStart,periodEnd,routeType);
+    }
     public LiveData<Grades> noGoalSetReturnNull(){
         return routeDAO.noGoalSetReturnNull();
     }
