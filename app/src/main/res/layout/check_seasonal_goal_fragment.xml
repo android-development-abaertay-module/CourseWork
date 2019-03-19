@@ -14,43 +14,43 @@
             android:text="@string/boulder_onsight_goal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <ProgressBar
-            android:id="@+id/checkGoalSeasonalBoulderOSPB"
+        <TextView
+            android:id="@+id/checkGoalSeasonalBoulderOSTV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:progressBarStyleHorizontal"/>
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/checkGoalSeasonalSportOSTxt"
             android:text="@string/sport_onsight_goal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <ProgressBar
-            android:id="@+id/checkGoalSeasonalSportOSPB"
+        <TextView
+            android:id="@+id/checkGoalSeasonalSportOSTV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:progressBarStyleHorizontal"/>
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/checkGoalSeasonalBoulderWorkedTxt"
             android:text="@string/boulder_worked_goal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <ProgressBar
-            android:id="@+id/checkGoalSeasonalBoulderWorkedPB"
+        <TextView
+            android:id="@+id/checkGoalSeasonalBoulderWorkedTV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:progressBarStyleHorizontal"/>
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/checkGoalSeasonalSportWorkedTxt"
             android:text="@string/sport_worked_goal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <ProgressBar
-            android:id="@+id/checkGoalSeasonalSportWorkedPB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:progressBarStyleHorizontal"/>
         <TextView
-            android:id="@+id/isSeasonalGoalActiveTxt"
+            android:id="@+id/checkGoalSeasonalSportWorkedTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/seasonalGoalSummaryTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

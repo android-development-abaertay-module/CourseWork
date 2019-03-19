@@ -90,7 +90,7 @@ public class CheckWeeklyGoal extends Fragment {
                 goalWeekly = goalWeeklyVal;
                 if (goalWeekly.getDateExpires().isBefore(OffsetDateTime.now())){
                     //goal has expired...
-                    weeklyGoalSummaryTxt.setText("Goal Has Expired. Please Set a new Weekly goal");
+                    weeklyGoalSummaryTxt.setText(R.string.goal_expired_summary);
                 }else{
                     //display days remaining
                     int daysRemaining = (int)Duration.between(LocalDateTime.now(),goalWeekly.getDateExpires()).toDays();
