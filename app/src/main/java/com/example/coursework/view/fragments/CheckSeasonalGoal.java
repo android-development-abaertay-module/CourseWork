@@ -115,6 +115,7 @@ public class CheckSeasonalGoal extends Fragment {
                 }else {
                     //no routes in period
                     highestSportOSDisplay.setText(R.string.no_routes_completed);
+                    highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
                 }
             }
         });
@@ -129,6 +130,7 @@ public class CheckSeasonalGoal extends Fragment {
                 }else{
                     //no routes done in period
                     highestBoulderOSDisplay.setText(R.string.no_routes_completed);
+                    highestBoulderOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
                 }
             }
         });
@@ -143,6 +145,7 @@ public class CheckSeasonalGoal extends Fragment {
                 }else{
                     //no routes logged in period yet
                     highestSportWorkedDisplay.setText(R.string.no_routes_completed);
+                    highestSportWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
                 }
             }
         });
@@ -155,7 +158,9 @@ public class CheckSeasonalGoal extends Fragment {
                     if (highestBoulderWorked.getValue() > goalSeasonal.get_highestBoulderWorked().getValue())
                         highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
                 }else{
+                    //no routes logged in period yet
                     highestBoulderWorkedDisplay.setText(R.string.no_routes_completed);
+                    highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
                 }
             }
         });
