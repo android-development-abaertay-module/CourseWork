@@ -12,6 +12,7 @@ import com.example.coursework.model.Route;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.enums.RouteType;
+import com.example.coursework.model.enums.StyleDone;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -56,6 +57,7 @@ public interface RouteDAO {
 
     @Query("SELECT MAX(grade) FROM Route WHERE userId ==:userId " +
             "and timeDone BETWEEN datetime(:periodStart) AND datetime(:periodEnd) " +
-            "AND routeType ==:routeType")
-    LiveData<Grades> getHighestRouteInPeriod(long userId, OffsetDateTime periodStart, OffsetDateTime periodEnd, RouteType routeType);
+            "AND routeType ==:routeType " +
+            "AND styleDone ==:styleDone")
+    LiveData<Grades> getHighestRouteInPeriod(long userId, OffsetDateTime periodStart, OffsetDateTime periodEnd, RouteType routeType, StyleDone styleDone);
 }
