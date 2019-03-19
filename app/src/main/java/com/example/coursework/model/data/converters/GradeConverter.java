@@ -12,6 +12,6 @@ public class GradeConverter {
 
     @TypeConverter
     public static Grades intToGrade(int gradeValue){
-        return gradeValue == 0 ? Grades.THREE_C :  Grades.getFromInteger(gradeValue);
+        return gradeValue == 0 ? null :  Grades.getFromInteger(gradeValue);
     }
 }
