@@ -27,31 +27,31 @@ public class CheckWeeklyGoalViewModel extends AndroidViewModel {
 
 
 
-    public LiveData<GoalWeekly> getGoalWeeklyLD(long userId) {
+    public LiveData<GoalWeekly> getGoalWeeklyLD() {
         return goalWeeklyLD;
     }
 
-    public MutableLiveData<User> getUserLD(long userId) {
+    public MutableLiveData<User> getUserLD() {
         return userLD;
     }
     public void setUserLD(User user) {
         userLD.setValue(user);
     }
 
-    public LiveData<Integer> getNumberSportProgressLD(long userId) {
+    public LiveData<Integer> getNumberSportProgressLD() {
         return numberSportProgressLD;
     }
 
-    public LiveData<Integer> getNumberBoulderProgressLD(long userId) {
+    public LiveData<Integer> getNumberBoulderProgressLD() {
         return numberBoulderProgressLD;
     }
 
-    public LiveData<Grades> getAverageSportGradeLD(long userId) {
+    public LiveData<Grades> getAverageSportGradeLD() {
         return averageSportGradeLD;
     }
 
 
-    public LiveData<Grades> getAverageBoulderGradeLD(long userId) {
+    public LiveData<Grades> getAverageBoulderGradeLD() {
         return averageBoulderGradeLD;
     }
 

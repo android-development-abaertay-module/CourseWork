@@ -79,13 +79,13 @@ public class CheckWeeklyGoal extends Fragment {
 
 
         //region [Register Observers]
-        checkWeeklyViewModel.getUserLD(user.getId()).observe(this, new Observer<User>() {
+        checkWeeklyViewModel.getUserLD().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable User userVal) {
                 user = userVal;
             }
         });
-        checkWeeklyViewModel.getGoalWeeklyLD(user.getId()).observe(this, goalWeeklyVal -> {
+        checkWeeklyViewModel.getGoalWeeklyLD().observe(this, goalWeeklyVal -> {
             if (goalWeeklyVal != null){
                 goalWeekly = goalWeeklyVal;
                 if (goalWeekly.getDateExpires().isBefore(OffsetDateTime.now())){
@@ -105,7 +105,7 @@ public class CheckWeeklyGoal extends Fragment {
                 weeklyGoalSummaryTxt.setText("No Weekly goal found. \n Set a Goals First");
             }
         });
-        checkWeeklyViewModel.getNumberBoulderProgressLD(user.getId()).observe(this, numBoulderAchievedVal -> {
+        checkWeeklyViewModel.getNumberBoulderProgressLD().observe(this, numBoulderAchievedVal -> {
             if (numBoulderAchievedVal != null && goalWeekly != null){
                 if (numBoulderAchievedVal > goalWeekly.getNumberOfBoulder()) {
                     numBoulderAchievedVal = goalWeekly.getNumberOfBoulder();
@@ -116,7 +116,7 @@ public class CheckWeeklyGoal extends Fragment {
                 noBoulderAchievedPb.setProgress(numberBoulderPercentage);
             }
         });
-        checkWeeklyViewModel.getNumberSportProgressLD(user.getId()).observe(this, numSportAchievedVal -> {
+        checkWeeklyViewModel.getNumberSportProgressLD().observe(this, numSportAchievedVal -> {
             if (numSportAchievedVal != null && goalWeekly != null){
                 if (numSportAchievedVal > goalWeekly.getNumberOfSport())
                     numSportAchievedVal = goalWeekly.getNumberOfSport();
@@ -126,7 +126,7 @@ public class CheckWeeklyGoal extends Fragment {
                 noSportAchievedPb.setProgress(numberSportPercentage);
             }
         });
-        checkWeeklyViewModel.getAverageBoulderGradeLD(user.getId()).observe(this, avgBoulderGradeVal -> {
+        checkWeeklyViewModel.getAverageBoulderGradeLD().observe(this, avgBoulderGradeVal -> {
             if (avgBoulderGradeVal != null && goalWeekly != null) {
                 avgBoulderAchieved = avgBoulderGradeVal;
                 String output = avgBoulderAchieved.toString() + " : " + goalWeekly.getAverageBoulderGrade().toString();
@@ -137,7 +137,7 @@ public class CheckWeeklyGoal extends Fragment {
                 Log.d("gwyd", "getAverageBoulderGradeLD returned null");
             }
         });
-        checkWeeklyViewModel.getAverageSportGradeLD(user.getId()).observe(this, avgSportGradeVal -> {
+        checkWeeklyViewModel.getAverageSportGradeLD().observe(this, avgSportGradeVal -> {
             if (avgSportGradeVal != null && goalWeekly != null) {
                 avgSportAchieved = avgSportGradeVal;
 
