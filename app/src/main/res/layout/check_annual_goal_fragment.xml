@@ -12,45 +12,83 @@
         <TextView
             android:id="@+id/checkGoalAnnualBoulderOSTxt"
             android:text="@string/boulder_onsight_goal"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <ProgressBar
-            android:id="@+id/checkGoalAnnualBoulderOSPB"
+        <TextView
+            android:id="@+id/checkGoalAnnualBoulderOSTV"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:progressBarStyleHorizontal"/>
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/checkGoalAnnualSportOSTxt"
             android:text="@string/sport_onsight_goal"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <ProgressBar
-            android:id="@+id/checkGoalAnnualSportOSPB"
+        <TextView
+            android:id="@+id/checkGoalAnnualSportOSTV"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:progressBarStyleHorizontal"/>
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/checkGoalAnnualBoulderWorkedTxt"
             android:text="@string/boulder_worked_goal"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <ProgressBar
-            android:id="@+id/checkGoalAnnualBoulderWorkedPB"
+        <TextView
+            android:id="@+id/checkGoalAnnualBoulderWorkedTV"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:progressBarStyleHorizontal"/>
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/checkGoalAnnualSportWorkedTxt"
             android:text="@string/sport_worked_goal"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <ProgressBar
-            android:id="@+id/checkGoalAnnualSportWorkedPB"
+        <TextView
+            android:id="@+id/checkGoalAnnualSportWorkedTV"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:progressBarStyleHorizontal"/>
+            android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/isAnnualGoalActiveTxt"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/AnnualGoalSummaryTxt"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
