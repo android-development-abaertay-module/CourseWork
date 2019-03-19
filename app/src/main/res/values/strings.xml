@@ -72,4 +72,5 @@
     <string name="no_recent_sesions_to_display">No Recent Sessions to Display</string>
     <string name="goal_expires_today">Goal Expires Today</string>
     <string name="goal_expired_summary">Goal Has Expired. Please Set a new Weekly goal</string>
+    <string name="no_routes_completed">no Routes Completed</string>
 </resources>

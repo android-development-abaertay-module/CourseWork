@@ -101,47 +101,62 @@ public class CheckSeasonalGoal extends Fragment {
                 }
             }else{
                 //No Goal Set
-                seasonalGoalSummaryTxt.setText("No Weekly goal found. \n Set a Goals First");
+                seasonalGoalSummaryTxt.setText("No Seasonal Goal found. \n Set a Goals First");
             }
         });
         checkSeasonalGoalVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
-            if (highestSportOSVal != null && goalSeasonal != null){
-                highestSportOS = highestSportOSVal;
-
-                String output = highestSportOS.toString() + " : " + goalSeasonal.get_highestSportOnsight().toString();
-                highestSportOSDisplay.setText(output);
-                if (highestSportOS.getValue() > goalSeasonal.get_highestSportOnsight().getValue())
-                    highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+            highestSportOS = highestSportOSVal;
+            if (goalSeasonal != null){
+                if (highestSportOSVal != null){
+                    String output = highestSportOS.toString() + " : " + goalSeasonal.get_highestSportOnsight().toString();
+                    highestSportOSDisplay.setText(output);
+                    if (highestSportOS.getValue() > goalSeasonal.get_highestSportOnsight().getValue())
+                        highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+                }else {
+                    //no routes in period
+                    highestSportOSDisplay.setText(R.string.no_routes_completed);
+                }
             }
         });
         checkSeasonalGoalVM.getHighestBoulderOnsightLD().observe(this, highestBoulderOSVal -> {
-            if (highestBoulderOSVal != null && goalSeasonal != null){
-                highestBoulderOS = highestBoulderOSVal;
-
-                String output = highestBoulderOS.toString() + " : " + goalSeasonal.get_highestBoulderOnsight().toString();
-                highestBoulderOSDisplay.setText(output);
-                if (highestBoulderOS.getValue() > goalSeasonal.get_highestBoulderOnsight().getValue())
-                    highestBoulderOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+            highestBoulderOS = highestBoulderOSVal;
+            if (goalSeasonal != null){
+                if (highestBoulderOSVal != null){
+                    String output = highestBoulderOS.toString() + " : " + goalSeasonal.get_highestBoulderOnsight().toString();
+                    highestBoulderOSDisplay.setText(output);
+                    if (highestBoulderOS.getValue() > goalSeasonal.get_highestBoulderOnsight().getValue())
+                        highestBoulderOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+                }else{
+                    //no routes done in period
+                    highestBoulderOSDisplay.setText(R.string.no_routes_completed);
+                }
             }
         });
         checkSeasonalGoalVM.getHighestSportWorkedLD().observe(this, highestSportWorkedVal -> {
-            if (highestSportWorkedVal != null && goalSeasonal != null) {
-                highestSportWorked = highestSportWorkedVal;
-
-                String output = highestSportWorked.toString() + " : " + goalSeasonal.get_highestSportWorked().toString();
-                highestSportWorkedDisplay.setText(output);
-                if (highestSportWorked.getValue() > goalSeasonal.get_highestSportWorked().getValue())
-                    highestSportWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+            highestSportWorked = highestSportWorkedVal;
+            if (goalSeasonal != null) {
+                if (highestSportWorkedVal != null){
+                    String output = highestSportWorked.toString() + " : " + goalSeasonal.get_highestSportWorked().toString();
+                    highestSportWorkedDisplay.setText(output);
+                    if (highestSportWorked.getValue() > goalSeasonal.get_highestSportWorked().getValue())
+                        highestSportWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+                }else{
+                    //no routes logged in period yet
+                    highestSportWorkedDisplay.setText(R.string.no_routes_completed);
+                }
             }
         });
         checkSeasonalGoalVM.getHighestBoulderWorkedLD().observe(this, highestBoulderWorkedVal -> {
-            if (highestBoulderWorkedVal != null && goalSeasonal != null) {
-                highestBoulderWorked = highestBoulderWorkedVal;
-
-                String output = highestBoulderWorked.toString() + " : " + goalSeasonal.get_highestBoulderWorked().toString();
-                highestBoulderWorkedDisplay.setText(output);
-                if (highestBoulderWorked.getValue() > goalSeasonal.get_highestBoulderWorked().getValue())
-                    highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+            highestBoulderWorked = highestBoulderWorkedVal;
+            if ( goalSeasonal != null) {
+                if (highestBoulderWorked != null){
+                    String output = highestBoulderWorked.toString() + " : " + goalSeasonal.get_highestBoulderWorked().toString();
+                    highestBoulderWorkedDisplay.setText(output);
+                    if (highestBoulderWorked.getValue() > goalSeasonal.get_highestBoulderWorked().getValue())
+                        highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+                }else{
+                    highestBoulderWorkedDisplay.setText(R.string.no_routes_completed);
+                }
             }
         });
         //endregion
