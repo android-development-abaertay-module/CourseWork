@@ -39,7 +39,7 @@ public class CheckAnnualGoal extends Fragment {
     private TextView highestBoulderOSDisplay;
     private TextView highestSportWorkedDisplay;
     private TextView highestBoulderWorkedDisplay;
-    private TextView seasonalGoalSummaryTxt;
+    private TextView annualGoalSummaryTxt;
 
     public static CheckAnnualGoal newInstance() {
         return new CheckAnnualGoal();
@@ -70,7 +70,7 @@ public class CheckAnnualGoal extends Fragment {
         highestBoulderOSDisplay = getView().findViewById(R.id.checkGoalAnnualBoulderOSTV);
         highestSportWorkedDisplay = getView().findViewById(R.id.checkGoalAnnualSportWorkedTV);
         highestBoulderWorkedDisplay = getView().findViewById(R.id.checkGoalAnnualBoulderWorkedTV);
-        seasonalGoalSummaryTxt = getView().findViewById(R.id.annualGoalSummaryTxt);
+        annualGoalSummaryTxt = getView().findViewById(R.id.annualGoalSummaryTxt);
         //endregion
 
 
@@ -86,19 +86,19 @@ public class CheckAnnualGoal extends Fragment {
                 goalAnnual = goalSeasonalVal;
                 if (goalAnnual.getDateExpires().isBefore(OffsetDateTime.now())){
                     //goal has expired...
-                    seasonalGoalSummaryTxt.setText(R.string.goal_expired_summary);
+                    annualGoalSummaryTxt.setText(R.string.goal_expired_summary);
                 }else{
                     //display days remaining
                     int daysRemaining = (int) Duration.between(OffsetDateTime.now(), goalAnnual.getDateExpires()).toDays();
                     if (daysRemaining == 0)
-                        seasonalGoalSummaryTxt.setText(R.string.goal_expires_today);
+                        annualGoalSummaryTxt.setText(R.string.goal_expires_today);
                     else
-                        seasonalGoalSummaryTxt.setText(daysRemaining + " Days Remaining");
+                        annualGoalSummaryTxt.setText(daysRemaining + " Days Remaining");
 
                 }
             }else{
                 //No Goal Set
-                seasonalGoalSummaryTxt.setText("No Seasonal Goal found. \n Set a Goals First");
+                annualGoalSummaryTxt.setText("No Annual Goal found. \n Set a Goals First");
             }
         });
         checkGoalAnnualVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
