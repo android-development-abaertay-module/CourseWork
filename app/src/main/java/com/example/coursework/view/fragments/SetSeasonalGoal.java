@@ -84,24 +84,18 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         resetSeasonalGoalBtn = getView().findViewById(R.id.resetSeasonalGoalBtn);
         resetSeasonalGoalBtn.setOnClickListener(this);
 
-        mViewModel.getUserLD(user.getId()).observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(@Nullable User userVal) {
-                user = userVal;
-            }
+        mViewModel.getUserLD(user.getId()).observe(this, userVal -> {
+            user = userVal;
         });
-        mViewModel.getSeasonalGoalLD(user.getId()).observe(this, new Observer<GoalSeasonal>() {
-            @Override
-            public void onChanged(@Nullable GoalSeasonal goalSeasonal) {
-                seasonalGoal = goalSeasonal;
-                if (goalSeasonal != null) {
+        mViewModel.getSeasonalGoalLD(user.getId()).observe(this, goalSeasonal -> {
+            seasonalGoal = goalSeasonal;
+            if (goalSeasonal != null) {
 
-                    updateSeasonalGoalView(goalSeasonal);
-                }else {
-                    //no weekly goal found
-                    resetSeasonalGoalBtn.setText(R.string.create_seasonal_goal);
-                    resetSeasonalGoalBtn.setBackgroundColor(Color.RED);
-                }
+                updateSeasonalGoalView(goalSeasonal);
+            }else {
+                //no weekly goal found
+                resetSeasonalGoalBtn.setText(R.string.create_seasonal_goal);
+                resetSeasonalGoalBtn.setBackgroundColor(Color.RED);
             }
         });
     }

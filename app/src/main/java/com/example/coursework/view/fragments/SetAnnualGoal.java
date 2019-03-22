@@ -84,23 +84,17 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         resetAnnualGoalBtn = getView().findViewById(R.id.resetAnnualGoalBtn);
         resetAnnualGoalBtn.setOnClickListener(this);
 
-        mViewModel.getUserDL(user.getId()).observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(@Nullable User userVal) {
-                user = userVal;
-            }
+        mViewModel.getUserDL(user.getId()).observe(this, userVal -> {
+            user = userVal;
         });
-        mViewModel.getAnnualGoalLD(user.getId()).observe(this, new Observer<GoalAnnual>() {
-            @Override
-            public void onChanged(@Nullable GoalAnnual goalAnnualVal) {
-                annualGoal = goalAnnualVal;
-                if (goalAnnualVal != null) {
-                    updateAnnualGoalView(goalAnnualVal);
-                }else {
-                    //no weekly goal found
-                    resetAnnualGoalBtn.setText(R.string.create_annual_goal);
-                    resetAnnualGoalBtn.setBackgroundColor(Color.RED);
-                }
+        mViewModel.getAnnualGoalLD(user.getId()).observe(this, goalAnnualVal -> {
+            annualGoal = goalAnnualVal;
+            if (goalAnnualVal != null) {
+                updateAnnualGoalView(goalAnnualVal);
+            }else {
+                //no weekly goal found
+                resetAnnualGoalBtn.setText(R.string.create_annual_goal);
+                resetAnnualGoalBtn.setBackgroundColor(Color.RED);
             }
         });
     }

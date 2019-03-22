@@ -82,26 +82,20 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         resetWeeklyGoalBtn = getView().findViewById(R.id.resetWeeklyGoalBtn);
         resetWeeklyGoalBtn.setOnClickListener(this);
 
-        mViewModel.getUserLD(user.getId()).observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(@Nullable User userVal) {
-                user = userVal;
-            }
+        mViewModel.getUserLD(user.getId()).observe(this, userVal -> {
+            user = userVal;
         });
 
 
-        mViewModel.getWeeklyGoalLD(user.getId()).observe(this, new Observer<GoalWeekly>() {
-            @Override
-            public void onChanged(@Nullable GoalWeekly goalWeekly) {
-                weeklyGoal = goalWeekly;
-                if (goalWeekly != null) {
+        mViewModel.getWeeklyGoalLD(user.getId()).observe(this, goalWeekly -> {
+            weeklyGoal = goalWeekly;
+            if (goalWeekly != null) {
 
-                    updateWeeklyGoalView(goalWeekly);
-                }else {
-                    //no weekly goal found
-                    resetWeeklyGoalBtn.setText(R.string.greate_weekly_goal);
-                    resetWeeklyGoalBtn.setBackgroundColor(Color.RED);
-                }
+                updateWeeklyGoalView(goalWeekly);
+            }else {
+                //no weekly goal found
+                resetWeeklyGoalBtn.setText(R.string.greate_weekly_goal);
+                resetWeeklyGoalBtn.setBackgroundColor(Color.RED);
             }
         });
     }
