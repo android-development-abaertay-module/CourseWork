@@ -108,7 +108,10 @@ public class MenuActivity extends AppCompatActivity
             intent.putExtra(USERNAME,user.getUserName());
             startActivity(intent);
         } else if (id == R.id.nav_my_map) {
-
+            Intent intent = new Intent(MenuActivity.this,MainMapActivity.class );
+            intent.putExtra(USER_ID,user.getId());
+            intent.putExtra(USERNAME,user.getUserName());
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
