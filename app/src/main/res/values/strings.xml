@@ -81,4 +81,5 @@
     <string name="reset_weekly_goal">RESET WEEKLY GOAL</string>
     <string name="reset_seasonal_goal">RESET SEASONAL GOAL</string>
     <string name="reset_annual_goal">RESET ANNUAL GOAL</string>
+    <string name="title_activity_main_map">Map</string>
 </resources>
