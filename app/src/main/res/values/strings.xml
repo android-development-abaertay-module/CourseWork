@@ -68,11 +68,11 @@
     <string name="onsight">Onsight</string>
     <string name="grade">Grade</string>
     <string name="add_route">Add New Route To Session</string>
-    <string name="no_routes_to_display">%s No Recent Routes to Display</string>
-    <string name="no_recent_sesions_to_display">%s No Recent Sessions to Display</string>
+    <string name="no_routes_to_display">%s \nNo Recent Routes to Display</string>
+    <string name="no_recent_sesions_to_display">%s \nNo Recent Sessions to Display</string>
     <string name="goal_expires_today">Goal Expires Today</string>
     <string name="goal_expired_summary">Goal Has Expired. Please Set a new Weekly goal</string>
     <string name="no_routes_completed">no Routes Completed</string>
-    <string name="recent_routes">%s Recent Routes</string>
+    <string name="recent_routes">%s \nRecent Routes</string>
     <string name="recent_sessions">Recent Sessions</string>
 </resources>

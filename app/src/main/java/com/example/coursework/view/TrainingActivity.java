@@ -36,6 +36,7 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.enums.PermissionCheck;
 import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
+import com.example.coursework.model.helper.PrintNull;
 import com.example.coursework.view.adapters.RouteAdapter;
 import com.example.coursework.view.adapters.SessionAdapter;
 import com.example.coursework.viewmodel.TrainingActivityViewModel;
@@ -192,12 +193,9 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
                     if (user.getCurSesh().getRoutes().size() == 0) {
                         //no recent routes to display:
-                        messageTxt.setVisibility(View.VISIBLE);
-                        messageTxt.setText(R.string.no_routes_to_display);
+                        messageTxt.setText(getString(R.string.no_routes_to_display, PrintNull.Print(user.getCurSesh().getLocation())));
                     } else {
-                        if (user.getCurSesh().getLocation()!= null)
-                            if (!user.getCurSesh().getLocation().equals(""))
-                                messageTxt.setText(user.getCurSesh().getLocation());
+                        getString(R.string.recent_routes,PrintNull.Print(user.getCurSesh().getLocation()));
                     }
                     RouteAdapter adapter = new RouteAdapter(getApplicationContext(), user.getCurSesh().getRoutes());
                     displayRecentRoutesLV.setAdapter(adapter);
@@ -230,25 +228,16 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                         }
                         if (user.getCurSesh().getRoutes().size() == 0) {
                             //no recent routes to display:
-                            if (user.getCurSesh().getLocation() != null && user.getCurSesh().getLocation() != "")
-                                messageTxt.setText(getString(R.string.no_routes_to_display, user.getCurSesh().getLocation() + " "));
-                            else
-                                messageTxt.setText(getString(R.string.no_routes_to_display);
+                            messageTxt.setText(getString(R.string.no_routes_to_display, PrintNull.Print(user.getCurSesh().getLocation())));
 
                         } else {
-                            if (user.getCurSesh().getLocation() != null && user.getCurSesh().getLocation() != "")
-                                messageTxt.setText(getString(R.string.recent_routes,user.getCurSesh().getLocation() + " " ));
-                            else
-                                messageTxt.setText(R.string.recent_routes);
+                            messageTxt.setText(getString(R.string.recent_routes,PrintNull.Print(user.getCurSesh().getLocation())));
                         }
                         RouteAdapter adapter = new RouteAdapter(getApplicationContext(), user.getCurSesh().getRoutes());
                         displayRecentRoutesLV.setAdapter(adapter);
                     } else {
                         Log.d("gwyd", "no routes returned");
-                        if (user.getCurSesh().getLocation() != null && user.getCurSesh().getLocation() != "")
-                            messageTxt.setText(getString(R.string.no_routes_to_display, user.getCurSesh().getLocation() + " "));
-                        else
-                            messageTxt.setText(R.string.no_routes_to_display);
+                        messageTxt.setText(getString(R.string.no_routes_to_display, PrintNull.Print(user.getCurSesh().getLocation())));
                     }
                 }
             }
@@ -335,12 +324,12 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
     private void turnOnLocationTracking() {
         //passive provider to save battery as this is not a live update
-        //(1 * 60 * 1000) time = every minute again to save battery
+        //(1 * 60 * 1000) time = every minute
         //0 = don't care about refreshing on distance
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.d("gwyd", "granted");
             trainingActivityViewModel.setLocationPermissionGranted(PermissionCheck.GRANTED);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, (1 * 60 * 1000),0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, (60 * 1000),0, this);
         }
         else{
             Log.d("gwyd", "location manager requesting updates skipped because of lack or permissions. shouldn't get hit");
