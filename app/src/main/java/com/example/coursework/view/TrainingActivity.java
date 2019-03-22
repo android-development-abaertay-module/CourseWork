@@ -41,7 +41,6 @@ import com.example.coursework.view.adapters.SessionAdapter;
 import com.example.coursework.viewmodel.TrainingActivityViewModel;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +58,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     MenuItem startMenuItem;
     MenuItem endMenuItem;
     MenuItem addRouteMenuItem;
-    private TextView mTextMessage;
+    private TextView messageTxt;
     private ListView displayRecentRoutesLV;
     private ListView displayRecentSessionsLV;
     private View addRouteForm;
@@ -83,11 +82,10 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_start_session:
-                    mTextMessage.setText(R.string.title_start_session);
+                    messageTxt.setText(R.string.title_start_session);
                     startSession_Click();
                     return true;
                 case R.id.navigation_add_route:
-                    mTextMessage.setText(R.string.add_route);
                     if (addRouteForm.getVisibility() != View.VISIBLE) {
                         addRouteForm.setVisibility(View.VISIBLE);
                         displayRecentRoutesLV.setVisibility(View.GONE);
@@ -126,7 +124,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         endMenuItem = navigation.getMenu().findItem(R.id.navigation_end_session);
         addRouteMenuItem = navigation.getMenu().findItem(R.id.navigation_add_route);
 
-        mTextMessage = findViewById(R.id.message);
+        messageTxt = findViewById(R.id.message);
 
         displayRecentRoutesLV = findViewById(R.id.displayRecentRoutesLV);
         displayRecentSessionsLV = findViewById(R.id.displayRecentSessionsLV);
@@ -194,10 +192,12 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
                     if (user.getCurSesh().getRoutes().size() == 0) {
                         //no recent routes to display:
-                        mTextMessage.setVisibility(View.VISIBLE);
-                        mTextMessage.setText(R.string.no_routes_to_display);
+                        messageTxt.setVisibility(View.VISIBLE);
+                        messageTxt.setText(R.string.no_routes_to_display);
                     } else {
-                        mTextMessage.setVisibility(View.GONE);
+                        if (user.getCurSesh().getLocation()!= null)
+                            if (!user.getCurSesh().getLocation().equals(""))
+                                messageTxt.setText(user.getCurSesh().getLocation());
                     }
                     RouteAdapter adapter = new RouteAdapter(getApplicationContext(), user.getCurSesh().getRoutes());
                     displayRecentRoutesLV.setAdapter(adapter);
@@ -212,11 +212,6 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                     user.setSessionsList((ArrayList) sessions);
                     SessionAdapter adapter = new SessionAdapter(getApplicationContext(), user.getSessionsList());
                     displayRecentSessionsLV.setAdapter(adapter);
-                    mTextMessage.setVisibility(View.GONE);
-                } else {
-                    Log.d("gwyd", "no sessions found");
-                    mTextMessage.setVisibility(View.VISIBLE);
-                    mTextMessage.setText(R.string.no_recent_sesions_to_display);
                 }
             }
         });
@@ -235,17 +230,25 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                         }
                         if (user.getCurSesh().getRoutes().size() == 0) {
                             //no recent routes to display:
-                            mTextMessage.setVisibility(View.VISIBLE);
-                            mTextMessage.setText(R.string.no_routes_to_display);
+                            if (user.getCurSesh().getLocation() != null && user.getCurSesh().getLocation() != "")
+                                messageTxt.setText(getString(R.string.no_routes_to_display, user.getCurSesh().getLocation() + " "));
+                            else
+                                messageTxt.setText(getString(R.string.no_routes_to_display);
+
                         } else {
-                            mTextMessage.setVisibility(View.GONE);
+                            if (user.getCurSesh().getLocation() != null && user.getCurSesh().getLocation() != "")
+                                messageTxt.setText(getString(R.string.recent_routes,user.getCurSesh().getLocation() + " " ));
+                            else
+                                messageTxt.setText(R.string.recent_routes);
                         }
                         RouteAdapter adapter = new RouteAdapter(getApplicationContext(), user.getCurSesh().getRoutes());
                         displayRecentRoutesLV.setAdapter(adapter);
                     } else {
                         Log.d("gwyd", "no routes returned");
-                        mTextMessage.setVisibility(View.VISIBLE);
-                        mTextMessage.setText(R.string.no_routes_to_display);
+                        if (user.getCurSesh().getLocation() != null && user.getCurSesh().getLocation() != "")
+                            messageTxt.setText(getString(R.string.no_routes_to_display, user.getCurSesh().getLocation() + " "));
+                        else
+                            messageTxt.setText(R.string.no_routes_to_display);
                     }
                 }
             }
