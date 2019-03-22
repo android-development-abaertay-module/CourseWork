@@ -73,10 +73,10 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         numSportSpinner = getView().findViewById(R.id.weeklyNumberOfSportSpinner);
         numBoulderSpinner = getView().findViewById(R.id.weeklyNumberOfBoulderSpinner);
         avgSportSpinner = getView().findViewById(R.id.weeklyAverageSportGradeSpinner);
-        avgSportSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        avgSportSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
         avgBoulderSpinner = getView().findViewById(R.id.weeklyAverageBoulderGradeSpinner);
-        avgBoulderSpinner.setAdapter(new ArrayAdapter<Grades>(getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        avgBoulderSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
         createdOnTxt = getView().findViewById(R.id.weeklyCreatedOnTxt);
         expiresOnTxt = getView().findViewById(R.id.weeklyExpiresOnTxt);
         resetWeeklyGoalBtn = getView().findViewById(R.id.resetWeeklyGoalBtn);
@@ -99,7 +99,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                     updateWeeklyGoalView(goalWeekly);
                 }else {
                     //no weekly goal found
-                    resetWeeklyGoalBtn.setText("CREATE WEEKLY GOAL");
+                    resetWeeklyGoalBtn.setText(R.string.greate_weekly_goal);
                     resetWeeklyGoalBtn.setBackgroundColor(Color.RED);
                 }
             }
@@ -113,7 +113,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         avgBoulderSpinner.setSelection(((ArrayAdapter<Grades>)avgBoulderSpinner.getAdapter()).getPosition(goalWeekly.getAverageBoulderGrade()));
         createdOnTxt.setText(goalWeekly.getDateCreated().toLocalDate().toString());
         expiresOnTxt.setText(goalWeekly.getDateExpires().toLocalDate().toString());
-        resetWeeklyGoalBtn.setText("RESET WEEKLY GOAL");
+        resetWeeklyGoalBtn.setText(R.string.reset_weekly_goal);
         if (goalWeekly.getDateExpires().isBefore(OffsetDateTime.now())) {
             //Weekly Goal Expired.
             resetWeeklyGoalBtn.setBackgroundColor(Color.RED);
