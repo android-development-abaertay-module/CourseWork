@@ -1,15 +1,9 @@
 package com.example.coursework.model;
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-
-import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 public abstract class Goal {
     @PrimaryKey(autoGenerate = true)

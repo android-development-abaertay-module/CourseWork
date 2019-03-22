@@ -6,7 +6,6 @@ import android.arch.persistence.room.ForeignKey;
 
 import com.example.coursework.model.enums.Grades;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;

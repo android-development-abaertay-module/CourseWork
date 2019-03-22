@@ -6,7 +6,6 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
