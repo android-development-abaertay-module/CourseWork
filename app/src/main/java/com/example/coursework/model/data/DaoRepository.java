@@ -621,6 +621,9 @@ public class DaoRepository {
     public LiveData<List<Session>> getRecentSessionsForUser(int numberOfSessions, long userId) {
         return sessionDAO.getRecentSessionsForUser(numberOfSessions,userId);
     }
+    public LiveData<List<Session>> getRecentSessionsWithLocationForUser(int numberOfSessions, long userId) {
+        return sessionDAO.getRecentSessionsWithLocationForUser(numberOfSessions,userId);
+    }
     public LiveData<Session> getCurrentSession(long userId) {
         return sessionDAO.getCurrentSessionForUser(userId);
     }
