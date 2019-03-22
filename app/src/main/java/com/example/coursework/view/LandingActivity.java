@@ -50,16 +50,13 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         usersLV = findViewById(R.id.usersLV);
         usersLV.setOnItemClickListener(this);
         registerForContextMenu(usersLV);
-        landingActivityViewModel.getUsers().observe(this, new Observer<List<User>>() {
-            @Override
-            public void onChanged(@Nullable List<User> users) {
-                if(users != null) {
-                    userAdapter =new UsersAdapter(getApplicationContext(), users);
-                    usersLV.setAdapter(userAdapter);
-                    allUsers = users;
-                }
-                userAdapter.notifyDataSetChanged();
+        landingActivityViewModel.getUsers().observe(this, users -> {
+            if(users != null) {
+                userAdapter =new UsersAdapter(getApplicationContext(), users);
+                usersLV.setAdapter(userAdapter);
+                allUsers = users;
             }
+            userAdapter.notifyDataSetChanged();
         });
     }
 

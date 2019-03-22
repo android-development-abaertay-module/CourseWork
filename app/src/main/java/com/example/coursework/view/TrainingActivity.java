@@ -1,7 +1,6 @@
 package com.example.coursework.view;
 
 import android.Manifest;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,7 +11,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -134,111 +132,90 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         routeTypeRG = findViewById(R.id.routeTypeBtnGrp);
         routeStyleRG = findViewById(R.id.styleDoneBtnGrp);
         gradeAchievedSpinner = findViewById(R.id.gradeAchievedSpinner);
-        gradeAchievedSpinner.setAdapter(new ArrayAdapter<Grades>(this, android.R.layout.simple_list_item_1, Grades.values()));
+        gradeAchievedSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Grades.values()));
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         //endregion
 
         //region [Register Observers]
-        trainingActivityViewModel.getCurrentLatitudeLD().observe(this, new Observer<Double>() {
-            @Override
-            public void onChanged(@Nullable Double latitudeVal) {
-                latitude = latitudeVal;
-            }
+        trainingActivityViewModel.getCurrentLatitudeLD().observe(this, latitudeVal -> {
+            latitude = latitudeVal;
         });
-        trainingActivityViewModel.getCurrentLongitudeLD().observe(this, new Observer<Double>() {
-            @Override
-            public void onChanged(@Nullable Double longitudeVal) {
-                longitude = longitudeVal;
-            }
+        trainingActivityViewModel.getCurrentLongitudeLD().observe(this, longitudeVal -> {
+            longitude = longitudeVal;
         });
 
-        trainingActivityViewModel.getLocationPermissionGranted().observe(this, new Observer<PermissionCheck>() {
-            @Override
-            public void onChanged(@Nullable PermissionCheck permissionCheckVal) {
-                permissionChecked = permissionCheckVal;
-                //if permissions already denied by user on this visit to TrainingActivity don't show dialog again.
-                if (permissionCheckVal == PermissionCheck.NOT_REQUESTED || permissionCheckVal == null) {
-                    checkPermissions();
-                }
+        trainingActivityViewModel.getLocationPermissionGranted().observe(this, permissionCheckVal -> {
+            permissionChecked = permissionCheckVal;
+            //if permissions already denied by user on this visit to TrainingActivity don't show dialog again.
+            if (permissionCheckVal == PermissionCheck.NOT_REQUESTED || permissionCheckVal == null) {
+                checkPermissions();
             }
         });
-        trainingActivityViewModel.getUserLD(user.getId()).observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(@Nullable User userVal) {
-                user = userVal;
-            }
+        trainingActivityViewModel.getUserLD(user.getId()).observe(this, userVal -> {
+            user = userVal;
         });
-        trainingActivityViewModel.getCurrentSession(user.getId()).observe(this, new Observer<Session>() {
-            @Override
-            public void onChanged(@Nullable Session session) {
-                user.setCurSesh(session);
-                if (user.getCurSesh() == null) {
-                    //Display Start Session stuff
-                    startMenuItem.setChecked(false);
-                    startMenuItem.setVisible(true);
-                    endMenuItem.setVisible(false);
-                    addRouteMenuItem.setEnabled(false);
-                    displayRecentRoutesLV.setVisibility(View.GONE);
-                    displayRecentSessionsLV.setVisibility(View.VISIBLE);
+        trainingActivityViewModel.getCurrentSession(user.getId()).observe(this, session -> {
+            user.setCurSesh(session);
+            if (user.getCurSesh() == null) {
+                //Display Start Session stuff
+                startMenuItem.setChecked(false);
+                startMenuItem.setVisible(true);
+                endMenuItem.setVisible(false);
+                addRouteMenuItem.setEnabled(false);
+                displayRecentRoutesLV.setVisibility(View.GONE);
+                displayRecentSessionsLV.setVisibility(View.VISIBLE);
+            } else {
+                //We have a Current Session. display add route stuff
+                endMenuItem.setChecked(true);
+                startMenuItem.setVisible(false);
+                addRouteMenuItem.setEnabled(true);
+                endMenuItem.setVisible(true);
+                displayRecentSessionsLV.setVisibility(View.GONE);
+                displayRecentRoutesLV.setVisibility(View.VISIBLE);
+
+                if (user.getCurSesh().getRoutes().size() == 0) {
+                    //no recent routes to display:
+                    messageTxt.setText(getString(R.string.no_routes_to_display, PrintNull.Print(user.getCurSesh().getLocation())));
                 } else {
-                    //We have a Current Session. display add route stuff
-                    endMenuItem.setChecked(true);
-                    startMenuItem.setVisible(false);
-                    addRouteMenuItem.setEnabled(true);
-                    endMenuItem.setVisible(true);
-                    displayRecentSessionsLV.setVisibility(View.GONE);
-                    displayRecentRoutesLV.setVisibility(View.VISIBLE);
+                    getString(R.string.recent_routes,PrintNull.Print(user.getCurSesh().getLocation()));
+                }
+                RouteAdapter adapter = new RouteAdapter(getApplicationContext(), user.getCurSesh().getRoutes());
+                displayRecentRoutesLV.setAdapter(adapter);
+            }
+        });
 
+        trainingActivityViewModel.getRecentSessionsLD(user.getId()).observe(this, sessions -> {
+            if (sessions != null) {
+                user.setSessionsList((ArrayList<Session>) sessions);
+                SessionAdapter adapter = new SessionAdapter(getApplicationContext(), user.getSessionsList());
+                displayRecentSessionsLV.setAdapter(adapter);
+            }
+        });
+        trainingActivityViewModel.getRecentRoutesForUserLD(user.getId()).observe(this, routes -> {
+            //if user has no current session then they have no routes to display in session
+            if (user.getCurSesh() != null) {
+                user.getCurSesh().getRoutes().clear();
+
+                if (routes != null) {
+
+                    for (Route r : routes) {
+                        if (r.getSessionId() == user.getCurSesh().getId())
+                            user.getCurSesh().getRoutes().add(r);
+                    }
                     if (user.getCurSesh().getRoutes().size() == 0) {
                         //no recent routes to display:
                         messageTxt.setText(getString(R.string.no_routes_to_display, PrintNull.Print(user.getCurSesh().getLocation())));
+
                     } else {
-                        getString(R.string.recent_routes,PrintNull.Print(user.getCurSesh().getLocation()));
+                        messageTxt.setText(getString(R.string.recent_routes,PrintNull.Print(user.getCurSesh().getLocation())));
                     }
                     RouteAdapter adapter = new RouteAdapter(getApplicationContext(), user.getCurSesh().getRoutes());
                     displayRecentRoutesLV.setAdapter(adapter);
-                }
-            }
-        });
-
-        trainingActivityViewModel.getRecentSessionsLD(user.getId()).observe(this, new Observer<List<Session>>() {
-            @Override
-            public void onChanged(@Nullable List<Session> sessions) {
-                if (sessions != null) {
-                    user.setSessionsList((ArrayList) sessions);
-                    SessionAdapter adapter = new SessionAdapter(getApplicationContext(), user.getSessionsList());
-                    displayRecentSessionsLV.setAdapter(adapter);
-                }
-            }
-        });
-        trainingActivityViewModel.getRecentRoutesForUserLD(user.getId()).observe(this, new Observer<List<Route>>() {
-            @Override
-            public void onChanged(@Nullable List<Route> routes) {
-                //if user has no current session then they have no routes to display in session
-                if (user.getCurSesh() != null) {
-                    user.getCurSesh().getRoutes().clear();
-
-                    if (routes != null) {
-
-                        for (Route r : routes) {
-                            if (r.getSessionId() == user.getCurSesh().getId())
-                                user.getCurSesh().getRoutes().add(r);
-                        }
-                        if (user.getCurSesh().getRoutes().size() == 0) {
-                            //no recent routes to display:
-                            messageTxt.setText(getString(R.string.no_routes_to_display, PrintNull.Print(user.getCurSesh().getLocation())));
-
-                        } else {
-                            messageTxt.setText(getString(R.string.recent_routes,PrintNull.Print(user.getCurSesh().getLocation())));
-                        }
-                        RouteAdapter adapter = new RouteAdapter(getApplicationContext(), user.getCurSesh().getRoutes());
-                        displayRecentRoutesLV.setAdapter(adapter);
-                    } else {
-                        Log.d("gwyd", "no routes returned");
-                        messageTxt.setText(getString(R.string.no_routes_to_display, PrintNull.Print(user.getCurSesh().getLocation())));
-                    }
+                } else {
+                    Log.d("gwyd", "no routes returned");
+                    messageTxt.setText(getString(R.string.no_routes_to_display, PrintNull.Print(user.getCurSesh().getLocation())));
                 }
             }
         });
@@ -269,7 +246,6 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
     private void startSession_Click() {
         user.setCurSesh(new Session(OffsetDateTime.now(), user.getId()));
-        Location location;
         if (permissionChecked != null)
             if (permissionChecked == PermissionCheck.GRANTED) {
                 //if location services are disabled on the phone latitude and longitude are defaulted to 0.0

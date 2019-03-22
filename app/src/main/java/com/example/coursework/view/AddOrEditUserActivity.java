@@ -35,12 +35,9 @@ public class AddOrEditUserActivity extends AppCompatActivity {
 
         usernameTxt = findViewById(R.id.userNameTxt);
         addOrEditUserViewModel = ViewModelProviders.of(this).get(AddOrEditUserViewModel.class);
-        addOrEditUserViewModel.updateUserList().observe(this, new Observer<List<User>>() {
-            @Override
-            public void onChanged(@Nullable List<User> users) {
-                if(users != null) {
-                    allUsers = users;
-                }
+        addOrEditUserViewModel.updateUserList().observe(this, users -> {
+            if(users != null) {
+                allUsers = users;
             }
         });
 
