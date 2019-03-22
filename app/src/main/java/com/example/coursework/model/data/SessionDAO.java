@@ -27,8 +27,9 @@ public interface SessionDAO {
     @Query("SELECT * FROM Session WHERE userId ==:userId   ORDER BY startTime DESC LIMIT :numberOfSessions")
     LiveData<List<Session>> getRecentSessionsForUser(int numberOfSessions, long userId);
 
-    @Query("SELECT * FROM Session WHERE userId ==:userId " +
-            "AND location is not null ORDER BY startTime DESC LIMIT :numberOfSessions")
+    @Query("SELECT * FROM Session WHERE userId ==:userId AND location is not null " +
+            "GROUP BY location " +
+            "ORDER BY startTime DESC LIMIT :numberOfSessions")
     LiveData<List<Session>> getRecentSessionsWithLocationForUser(int numberOfSessions, long userId);
 
 }

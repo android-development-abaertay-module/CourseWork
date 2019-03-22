@@ -63,9 +63,21 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onChanged(@Nullable List<Session> sessions) {
                 recentSessions = sessions;
+                DrawSessionsOnMap();
             }
         });
         //endregion
+    }
+
+    private void DrawSessionsOnMap() {
+        for (Session s: recentSessions) {
+            LatLng latLon = new LatLng(s.getLat(), s.getLon());
+            MarkerOptions marker = new MarkerOptions();
+            marker.position(latLon);
+            marker.title(s.getStartTime().toLocalDate().toString());
+
+            mMap.addMarker(marker);
+        }
     }
 
 
