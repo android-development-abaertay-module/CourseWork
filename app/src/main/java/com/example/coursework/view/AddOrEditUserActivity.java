@@ -64,7 +64,7 @@ public class AddOrEditUserActivity extends AppCompatActivity {
         addOrEditUserViewModel.updateUserList();
 
         for(User usr: allUsers) {
-            if(usr.getUserName().contains(user.getUserName())){
+            if(usr.getUserName().equals(user.getUserName())){
                 Toast.makeText(this,"Username Already Used",Toast.LENGTH_LONG).show();
                 return;
             }

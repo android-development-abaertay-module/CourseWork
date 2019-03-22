@@ -27,10 +27,6 @@ public class AddOrEditUserViewModel extends AndroidViewModel {
         return  daoRepository.getAllUsers();
     }
 
-    public DaoRepository getDaoRepository() {
-        return daoRepository;
-    }
-
     public AddOrEditUserViewModel(@NonNull Application application) {
         super(application);
         daoRepository = new DaoRepository(application);
