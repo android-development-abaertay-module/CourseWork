@@ -19,14 +19,17 @@ import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.PermissionCheck;
 import com.example.coursework.viewmodel.MainMapActivityViewModel;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
@@ -37,6 +40,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     private GoogleMap mMap;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     SupportMapFragment mapFragment;
 
     MainMapActivityViewModel mapViewModel;
@@ -91,7 +95,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         } else {
             Log.d("gwyd", "access fine location permission already granted");
             //permissions already granted initialize map if required
-            if (mMap ==null)
+//            if (mMap ==null)
                 initMap();
         }
     }
@@ -104,7 +108,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 Log.d("gwyd", "ACCESS_FINE_LOCATION_REQUEST received");
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //permissions granted initialize map
-                    if (mMap ==null)
+//                    if (mMap ==null)
                         initMap();
 
                 } else {
@@ -126,7 +130,16 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         mapFragment.getMapAsync(MainMapActivity.this);
     }
+    private void getDeviceLocation(){
+        Log.d("gwyd","getting current location");
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        try{
+            //TODO: decide between using locaiotn manager or google playservices location (what i used in traing activity vs the youtube guy)
+         //   Task location fusedLocationProviderClient.getLastLocation();
+        }catch (SecurityException ex){
 
+        }
+    }
     private void DrawSessionsOnMap() {
         Log.d("gwyd","drawing items on map");
         LatLngBounds.Builder builder = new LatLngBounds.Builder();

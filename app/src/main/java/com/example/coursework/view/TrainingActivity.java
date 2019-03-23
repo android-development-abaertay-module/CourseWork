@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -305,7 +306,9 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.d("gwyd", "granted");
             trainingActivityViewModel.setLocationPermissionGranted(PermissionCheck.GRANTED);
+            //listening to both providers for speed
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, (60 * 1000),0, this);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, (60 * 1000),0, this);
         }
         else{
             Log.d("gwyd", "location manager requesting updates skipped because of lack or permissions. shouldn't get hit");
