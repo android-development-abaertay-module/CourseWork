@@ -22,7 +22,6 @@ public class MainMapActivityViewModel extends AndroidViewModel {
 
     DaoRepository daoRepository;
     MutableLiveData<User> userLD;
-    MutableLiveData<GoogleMap> mapLD;
     LiveData<List<Session>> recentSessionsLD;
     MediatorLiveData<MapMediator> mediator;
 
@@ -31,14 +30,6 @@ public class MainMapActivityViewModel extends AndroidViewModel {
     }
     public MutableLiveData<User> getUserLD(){
         return userLD;
-    }
-
-    public MutableLiveData<GoogleMap> getMapLD() {
-        return mapLD;
-    }
-
-    public void setMapLD(MutableLiveData<GoogleMap> mapLD) {
-        this.mapLD = mapLD;
     }
 
     public LiveData<List<Session>> getRecentSessionsLD() {
@@ -52,7 +43,6 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         super(application);
         daoRepository = new DaoRepository(application);
         userLD = new MutableLiveData<>();
-        mapLD = new MutableLiveData<>();
 
         recentSessionsLD = Transformations.switchMap(userLD, (User user) -> {
             return daoRepository.getRecentSessionsWithLocationForUser(10, user.getId());
@@ -63,11 +53,6 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         mediator.addSource(recentSessionsLD, sessions -> {
             MapMediator med = mediator.getValue();
             med.setRecentSessions(sessions);
-            mediator.setValue(med);
-        });
-        mediator.addSource(mapLD, map ->{
-            MapMediator med = mediator.getValue();
-            med.setMap(map);
             mediator.setValue(med);
         });
     }

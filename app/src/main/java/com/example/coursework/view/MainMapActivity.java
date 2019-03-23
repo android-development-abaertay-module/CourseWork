@@ -19,11 +19,13 @@ import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.PermissionCheck;
 import com.example.coursework.viewmodel.MainMapActivityViewModel;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
@@ -31,10 +33,12 @@ import java.util.List;
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
-public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     private GoogleMap mMap;
+    SupportMapFragment mapFragment;
+
     MainMapActivityViewModel mapViewModel;
     private User user;
     private List<Session> recentSessions;
@@ -61,11 +65,13 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         });
         mapViewModel.getMediator().observe(this, mediator -> {
             if (mediator != null){
-                if (mediator.getRecentSessions() != null)
+                //read data from the Mediator
                 recentSessions = mediator.getRecentSessions();
-                //redraw map if necessary
-                if (mMap != null)
+
+                //redraw sessions
+                if (recentSessions != null){
                     DrawSessionsOnMap();
+                }
             }
         });
         //endregion
@@ -84,7 +90,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         } else {
             Log.d("gwyd", "access fine location permission already granted");
-            //permissions already granted turn on location listening...
+            //permissions already granted initialize map if required
             if (mMap ==null)
                 initMap();
         }
@@ -116,13 +122,15 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     private void initMap(){
         Log.d("gwyd", "initMap: initializing map");
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(MainMapActivity.this);
-        DrawSessionsOnMap();
     }
 
     private void DrawSessionsOnMap() {
+        Log.d("gwyd","drawing items on map");
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
         mMap.clear();
         if (recentSessions != null)
             for (Session s: recentSessions) {
@@ -132,7 +140,16 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 marker.title(s.getStartTime().toLocalDate().toString());
 
                 mMap.addMarker(marker);
+                //add marker to bonds (for auto zoom and focus)
+                builder.include(marker.getPosition());
             }
+
+        //build the bonds
+        LatLngBounds bounds = builder.build();
+
+        int padding = 100;
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        mMap.animateCamera(cu);
     }
 
 
@@ -147,11 +164,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d("gwyd","onMapReady Hit");
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Do Other On load map stuff
+
     }
 }
