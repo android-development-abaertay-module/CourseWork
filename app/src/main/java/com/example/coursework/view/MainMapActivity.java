@@ -17,8 +17,11 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +65,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     //Widgets
     private EditText mSearchText;
+    private ImageView mGps;
 
 
     @Override
@@ -72,7 +76,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         //region [Properties]
         mapViewModel = ViewModelProviders.of(this).get(MainMapActivityViewModel.class);
         mSearchText = findViewById(R.id.input_search);
-
+        mGps = findViewById(R.id.ic_gps);
 
         Intent intent = getIntent();
         if (intent.hasExtra(USER_ID) && intent.hasExtra(USERNAME)) {
@@ -150,19 +154,21 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
     private void init(){
         Log.d("gwyd","init hit");
-        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        || event.getAction() == KeyEvent.ACTION_DOWN
-                        || event.getAction() == KeyEvent.KEYCODE_ENTER){
-                    //execute code to search for text
-                    geoLocate();
-                }
-                return false;
+        mSearchText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH
+                    || actionId == EditorInfo.IME_ACTION_DONE
+                    || event.getAction() == KeyEvent.ACTION_DOWN
+                    || event.getAction() == KeyEvent.KEYCODE_ENTER){
+                //execute code to search for text
+                geoLocate();
             }
+            return false;
         });
+        mGps.setOnClickListener(v -> {
+            Log.d("gwyd","custom gps icon clicked");
+            getDeviceLocation();
+        });
+        hideSoftKeyboard();
     }
     private void geoLocate(){
         Log.d("gwyd","geoLocate entered");
@@ -179,6 +185,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             //address found
             Address address = list.get(0);
             Log.d("gwyd",address.toString());
+            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),15f,address.getAddressLine(0));
+
         }
         else
             Log.d("gwyd","no address found for location: " + search);
@@ -190,26 +198,29 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         try {
             //TODO: decide between using location manager or google play services location (what i used in traing activity vs the youtube guy)
             Task location = fusedLocationProviderClient.getLastLocation();
-            location.addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task) {
-                    if (task.isSuccessful()) {
-                        //found location
-                        Location currentLocation = (Location) task.getResult();
-                        moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15f);
-                    } else {
-                        //couldn't find location
-                    }
+            location.addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    //found location
+                    Location currentLocation = (Location) task.getResult();
+                    moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15f,null);
+                } else {
+                    //couldn't find location
                 }
             });
         } catch (SecurityException ex) {
-            Log.e("gwyd", "get device location: security exeption: " + ex.getMessage());
+            Log.e("gwyd", "get device location: security exception: " + ex.getMessage());
         }
     }
 
-    private void moveCamera(LatLng latLng, float zoom) {
+    private void moveCamera(LatLng latLng, float zoom,String title) {
         Log.d("gwyd", "moving camera to : " + latLng.latitude + " " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+
+        if (title != null){
+            MarkerOptions options = new MarkerOptions().position(latLng).title(title);
+            mMap.addMarker(options);
+        }
+        hideSoftKeyboard();
     }
 
     private void DrawSessionsOnMap() {
@@ -264,5 +275,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         // Do Other On load map stuff
         //mMap.setPadding(0,10,0,0);
 
+    }
+    private void  hideSoftKeyboard(){
+        this.getWindow().setSoftInputMode((WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN));
     }
 }
