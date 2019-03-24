@@ -5,6 +5,8 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Camera;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -28,15 +30,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
-public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback{
+public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     private GoogleMap mMap;
@@ -68,12 +73,12 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             user = userVal;
         });
         mapViewModel.getMediator().observe(this, mediator -> {
-            if (mediator != null){
+            if (mediator != null) {
                 //read data from the Mediator
                 recentSessions = mediator.getRecentSessions();
 
                 //redraw sessions
-                if (recentSessions != null){
+                if (recentSessions != null) {
                     DrawSessionsOnMap();
                 }
             }
@@ -96,57 +101,76 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             Log.d("gwyd", "access fine location permission already granted");
             //permissions already granted initialize map if required
 //            if (mMap ==null)
-                initMap();
+            initMap();
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case ACCESS_FINE_LOCATION_REQUEST:
                 Log.d("gwyd", "ACCESS_FINE_LOCATION_REQUEST received");
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //permissions granted initialize map
 //                    if (mMap ==null)
-                        initMap();
+                    initMap();
 
                 } else {
                     //permission denied
                     Log.d("gwyd", "denied");
-                    Toast.makeText(this,"Turn on Location Permissions to access Map functionality.",Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(MainMapActivity.this,MenuActivity.class );
-                    intent.putExtra(USER_ID,user.getId()+"");
-                    intent.putExtra(USERNAME,user.getUserName());
+                    Toast.makeText(this, "Turn on Location Permissions to access Map functionality.", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(MainMapActivity.this, MenuActivity.class);
+                    intent.putExtra(USER_ID, user.getId() + "");
+                    intent.putExtra(USERNAME, user.getUserName());
                     startActivity(intent);
                 }
                 break;
         }
     }
 
-    private void initMap(){
+    private void initMap() {
         Log.d("gwyd", "initMap: initializing map");
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(MainMapActivity.this);
     }
-    private void getDeviceLocation(){
-        Log.d("gwyd","getting current location");
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        try{
-            //TODO: decide between using locaiotn manager or google playservices location (what i used in traing activity vs the youtube guy)
-         //   Task location fusedLocationProviderClient.getLastLocation();
-        }catch (SecurityException ex){
 
+    private void getDeviceLocation() {
+        Log.d("gwyd", "getting current location");
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        try {
+            //TODO: decide between using location manager or google play services location (what i used in traing activity vs the youtube guy)
+            Task location = fusedLocationProviderClient.getLastLocation();
+            location.addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+                        //found location
+                        Location currentLocation = (Location) task.getResult();
+                        moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15f);
+                    } else {
+                        //couldn't find location
+                    }
+                }
+            });
+        } catch (SecurityException ex) {
+            Log.e("gwyd", "get device location: security exeption: " + ex.getMessage());
         }
     }
+
+    private void moveCamera(LatLng latLng, float zoom) {
+        Log.d("gwyd", "moving camera to : " + latLng.latitude + " " + latLng.longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+    }
+
     private void DrawSessionsOnMap() {
-        Log.d("gwyd","drawing items on map");
+        Log.d("gwyd", "drawing items on map");
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
         mMap.clear();
         if (recentSessions != null)
-            for (Session s: recentSessions) {
+            for (Session s : recentSessions) {
                 LatLng latLon = new LatLng(s.getLat(), s.getLon());
                 MarkerOptions marker = new MarkerOptions();
                 marker.position(latLon);
@@ -177,10 +201,18 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("gwyd","onMapReady Hit");
+        Log.d("gwyd", "onMapReady Hit");
         mMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            //mMap.getUiSettings().setMyLocationButtonEnabled(false);//hides the button if choose to use my custom button instead
+            mMap.getUiSettings().setCompassEnabled(true);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            //mMap.getUiSettings().setMapToolbarEnabled(true); //adds buttons for explicit intents to open in google maps. try to do myself
 
+        }
         // Do Other On load map stuff
+        //mMap.setPadding(0,10,0,0);
 
     }
 }
