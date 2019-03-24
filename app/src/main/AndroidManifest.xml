@@ -32,7 +32,8 @@
 
         <activity
             android:name=".view.MainMapActivity"
-            android:label="@string/title_activity_main_map"></activity>
+            android:label="@string/title_activity_main_map"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".view.CheckGoalsActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>

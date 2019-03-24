@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Camera;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +16,10 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coursework.R;
@@ -35,7 +41,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
@@ -52,6 +60,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private User user;
     private List<Session> recentSessions;
 
+    //Widgets
+    private EditText mSearchText;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +71,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         //region [Properties]
         mapViewModel = ViewModelProviders.of(this).get(MainMapActivityViewModel.class);
+        mSearchText = findViewById(R.id.input_search);
+
 
         Intent intent = getIntent();
         if (intent.hasExtra(USER_ID) && intent.hasExtra(USERNAME)) {
@@ -104,7 +118,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             initMap();
         }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -135,7 +148,42 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         mapFragment.getMapAsync(MainMapActivity.this);
     }
+    private void init(){
+        Log.d("gwyd","init hit");
+        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || event.getAction() == KeyEvent.ACTION_DOWN
+                        || event.getAction() == KeyEvent.KEYCODE_ENTER){
+                    //execute code to search for text
+                    geoLocate();
+                }
+                return false;
+            }
+        });
+    }
+    private void geoLocate(){
+        Log.d("gwyd","geoLocate entered");
+        String search = mSearchText.getText().toString();
+        Geocoder geocoder = new Geocoder((MainMapActivity.this));
+        List<Address> list = new ArrayList<>();
+        try{
+            //get the  first address
+            list = geocoder.getFromLocationName(search,1);
+        }catch (IOException ex){
+            Log.e("gwyd","IOException "+ ex.getMessage());
+        }
+        if (list.size() > 0){
+            //address found
+            Address address = list.get(0);
+            Log.d("gwyd",address.toString());
+        }
+        else
+            Log.d("gwyd","no address found for location: " + search);
 
+    }
     private void getDeviceLocation() {
         Log.d("gwyd", "getting current location");
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -210,6 +258,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             mMap.getUiSettings().setZoomControlsEnabled(true);
             //mMap.getUiSettings().setMapToolbarEnabled(true); //adds buttons for explicit intents to open in google maps. try to do myself
 
+            //enable search functionality:
+            init();
         }
         // Do Other On load map stuff
         //mMap.setPadding(0,10,0,0);
