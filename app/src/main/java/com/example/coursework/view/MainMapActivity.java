@@ -58,6 +58,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     SupportMapFragment mapFragment;
+    Marker customMarker;
 
     MainMapActivityViewModel mapViewModel;
     private User user;
@@ -217,8 +218,11 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
         if (title != null){
-            MarkerOptions options = new MarkerOptions().position(latLng).title(title);
-            mMap.addMarker(options);
+            //remove old custom marker
+            if (customMarker != null)
+                customMarker.remove();
+            //add the new custom marker
+            customMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(title));
         }
         hideSoftKeyboard();
     }
