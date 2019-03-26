@@ -9,6 +9,7 @@ import android.graphics.Camera;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,8 +31,12 @@ import com.example.coursework.R;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.PermissionCheck;
+import com.example.coursework.view.adapters.PlaceAutocompleteAdapter;
 import com.example.coursework.viewmodel.MainMapActivityViewModel;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,22 +58,24 @@ import java.util.List;
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
-public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     SupportMapFragment mapFragment;
     Marker customMarker;
+    private GoogleApiClient mGoogleApiClient;
 
     MainMapActivityViewModel mapViewModel;
     private User user;
     private List<Session> recentSessions;
 
     //Widgets
-    private EditText mSearchText;
+    private AutoCompleteTextView mSearchText;
     private ImageView mGps;
-
+    private PlaceAutocompleteAdapter placeAutocompleteAdapter;
+    private static final LatLngBounds latLongBounds = new LatLngBounds(new LatLng(-40,-168),new LatLng(71,136));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +163,17 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
     private void init(){
         Log.d("gwyd","init hit");
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
+
+        placeAutocompleteAdapter = new PlaceAutocompleteAdapter(MainMapActivity.this,mGoogleApiClient,latLongBounds,null);
+        mSearchText.setAdapter(placeAutocompleteAdapter);
+
         mSearchText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH
                     || actionId == EditorInfo.IME_ACTION_DONE
@@ -282,5 +301,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
     private void  hideSoftKeyboard(){
         this.getWindow().setSoftInputMode((WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN));
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
