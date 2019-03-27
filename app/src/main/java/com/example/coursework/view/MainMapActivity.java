@@ -173,12 +173,18 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 Log.i("gwyd", "Place: " + place.getName() + ", " + place.getId());
+                if ( place.getLatLng() != null)
+                    moveCamera(place.getLatLng(),15f,place.getName());
+                else
+                    geoLocate(place);
+
             }
 
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
                 Log.i("gwyd", "An error occurred: " + status);
+                Toast.makeText(MainMapActivity.this,"Unable to Find Location",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -186,25 +192,16 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private void init(){
         Log.d("gwyd","init hit");
 
-        mSearchText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH
-                    || actionId == EditorInfo.IME_ACTION_DONE
-                    || event.getAction() == KeyEvent.ACTION_DOWN
-                    || event.getAction() == KeyEvent.KEYCODE_ENTER){
-                //execute code to search for text
-                geoLocate();
-            }
-            return false;
-        });
         mGps.setOnClickListener(v -> {
             Log.d("gwyd","custom gps icon clicked");
             getDeviceLocation();
         });
         hideSoftKeyboard();
     }
-    private void geoLocate(){
+    ///gooLocate locate and zoom to location from address
+    private void geoLocate(Place place){
         Log.d("gwyd","geoLocate entered");
-        String search = mSearchText.getText().toString();
+        String search = place.getName();
         Geocoder geocoder = new Geocoder((MainMapActivity.this));
         List<Address> list = new ArrayList<>();
         try{
@@ -244,7 +241,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
-    private void moveCamera(LatLng latLng, float zoom,String title) {
+    private void moveCamera(LatLng latLng, float zoom, String title) {
         Log.d("gwyd", "moving camera to : " + latLng.latitude + " " + latLng.longitude);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
@@ -299,10 +296,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);//hides the button if choose to use my custom button instead
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);//hides the zoom to my location button (i've implemented it myself)
             mMap.getUiSettings().setCompassEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
-            //mMap.getUiSettings().setMapToolbarEnabled(true); //adds buttons for explicit intents to open in google maps. try to do myself
+            //mMap.getUiSettings().setMapToolbarEnabled(true); //adds buttons for explicit intents to open in google maps.//TODO; try to do myself?
 
             //enable search functionality:
             init();
