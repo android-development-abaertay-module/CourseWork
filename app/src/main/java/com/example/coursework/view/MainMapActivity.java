@@ -104,9 +104,13 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 //read data from the Mediator
                 recentSessions = mediator.getRecentSessions();
 
+                if (mediator.getRecentSessions() == null || mediator.getRecentSessions().size() == 0)
+                    recentSessions = null;
                 //redraw sessions
                 if (recentSessions != null) {
                     DrawSessionsOnMap();
+                }else {
+                    Toast.makeText(MainMapActivity.this,"No Sessions to Display.",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -248,10 +252,11 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     private void DrawSessionsOnMap() {
         Log.d("gwyd", "drawing items on map");
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
         mMap.clear();
-        if (recentSessions != null)
+        if (recentSessions != null ) {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
             for (Session s : recentSessions) {
                 LatLng latLon = new LatLng(s.getLat(), s.getLon());
                 MarkerOptions marker = new MarkerOptions();
@@ -262,13 +267,12 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 //add marker to bonds (for auto zoom and focus)
                 builder.include(marker.getPosition());
             }
-
-        //build the bonds
-        LatLngBounds bounds = builder.build();
-
-        int padding = 100;
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        mMap.animateCamera(cu);
+            //build the bonds
+            LatLngBounds bounds = builder.build();
+            int padding = 100;
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            mMap.animateCamera(cu);
+        }
     }
 
 
