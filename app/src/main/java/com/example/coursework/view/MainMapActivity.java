@@ -228,7 +228,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         Log.d("gwyd", "getting current location");
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
-            //TODO: decide between using location manager or google play services location (what i used in traing activity vs the youtube guy)
+            //TODO: decide between using location manager or google play services location (what i used in training activity vs the youtube guy)
             Task location = fusedLocationProviderClient.getLastLocation();
             location.addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -246,7 +246,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     private void moveCamera(LatLng latLng, float zoom,String title) {
         Log.d("gwyd", "moving camera to : " + latLng.latitude + " " + latLng.longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
         if (title != null){
             //remove old custom marker
@@ -299,7 +299,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            //mMap.getUiSettings().setMyLocationButtonEnabled(false);//hides the button if choose to use my custom button instead
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);//hides the button if choose to use my custom button instead
             mMap.getUiSettings().setCompassEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
             //mMap.getUiSettings().setMapToolbarEnabled(true); //adds buttons for explicit intents to open in google maps. try to do myself
