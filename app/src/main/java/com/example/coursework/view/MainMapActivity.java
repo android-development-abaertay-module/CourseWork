@@ -13,10 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -24,8 +21,6 @@ import com.example.coursework.R;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.viewmodel.MainMapActivityViewModel;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -52,7 +47,7 @@ import java.util.List;
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
-public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
+public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     private GoogleMap mMap;
@@ -156,13 +151,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
         }
-
         // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -181,7 +173,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 Toast.makeText(MainMapActivity.this,"Unable to Find Location",Toast.LENGTH_LONG).show();
             }
         });
-
     }
     private void init(){
         Log.d("gwyd","init hit");
@@ -228,10 +219,13 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                     moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15f,null);
                 } else {
                     //couldn't find location
+                    Log.e("gwyd", "couldn't find location");
+                    Toast.makeText(MainMapActivity.this,"Couldn't find Device Location",Toast.LENGTH_LONG).show();
                 }
             });
         } catch (SecurityException ex) {
             Log.e("gwyd", "get device location: security exception: " + ex.getMessage());
+            Toast.makeText(MainMapActivity.this,"Couldn't find Device Location: " + ex.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -304,10 +298,5 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
     private void  hideSoftKeyboard(){
         this.getWindow().setSoftInputMode((WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN));
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 }
