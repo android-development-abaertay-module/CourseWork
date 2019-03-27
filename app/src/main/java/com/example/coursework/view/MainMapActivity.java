@@ -16,10 +16,10 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.example.coursework.R;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
+import com.example.coursework.model.helper.PlaceInfoHoulder;
 import com.example.coursework.viewmodel.MainMapActivityViewModel;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
@@ -36,6 +36,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
@@ -50,12 +53,15 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
+    private final  float defaultZoom = 15f;
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private PlacesClient placesClient;
     private SupportMapFragment mapFragment;
     private AutocompleteSupportFragment autocompleteFragment;
     private Marker customMarker;
     private ImageView mGps;
+    private PlaceInfoHoulder mPlaceInfo;
 
     MainMapActivityViewModel mapViewModel;
     private User user;
@@ -150,6 +156,9 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         //* Initialize Places.
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
+            // Create a new Places client instance.
+            placesClient = Places.createClient(this);
+
         }
         // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
@@ -157,14 +166,49 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(Place place) {
+            public void onPlaceSelected(Place placeSelected) {
+                hideSoftKeyboard();
                 // TODO: Get info about the selected place.
-                Log.i("gwyd", "Place: " + place.getName() + ", " + place.getId());
-                if ( place.getLatLng() != null)
-                    moveCamera(place.getLatLng(),15f,place.getName());
-                else
-                    geoLocate(place);
+                String placeId =  placeSelected.getId();
+                // Specify the fields to return (in this example all fields are returned).
+                List<Place.Field> placeFields = Arrays.asList(
+                        Place.Field.ID,
+                        Place.Field.NAME,
+                        Place.Field.LAT_LNG,
+                        Place.Field.ADDRESS,
+                        Place.Field.PHONE_NUMBER,
+                        Place.Field.OPENING_HOURS,
+                        Place.Field.WEBSITE_URI,
+                        Place.Field.TYPES,
+                        Place.Field.VIEWPORT);
+                // Construct a request object, passing the place ID and fields array.
+                FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
 
+                placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
+                    mPlaceInfo = new PlaceInfoHoulder();
+                        mPlaceInfo.setId(response.getPlace().getId());
+                        if (response.getPlace().getRating() != null)
+                            mPlaceInfo.setRating(response.getPlace().getRating());
+                        mPlaceInfo.setName(response.getPlace().getName());
+                        mPlaceInfo.setLatLng(response.getPlace().getLatLng());
+                        mPlaceInfo.setAddress(response.getPlace().getAddress());
+                        mPlaceInfo.setPhoneNumber(response.getPlace().getPhoneNumber());
+                        mPlaceInfo.setOpeningHours(response.getPlace().getOpeningHours());
+                        mPlaceInfo.setWebsiteUri(response.getPlace().getWebsiteUri());
+                        mPlaceInfo.setTypes(response.getPlace().getTypes());
+                        mPlaceInfo.setViewPort(response.getPlace().getViewport());
+
+
+                    Log.d("gwyd",mPlaceInfo.toString());
+                    if ( mPlaceInfo.getLatLng() != null)
+                        moveCamera(mPlaceInfo.getLatLng(),defaultZoom,mPlaceInfo.getName());
+                    else
+                        geoLocate(mPlaceInfo);
+
+                }).addOnFailureListener((exception) -> {
+                    Log.e("gwyd", "Place not found: " );
+                    Toast.makeText(MainMapActivity.this,"Place not Found..",Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override
@@ -184,7 +228,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         hideSoftKeyboard();
     }
     ///gooLocate locate and zoom to location from address
-    private void geoLocate(Place place){
+    private void geoLocate(PlaceInfoHoulder place){
         Log.d("gwyd","geoLocate entered");
         String search = place.getName();
         Geocoder geocoder = new Geocoder((MainMapActivity.this));
@@ -199,12 +243,13 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             //address found
             Address address = list.get(0);
             Log.d("gwyd",address.toString());
-            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),15f,address.getAddressLine(0));
+            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),defaultZoom,address.getAddressLine(0));
 
         }
-        else
-            Log.d("gwyd","no address found for location: " + search);
-
+        else {
+            Log.d("gwyd", "no address found for location: " + search);
+            Toast.makeText(MainMapActivity.this, "no address found for location: " + search, Toast.LENGTH_LONG).show();
+        }
     }
     private void getDeviceLocation() {
         Log.d("gwyd", "getting current location");
@@ -216,7 +261,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 if (task.isSuccessful()) {
                     //found location
                     Location currentLocation = (Location) task.getResult();
-                    moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15f,null);
+                    moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), defaultZoom,null);
                 } else {
                     //couldn't find location
                     Log.e("gwyd", "couldn't find location");
