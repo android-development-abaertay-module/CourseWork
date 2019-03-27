@@ -262,13 +262,11 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                         moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), defaultZoom,null);
                     else{
                         //couldn't find location
-                        Log.e("gwyd", "couldn't find location");
-                        Toast.makeText(MainMapActivity.this,"Couldn't find Device Location",Toast.LENGTH_LONG).show();
+                        toastAndLog("Couldn't find Device Location",LogType.ERROR);
                     }
                 } else {
                     //couldn't find location
-                    Log.e("gwyd", "couldn't find location");
-                    Toast.makeText(MainMapActivity.this,"Couldn't find Device Location",Toast.LENGTH_LONG).show();
+                   toastAndLog("Couldn't find Device Location",LogType.ERROR);
                 }
             });
         } catch (SecurityException ex) {
