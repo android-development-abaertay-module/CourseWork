@@ -1,42 +1,33 @@
 package com.example.coursework.view;
 
 import android.Manifest;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.media.Image;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coursework.R;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
-import com.example.coursework.model.enums.PermissionCheck;
-import com.example.coursework.view.adapters.PlaceAutocompleteAdapter;
 import com.example.coursework.viewmodel.MainMapActivityViewModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -47,12 +38,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
@@ -64,8 +58,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     SupportMapFragment mapFragment;
+    AutocompleteSupportFragment autocompleteFragment;
     Marker customMarker;
-    private GoogleApiClient mGoogleApiClient;
 
     MainMapActivityViewModel mapViewModel;
     private User user;
@@ -74,8 +68,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     //Widgets
     private AutoCompleteTextView mSearchText;
     private ImageView mGps;
-    private PlaceAutocompleteAdapter placeAutocompleteAdapter;
-    private static final LatLngBounds latLongBounds = new LatLngBounds(new LatLng(-40,-168),new LatLng(71,136));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +101,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 //redraw sessions
                 if (recentSessions != null) {
                     DrawSessionsOnMap();
-                }else {
-                    Toast.makeText(MainMapActivity.this,"No Sessions to Display.",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -164,19 +154,37 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(MainMapActivity.this);
+
+        //* Initialize Places. For simplicity, the API key is hard-coded. In a production
+       //   * environment we recommend using a secure mechanism to manage API keys.
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
+        }
+
+        // Initialize the AutocompleteSupportFragment.
+        autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("gwyd", "Place: " + place.getName() + ", " + place.getId());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("gwyd", "An error occurred: " + status);
+            }
+        });
+
     }
     private void init(){
         Log.d("gwyd","init hit");
-
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
-
-        placeAutocompleteAdapter = new PlaceAutocompleteAdapter(MainMapActivity.this,mGoogleApiClient,latLongBounds,null);
-        mSearchText.setAdapter(placeAutocompleteAdapter);
 
         mSearchText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH
