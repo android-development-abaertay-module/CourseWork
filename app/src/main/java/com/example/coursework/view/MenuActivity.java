@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -13,9 +14,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.coursework.R;
 import com.example.coursework.model.User;
+import com.example.coursework.model.enums.LogType;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
@@ -93,25 +96,13 @@ public class MenuActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_set_goals) {
-            Intent intent = new Intent(MenuActivity.this,SetGoalsActivity.class );
-            intent.putExtra(USER_ID,user.getId());
-            intent.putExtra(USERNAME,user.getUserName());
-            startActivity(intent);
+            goToActivity(SetGoalsActivity.class);
         } else if (id == R.id.nav_check_goals) {
-            Intent intent = new Intent(MenuActivity.this,CheckGoalsActivity.class );
-            intent.putExtra(USER_ID,user.getId());
-            intent.putExtra(USERNAME,user.getUserName());
-            startActivity(intent);
+            goToActivity(CheckGoalsActivity.class);
         } else if (id == R.id.nav_start_training) {
-            Intent intent = new Intent(MenuActivity.this,TrainingActivity.class );
-            intent.putExtra(USER_ID,user.getId());
-            intent.putExtra(USERNAME,user.getUserName());
-            startActivity(intent);
+            goToActivity(TrainingActivity.class);
         } else if (id == R.id.nav_my_map) {
-            Intent intent = new Intent(MenuActivity.this,MainMapActivity.class );
-            intent.putExtra(USER_ID,user.getId());
-            intent.putExtra(USERNAME,user.getUserName());
-            startActivity(intent);
+            goToActivity(MainMapActivity.class);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -121,5 +112,12 @@ public class MenuActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void goToActivity(Class goToClass) {
+        Intent intent = new Intent(MenuActivity.this, goToClass);
+        intent.putExtra(USER_ID,user.getId());
+        intent.putExtra(USERNAME,user.getUserName());
+        startActivity(intent);
     }
 }

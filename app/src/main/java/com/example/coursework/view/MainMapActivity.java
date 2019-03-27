@@ -341,6 +341,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         //mMap.setPadding(0,10,0,0);
 
     }
+
     private void  hideSoftKeyboard(){
         this.getWindow().setSoftInputMode((WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN));
     }
