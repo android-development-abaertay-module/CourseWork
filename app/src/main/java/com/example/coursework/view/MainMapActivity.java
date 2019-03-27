@@ -57,17 +57,15 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    SupportMapFragment mapFragment;
-    AutocompleteSupportFragment autocompleteFragment;
-    Marker customMarker;
+    private SupportMapFragment mapFragment;
+    private AutocompleteSupportFragment autocompleteFragment;
+    private Marker customMarker;
+    private ImageView mGps;
 
     MainMapActivityViewModel mapViewModel;
     private User user;
     private List<Session> recentSessions;
 
-    //Widgets
-    private AutoCompleteTextView mSearchText;
-    private ImageView mGps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +74,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         //region [Properties]
         mapViewModel = ViewModelProviders.of(this).get(MainMapActivityViewModel.class);
-        mSearchText = findViewById(R.id.input_search);
         mGps = findViewById(R.id.ic_gps);
 
         Intent intent = getIntent();
@@ -155,9 +152,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         mapFragment.getMapAsync(MainMapActivity.this);
 
-        //* Initialize Places. For simplicity, the API key is hard-coded. In a production
-       //   * environment we recommend using a secure mechanism to manage API keys.
-
+        //* Initialize Places.
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
         }
@@ -182,7 +177,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 Log.i("gwyd", "An error occurred: " + status);
                 Toast.makeText(MainMapActivity.this,"Unable to Find Location",Toast.LENGTH_LONG).show();
             }
