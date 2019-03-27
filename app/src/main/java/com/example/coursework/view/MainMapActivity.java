@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.coursework.R;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
+import com.example.coursework.model.enums.LogType;
 import com.example.coursework.model.helper.PlaceInfoHoulder;
 import com.example.coursework.viewmodel.MainMapActivityViewModel;
 import com.google.android.gms.common.api.Status;
@@ -136,8 +137,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
                 } else {
                     //permission denied
-                    Log.d("gwyd", "denied");
-                    Toast.makeText(this, "Turn on Location Permissions to access Map functionality.", Toast.LENGTH_LONG).show();
+                    toastAndLog("Turn on Location Permissions to access Map functionality.", LogType.INFO);
                     Intent intent = new Intent(MainMapActivity.this, MenuActivity.class);
                     intent.putExtra(USER_ID, user.getId() + "");
                     intent.putExtra(USERNAME, user.getUserName());
@@ -206,15 +206,13 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                         geoLocate(mPlaceInfo);
 
                 }).addOnFailureListener((exception) -> {
-                    Log.e("gwyd", "Place not found: " );
-                    Toast.makeText(MainMapActivity.this,"Place not Found..",Toast.LENGTH_LONG).show();
+                    toastAndLog("Place not Found..",LogType.ERROR);
                 });
             }
 
             @Override
             public void onError(Status status) {
-                Log.i("gwyd", "An error occurred: " + status);
-                Toast.makeText(MainMapActivity.this,"Unable to Find Location",Toast.LENGTH_LONG).show();
+                toastAndLog("Error: Unable to Find Location" + status,LogType.ERROR);
             }
         });
     }
@@ -239,7 +237,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         }catch (IOException ex){
             Log.e("gwyd","IOException "+ ex.getMessage());
         }
-        if (list.size() > 0){
+        if (list != null && list.size() > 0){
             //address found
             Address address = list.get(0);
             Log.d("gwyd",address.toString());
@@ -247,8 +245,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         }
         else {
-            Log.d("gwyd", "no address found for location: " + search);
-            Toast.makeText(MainMapActivity.this, "no address found for location: " + search, Toast.LENGTH_LONG).show();
+            toastAndLog("no address found for location: " + search,LogType.DEBUG);
         }
     }
     private void getDeviceLocation() {
@@ -261,7 +258,13 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 if (task.isSuccessful()) {
                     //found location
                     Location currentLocation = (Location) task.getResult();
-                    moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), defaultZoom,null);
+                    if (currentLocation != null)
+                        moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), defaultZoom,null);
+                    else{
+                        //couldn't find location
+                        Log.e("gwyd", "couldn't find location");
+                        Toast.makeText(MainMapActivity.this,"Couldn't find Device Location",Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     //couldn't find location
                     Log.e("gwyd", "couldn't find location");
@@ -269,8 +272,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 }
             });
         } catch (SecurityException ex) {
-            Log.e("gwyd", "get device location: security exception: " + ex.getMessage());
-            Toast.makeText(MainMapActivity.this,"Couldn't find Device Location: " + ex.getMessage(),Toast.LENGTH_LONG).show();
+            toastAndLog("get device location: security exception: " + ex.getMessage(),LogType.ERROR);
         }
     }
 
@@ -343,5 +345,25 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
     private void  hideSoftKeyboard(){
         this.getWindow().setSoftInputMode((WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN));
+    }
+    private void toastAndLog(String message, LogType logType){
+        switch (logType){
+            case INFO:
+                Log.i("gwyd",message);
+                break;
+            case DEBUG:
+                Log.d("gwyd",message);
+                break;
+            case ERROR:
+                Log.e("gwyd",message);
+                break;
+            case VERBOSE:
+                Log.v("gwyd",message);
+                break;
+            case WARNING:
+                Log.w("gwyd",message);
+                break;
+        }
+        Toast.makeText(MainMapActivity.this,message,Toast.LENGTH_LONG).show();
     }
 }
