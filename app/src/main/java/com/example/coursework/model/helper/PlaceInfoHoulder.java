@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.libraries.places.api.model.OpeningHours;
 import com.google.android.libraries.places.api.model.Place.Type;
 
@@ -21,23 +22,25 @@ public class PlaceInfoHoulder {
     private String id;
     private Uri websiteUri;
     private OpeningHours openingHours;
-    private LatLng latlng;
+    private LatLng latLng;
     private double rating;
     private List<Type> types;
     private LatLngBounds viewPort;
+    private Marker marker;
 
     public PlaceInfoHoulder(String name, String address, String phoneNumber, String id, Uri websiteUri,
-                            LatLng latLng, float rating, String attributions, OpeningHours openingHours,List<Type> types, LatLngBounds viewPort) {
+                            LatLng latLng, float rating, String attributions, OpeningHours openingHours,List<Type> types, LatLngBounds viewPort, Marker marker) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.id = id;
         this.websiteUri = websiteUri;
-        this.latlng = latLng;
+        this.latLng = latLng;
         this.rating = rating;
         this.openingHours = openingHours;
         this.types = types;
         this.viewPort = viewPort;
+        this.marker = marker;
     }
 
     public PlaceInfoHoulder() {
@@ -85,11 +88,11 @@ public class PlaceInfoHoulder {
     }
 
     public LatLng getLatLng() {
-        return latlng;
+        return latLng;
     }
 
     public void setLatLng(LatLng latlng) {
-        this.latlng = latlng;
+        this.latLng = latlng;
     }
 
     public OpeningHours getOpeningHours() {
@@ -121,6 +124,19 @@ public class PlaceInfoHoulder {
         this.viewPort = viewPort;
     }
 
+    public Marker getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
+    }
+    public String displaySnippetDetails(){
+        String details = "Address: " + address + "\n" +
+                "Phone Number: " + phoneNumber + "\n" +
+                "Website: " + websiteUri + "\n" ;
+        return details;
+    }
     @Override
     public String toString() {
         return "PlaceInfo{" +
@@ -129,11 +145,12 @@ public class PlaceInfoHoulder {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", id='" + id + '\'' +
                 ", websiteUri=" + websiteUri +
-                ", latlng=" + latlng +
+                ", latLng=" + latLng +
                 ", rating=" + rating +
                 ", openingHours= " + openingHours +
                 ", types= "+  types +
                 ", view Port= " + viewPort +
+                ", Marker = " + marker +
                 '}';
     }
 }

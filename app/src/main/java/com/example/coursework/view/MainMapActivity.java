@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.LogType;
 import com.example.coursework.model.helper.PlaceInfoHoulder;
+import com.example.coursework.view.adapters.CustomMapInfoWindowAdapter;
 import com.example.coursework.viewmodel.MainMapActivityViewModel;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
@@ -32,7 +34,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
@@ -51,6 +52,7 @@ import java.util.List;
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
+
 public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
@@ -60,9 +62,9 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private PlacesClient placesClient;
     private SupportMapFragment mapFragment;
     private AutocompleteSupportFragment autocompleteFragment;
-    private Marker customMarker;
     private ImageView mGps;
-    private PlaceInfoHoulder mPlaceInfo;
+    private  ImageView mInfo;
+    private PlaceInfoHoulder customPlaceInfo;
 
     MainMapActivityViewModel mapViewModel;
     private User user;
@@ -77,6 +79,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         //region [Properties]
         mapViewModel = ViewModelProviders.of(this).get(MainMapActivityViewModel.class);
         mGps = findViewById(R.id.ic_gps);
+        mInfo = (ImageView) findViewById(R.id.ic_place_info);
 
         Intent intent = getIntent();
         if (intent.hasExtra(USER_ID) && intent.hasExtra(USERNAME)) {
@@ -150,7 +153,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private void initMap() {
         Log.d("gwyd", "initMap: initializing map");
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
         mapFragment.getMapAsync(MainMapActivity.this);
 
         //* Initialize Places.
@@ -158,8 +160,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
             // Create a new Places client instance.
             placesClient = Places.createClient(this);
-
         }
+
         // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
@@ -168,42 +170,41 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onPlaceSelected(Place placeSelected) {
                 hideSoftKeyboard();
-                // TODO: Get info about the selected place.
+
                 String placeId =  placeSelected.getId();
                 // Specify the fields to return (in this example all fields are returned).
                 List<Place.Field> placeFields = Arrays.asList(
-                        Place.Field.ID,
-                        Place.Field.NAME,
-                        Place.Field.LAT_LNG,
-                        Place.Field.ADDRESS,
-                        Place.Field.PHONE_NUMBER,
-                        Place.Field.OPENING_HOURS,
-                        Place.Field.WEBSITE_URI,
-                        Place.Field.TYPES,
-                        Place.Field.VIEWPORT);
+                        Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG,Place.Field.ADDRESS,Place.Field.PHONE_NUMBER,
+                        Place.Field.OPENING_HOURS,Place.Field.WEBSITE_URI,Place.Field.TYPES,Place.Field.VIEWPORT);
+
                 // Construct a request object, passing the place ID and fields array.
                 FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
 
                 placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
-                    mPlaceInfo = new PlaceInfoHoulder();
-                        mPlaceInfo.setId(response.getPlace().getId());
+                    //remove old custom place marker from map before loading the new one
+                    if (customPlaceInfo != null)
+                        if (customPlaceInfo.getMarker() != null)
+                            customPlaceInfo.getMarker().remove();
+
+                    customPlaceInfo = new PlaceInfoHoulder();
+                        customPlaceInfo.setId(response.getPlace().getId());
                         if (response.getPlace().getRating() != null)
-                            mPlaceInfo.setRating(response.getPlace().getRating());
-                        mPlaceInfo.setName(response.getPlace().getName());
-                        mPlaceInfo.setLatLng(response.getPlace().getLatLng());
-                        mPlaceInfo.setAddress(response.getPlace().getAddress());
-                        mPlaceInfo.setPhoneNumber(response.getPlace().getPhoneNumber());
-                        mPlaceInfo.setOpeningHours(response.getPlace().getOpeningHours());
-                        mPlaceInfo.setWebsiteUri(response.getPlace().getWebsiteUri());
-                        mPlaceInfo.setTypes(response.getPlace().getTypes());
-                        mPlaceInfo.setViewPort(response.getPlace().getViewport());
+                            customPlaceInfo.setRating(response.getPlace().getRating());
+                        customPlaceInfo.setName(response.getPlace().getName());
+                        customPlaceInfo.setLatLng(response.getPlace().getLatLng());
+                        customPlaceInfo.setAddress(response.getPlace().getAddress());
+                        customPlaceInfo.setPhoneNumber(response.getPlace().getPhoneNumber());
+                        customPlaceInfo.setOpeningHours(response.getPlace().getOpeningHours());
+                        customPlaceInfo.setWebsiteUri(response.getPlace().getWebsiteUri());
+                        customPlaceInfo.setTypes(response.getPlace().getTypes());
+                        customPlaceInfo.setViewPort(response.getPlace().getViewport());
 
 
-                    Log.d("gwyd",mPlaceInfo.toString());
-                    if ( mPlaceInfo.getLatLng() != null)
-                        moveCamera(mPlaceInfo.getLatLng(),defaultZoom,mPlaceInfo.getName());
+                    Log.d("gwyd", customPlaceInfo.toString());
+                    if ( customPlaceInfo.getLatLng() != null)
+                        moveCameraToNewCustomPlace(customPlaceInfo.getLatLng(),defaultZoom, customPlaceInfo.getName());
                     else
-                        geoLocate(mPlaceInfo);
+                        geoLocateToNewCustomPlace(customPlaceInfo);
 
                 }).addOnFailureListener((exception) -> {
                     toastAndLog("Place not Found..",LogType.ERROR);
@@ -226,8 +227,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         hideSoftKeyboard();
     }
     ///gooLocate locate and zoom to location from address
-    private void geoLocate(PlaceInfoHoulder place){
-        Log.d("gwyd","geoLocate entered");
+    private void geoLocateToNewCustomPlace(PlaceInfoHoulder place){
+        Log.d("gwyd","geoLocateToNewCustomPlace entered");
         String search = place.getName();
         Geocoder geocoder = new Geocoder((MainMapActivity.this));
         List<Address> list = new ArrayList<>();
@@ -241,8 +242,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             //address found
             Address address = list.get(0);
             Log.d("gwyd",address.toString());
-            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),defaultZoom,address.getAddressLine(0));
-
+            moveCameraToNewCustomPlace(new LatLng(address.getLatitude(),address.getLongitude()),defaultZoom,address.getAddressLine(0));
         }
         else {
             toastAndLog("no address found for location: " + search,LogType.DEBUG);
@@ -259,7 +259,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                     //found location
                     Location currentLocation = (Location) task.getResult();
                     if (currentLocation != null)
-                        moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), defaultZoom,null);
+                        moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), defaultZoom);
                     else{
                         //couldn't find location
                         toastAndLog("Couldn't find Device Location",LogType.ERROR);
@@ -274,16 +274,22 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
-    private void moveCamera(LatLng latLng, float zoom, String title) {
+    //If title is null no new marker created
+    private void moveCamera(LatLng latLng, float zoom) {
         Log.d("gwyd", "moving camera to : " + latLng.latitude + " " + latLng.longitude);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-
-        if (title != null){
-            //remove old custom marker
-            if (customMarker != null)
-                customMarker.remove();
-            //add the new custom marker
-            customMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(title));
+        hideSoftKeyboard();
+    }
+    private void moveCameraToNewCustomPlace(LatLng latLng, float zoom, String title){
+        Log.d("gwyd", "moving camera to : " + latLng.latitude + " " + latLng.longitude);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        //Re-place old custom marker
+        if (customPlaceInfo != null){
+            //add the new custom marker (old marker removed in on place select)
+            customPlaceInfo.setMarker(mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(title)
+                    .snippet(customPlaceInfo.displaySnippetDetails())));
         }
         hideSoftKeyboard();
     }
@@ -333,13 +339,28 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             mMap.getUiSettings().setCompassEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
             //mMap.getUiSettings().setMapToolbarEnabled(true); //adds buttons for explicit intents to open in google maps.//TODO; try to do myself?
-
+            //setup the custom info window
+            mMap.setInfoWindowAdapter(new CustomMapInfoWindowAdapter(MainMapActivity.this));
             //enable search functionality:
             init();
         }
         // Do Other On load map stuff
         //mMap.setPadding(0,10,0,0);
 
+    }
+
+    public void placeInfo_Click(View view){
+        Log.d("gwyd", "onClick: clicked place info");
+        try{
+            if(customPlaceInfo.getMarker().isInfoWindowShown()){
+                customPlaceInfo.getMarker().hideInfoWindow();
+            }else{
+                Log.d("gwyd", "onClick: place info: " + customPlaceInfo.toString());
+                customPlaceInfo.getMarker().showInfoWindow();
+            }
+        }catch (NullPointerException e){
+            Log.e("gwyd", "onClick: NullPointerException: " + e.getMessage() );
+        }
     }
 
     private void  hideSoftKeyboard(){
