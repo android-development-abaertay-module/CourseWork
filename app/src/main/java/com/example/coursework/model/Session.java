@@ -7,6 +7,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -107,5 +108,13 @@ public class Session
         this.lat = latitude;
         this.lon = longitude;
         routes = new ArrayList<>();
+    }
+    //---Methods---
+    public String detailsSummaryForMap(){
+        String snippet = "Start Time: " + startTime.format(DateTimeFormatter.ofPattern("MM/dd  HH:mm:ss")) + "\n" +
+                "End Time: " + endTime.format(DateTimeFormatter.ofPattern("MM/dd  HH:mm:ss")) + "\n" +
+                "Latitude: " + lat + "\n" +
+                "Longitude: " + lon;
+        return  snippet;
     }
 }

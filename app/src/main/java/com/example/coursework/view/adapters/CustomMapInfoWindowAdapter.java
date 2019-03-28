@@ -1,6 +1,7 @@
 package com.example.coursework.view.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -11,6 +12,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
 import org.w3c.dom.Text;
+
+import static android.text.Html.fromHtml;
 
 public class CustomMapInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
@@ -29,7 +32,7 @@ public class CustomMapInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         String snippet = marker.getSnippet();
         TextView snippetTV = (TextView) view.findViewById(R.id.mapMarkerSnippetTV);
-        snippetTV.setText(PrintNull.Print(snippet));
+        snippetTV.setText(snippet);
     }
     @Override
     public View getInfoWindow(Marker marker) {

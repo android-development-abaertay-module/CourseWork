@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -35,6 +36,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
@@ -55,7 +57,7 @@ import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 
-public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     private final  float defaultZoom = 15f;
@@ -67,6 +69,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private ImageView mGps;
     private  ImageView mInfo;
     private PlaceInfoHoulder customPlaceInfo;
+    private LatLng selectedLatLong;
 
     MainMapActivityViewModel mapViewModel;
     private User user;
@@ -311,7 +314,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 marker.position(latLon);
                 marker.title(s.getLocation());
                 marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                marker.snippet(s.detailsSummaryForMap());
+
                 mMap.addMarker(marker);
+
                 //add marker to bonds (for auto zoom and focus)
                 builder.include(marker.getPosition());
             }
@@ -345,14 +351,20 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             //mMap.getUiSettings().setMapToolbarEnabled(true); //adds buttons for explicit intents to open in google maps.//TODO; try to do myself?
             //setup the custom info window
             mMap.setInfoWindowAdapter(new CustomMapInfoWindowAdapter(MainMapActivity.this));
-            //enable search functionality:
+            //enable on marker click
+            mMap.setOnMarkerClickListener(this);
             init();
         }
         // Do Other On load map stuff
         //mMap.setPadding(0,10,0,0);
 
     }
-
+    public void loadNavigationView(double lat,double lng){
+        Uri navigation = Uri.parse("google.navigation:q="+lat+","+lng+"");
+        Intent navigationIntent = new Intent(Intent.ACTION_VIEW, navigation);
+        navigationIntent.setPackage("com.google.android.apps.maps");
+        startActivity(navigationIntent);
+    }
     private void  hideSoftKeyboard(){
         this.getWindow().setSoftInputMode((WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN));
     }
@@ -376,4 +388,26 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
         Toast.makeText(MainMapActivity.this,message,Toast.LENGTH_LONG).show();
     }
+
+
+
+    public void mapsExplicitIntent_Click(View view) {
+        if (selectedLatLong != null)
+            loadNavigationView(selectedLatLong.latitude,selectedLatLong.longitude);
+        else
+            toastAndLog("No Location Selected to Navigate to",LogType.INFO);
+    }
+    //region [OnMarkerClickListener methods]
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        //update the selected Location
+        selectedLatLong = new LatLng(marker.getPosition().latitude, marker.getPosition().longitude);
+        return false;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        Log.d("gwyd","onPointerCaptureChanged hit: " + hasCapture);
+    }
+    //endregion
 }

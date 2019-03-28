@@ -1,6 +1,7 @@
 package com.example.coursework.model.helper;
 
 import android.net.Uri;
+import android.text.Html;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -134,7 +135,7 @@ public class PlaceInfoHoulder {
     public String displaySnippetDetails(){
         String details = "Address: " + address + "\n" +
                 "Phone Number: " + phoneNumber + "\n" +
-                "Website: " + websiteUri + "\n" ;
+                "Website: " + websiteUri + " \n" ;
         return details;
     }
     @Override
