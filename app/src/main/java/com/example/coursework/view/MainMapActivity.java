@@ -32,6 +32,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -40,6 +41,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
@@ -79,7 +81,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         //region [Properties]
         mapViewModel = ViewModelProviders.of(this).get(MainMapActivityViewModel.class);
         mGps = findViewById(R.id.ic_gps);
-        mInfo = (ImageView) findViewById(R.id.ic_place_info);
 
         Intent intent = getIntent();
         if (intent.hasExtra(USER_ID) && intent.hasExtra(USERNAME)) {
@@ -179,32 +180,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
                 // Construct a request object, passing the place ID and fields array.
                 FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
-
                 placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
-                    //remove old custom place marker from map before loading the new one
-                    if (customPlaceInfo != null)
-                        if (customPlaceInfo.getMarker() != null)
-                            customPlaceInfo.getMarker().remove();
-
-                    customPlaceInfo = new PlaceInfoHoulder();
-                        customPlaceInfo.setId(response.getPlace().getId());
-                        if (response.getPlace().getRating() != null)
-                            customPlaceInfo.setRating(response.getPlace().getRating());
-                        customPlaceInfo.setName(response.getPlace().getName());
-                        customPlaceInfo.setLatLng(response.getPlace().getLatLng());
-                        customPlaceInfo.setAddress(response.getPlace().getAddress());
-                        customPlaceInfo.setPhoneNumber(response.getPlace().getPhoneNumber());
-                        customPlaceInfo.setOpeningHours(response.getPlace().getOpeningHours());
-                        customPlaceInfo.setWebsiteUri(response.getPlace().getWebsiteUri());
-                        customPlaceInfo.setTypes(response.getPlace().getTypes());
-                        customPlaceInfo.setViewPort(response.getPlace().getViewport());
-
-
-                    Log.d("gwyd", customPlaceInfo.toString());
-                    if ( customPlaceInfo.getLatLng() != null)
-                        moveCameraToNewCustomPlace(customPlaceInfo.getLatLng(),defaultZoom, customPlaceInfo.getName());
-                    else
-                        geoLocateToNewCustomPlace(customPlaceInfo);
+                    newCustomPlaceFound(response);
 
                 }).addOnFailureListener((exception) -> {
                     toastAndLog("Place not Found..",LogType.ERROR);
@@ -217,6 +194,33 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             }
         });
     }
+
+    private void newCustomPlaceFound(FetchPlaceResponse response) {
+        //remove old custom place marker from map before loading the new one
+        if (customPlaceInfo != null)
+            if (customPlaceInfo.getMarker() != null)
+                customPlaceInfo.getMarker().remove();
+
+        customPlaceInfo = new PlaceInfoHoulder();
+        customPlaceInfo.setId(response.getPlace().getId());
+        if (response.getPlace().getRating() != null)
+            customPlaceInfo.setRating(response.getPlace().getRating());
+        customPlaceInfo.setName(response.getPlace().getName());
+        customPlaceInfo.setLatLng(response.getPlace().getLatLng());
+        customPlaceInfo.setAddress(response.getPlace().getAddress());
+        customPlaceInfo.setPhoneNumber(response.getPlace().getPhoneNumber());
+        customPlaceInfo.setOpeningHours(response.getPlace().getOpeningHours());
+        customPlaceInfo.setWebsiteUri(response.getPlace().getWebsiteUri());
+        customPlaceInfo.setTypes(response.getPlace().getTypes());
+        customPlaceInfo.setViewPort(response.getPlace().getViewport());
+        Log.d("gwyd", customPlaceInfo.toString());
+
+        if ( customPlaceInfo.getLatLng() != null)
+            moveCameraToNewCustomPlace(customPlaceInfo.getLatLng(),defaultZoom, customPlaceInfo.getName());
+        else
+            geoLocateToNewCustomPlace(customPlaceInfo);
+    }
+
     private void init(){
         Log.d("gwyd","init hit");
 
@@ -305,8 +309,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 LatLng latLon = new LatLng(s.getLat(), s.getLon());
                 MarkerOptions marker = new MarkerOptions();
                 marker.position(latLon);
-                marker.title(s.getStartTime().toLocalDate().toString());
-
+                marker.title(s.getLocation());
+                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 mMap.addMarker(marker);
                 //add marker to bonds (for auto zoom and focus)
                 builder.include(marker.getPosition());
@@ -347,20 +351,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         // Do Other On load map stuff
         //mMap.setPadding(0,10,0,0);
 
-    }
-
-    public void placeInfo_Click(View view){
-        Log.d("gwyd", "onClick: clicked place info");
-        try{
-            if(customPlaceInfo.getMarker().isInfoWindowShown()){
-                customPlaceInfo.getMarker().hideInfoWindow();
-            }else{
-                Log.d("gwyd", "onClick: place info: " + customPlaceInfo.toString());
-                customPlaceInfo.getMarker().showInfoWindow();
-            }
-        }catch (NullPointerException e){
-            Log.e("gwyd", "onClick: NullPointerException: " + e.getMessage() );
-        }
     }
 
     private void  hideSoftKeyboard(){
