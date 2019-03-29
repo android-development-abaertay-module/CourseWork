@@ -38,6 +38,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -67,9 +69,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private SupportMapFragment mapFragment;
     private AutocompleteSupportFragment autocompleteFragment;
     private ImageView mGps;
-    private  ImageView mInfo;
+    private ImageView mInfo;
     private PlaceInfoHoulder customPlaceInfo;
     private LatLng selectedLatLong;
+    private  Polygon polygon;
 
     MainMapActivityViewModel mapViewModel;
     private User user;
@@ -323,6 +326,19 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             }
             //build the bonds
             LatLngBounds bounds = builder.build();
+            LatLng topRight = bounds.northeast;
+            LatLng topLeft = new LatLng(bounds.southwest.latitude,bounds.northeast.longitude);
+            LatLng bottomRight = new LatLng(bounds.northeast.latitude, bounds.southwest.longitude);
+            LatLng bottomLeft = bounds.southwest;
+            PolygonOptions rectangle = new PolygonOptions()
+                    .add(topRight)
+                    .add(bottomRight)
+                    .add(bottomLeft)
+                    .add(topLeft);
+            polygon = mMap.addPolygon(rectangle);
+            polygon.setVisible(false);
+
+
             int padding = 100;
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
             mMap.animateCamera(cu);
@@ -362,7 +378,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     public void loadNavigationView(double lat,double lng){
         Uri navigation = Uri.parse("google.navigation:q="+lat+","+lng+"");
         Intent navigationIntent = new Intent(Intent.ACTION_VIEW, navigation);
-        navigationIntent.setPackage("com.google.android.apps.maps");
         startActivity(navigationIntent);
     }
     private void  hideSoftKeyboard(){
@@ -390,7 +405,16 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
 
+    public void mapsDrawPolygon_Click(View view) {
+        if (polygon != null){
+            if (polygon.isVisible())
+                polygon.setVisible(false);
+            else
+                polygon.setVisible(true);
+        }else
+            toastAndLog("No Sessions To draw polygon around.", LogType.DEBUG);
 
+    }
     public void mapsExplicitIntent_Click(View view) {
         if (selectedLatLong != null)
             loadNavigationView(selectedLatLong.latitude,selectedLatLong.longitude);
