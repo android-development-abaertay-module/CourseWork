@@ -69,10 +69,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private SupportMapFragment mapFragment;
     private AutocompleteSupportFragment autocompleteFragment;
     private ImageView mGps;
-    private ImageView mInfo;
     private PlaceInfoHoulder customPlaceInfo;
     private LatLng selectedLatLong;
     private  Polygon polygon;
+
 
     MainMapActivityViewModel mapViewModel;
     private User user;
@@ -102,13 +102,23 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         });
         mapViewModel.getMediator().observe(this, mediator -> {
             if (mediator != null) {
-                //read data from the Mediator
-                recentSessions = mediator.getRecentSessions();
+                if(mMap == null)
+                    mMap = mediator.getMap();
 
+                if (placesClient == null)
+                    placesClient = mediator.getPlacesClient();
+
+                if (customPlaceInfo == null)
+                    customPlaceInfo = mediator.getCustomPlace();
+
+                //read data from the Mediator
                 if (mediator.getRecentSessions() == null || mediator.getRecentSessions().size() == 0)
                     recentSessions = null;
+                else
+                    recentSessions = mediator.getRecentSessions();
+
                 //redraw sessions
-                if (recentSessions != null) {
+                if (recentSessions != null && mMap != null ) {
                     DrawItemsOnMap();
                 }
             }
@@ -157,6 +167,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
+    //init map is called. this then triggers onMapReady
     private void initMap() {
         Log.d("gwyd", "initMap: initializing map");
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -167,6 +178,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
             // Create a new Places client instance.
             placesClient = Places.createClient(this);
+            mapViewModel.setPlacesClientLD(placesClient);
         }
 
         // Initialize the AutocompleteSupportFragment.
@@ -222,42 +234,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         Log.d("gwyd", customPlaceInfo.toString());
 
         if ( customPlaceInfo.getLatLng() != null)
-            moveCameraToNewCustomPlace(customPlaceInfo.getLatLng(),defaultZoom, customPlaceInfo.getName());
-        else
-            geoLocateToNewCustomPlace(customPlaceInfo);
+            moveCameraToNewCustomPlace(customPlaceInfo,defaultZoom);
     }
 
-    private void init(){
-        Log.d("gwyd","init hit");
 
-        mGps.setOnClickListener(v -> {
-            Log.d("gwyd","custom gps icon clicked");
-            getDeviceLocation();
-        });
-        hideSoftKeyboard();
-    }
-    ///gooLocate locate and zoom to location from address
-    private void geoLocateToNewCustomPlace(PlaceInfoHoulder place){
-        Log.d("gwyd","geoLocateToNewCustomPlace entered");
-        String search = place.getName();
-        Geocoder geocoder = new Geocoder((MainMapActivity.this));
-        List<Address> list = new ArrayList<>();
-        try{
-            //get the  first address
-            list = geocoder.getFromLocationName(search,1);
-        }catch (IOException ex){
-            Log.e("gwyd","IOException "+ ex.getMessage());
-        }
-        if (list != null && list.size() > 0){
-            //address found
-            Address address = list.get(0);
-            Log.d("gwyd",address.toString());
-            moveCameraToNewCustomPlace(new LatLng(address.getLatitude(),address.getLongitude()),defaultZoom,address.getAddressLine(0));
-        }
-        else {
-            toastAndLog("no address found for location: " + search,LogType.DEBUG);
-        }
-    }
     private void getDeviceLocation() {
         Log.d("gwyd", "getting current location");
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -290,16 +270,22 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         hideSoftKeyboard();
     }
-    private void moveCameraToNewCustomPlace(LatLng latLng, float zoom, String title){
-        Log.d("gwyd", "moving camera to : " + latLng.latitude + " " + latLng.longitude);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+    private void moveCameraToNewCustomPlace(PlaceInfoHoulder place, float zoom){
+        LatLng coordinates;
+        if (place.getLatLng() != null)
+            coordinates = place.getLatLng();
+        else
+            coordinates = place.getViewPort().getCenter();
+        Log.d("gwyd", "moving camera to : " + coordinates.latitude + " " + coordinates.longitude);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, zoom));
         //Re-place old custom marker
         if (customPlaceInfo != null){
             //add the new custom marker (old marker removed in on place select)
             customPlaceInfo.setMarker(mMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title(title)
+                    .position(coordinates)
+                    .title(place.getName())
                     .snippet(customPlaceInfo.displaySnippetDetails())));
+            mapViewModel.setCustomPlaceLD(customPlaceInfo);
         }
         hideSoftKeyboard();
     }
@@ -308,6 +294,19 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         Log.d("gwyd", "drawing items on map");
 
         mMap.clear();
+        if (customPlaceInfo != null){
+            LatLng coordinates;
+            if (customPlaceInfo.getLatLng() != null)
+                coordinates = customPlaceInfo.getLatLng();
+            else
+                coordinates = customPlaceInfo.getViewPort().getCenter();
+            //add the new custom marker (old marker removed in on place select)
+            customPlaceInfo.setMarker(mMap.addMarker(new MarkerOptions()
+                    .position(coordinates)
+                    .title(customPlaceInfo.getName())
+                    .snippet(customPlaceInfo.displaySnippetDetails())));
+        }
+
         if (recentSessions != null ) {
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
@@ -338,10 +337,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             polygon = mMap.addPolygon(rectangle);
             polygon.setVisible(false);
 
-
-            int padding = 100;
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-            mMap.animateCamera(cu);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
         }
     }
 
@@ -370,11 +366,18 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             //enable on marker click
             mMap.setOnMarkerClickListener(this);
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            init();
-        }
-        // Do Other On load map stuff
-        //mMap.setPadding(0,10,0,0);
 
+
+            //setup listener for go to my location
+            mGps.setOnClickListener(v -> {
+                Log.d("gwyd","custom gps icon clicked");
+                getDeviceLocation();
+            });
+            hideSoftKeyboard();
+            // Do Other On load map stuff
+            //mMap.setPadding(0,10,0,0);
+            mapViewModel.setMapLD(mMap);
+        }
     }
     public void loadNavigationView(double lat,double lng){
         Uri navigation = Uri.parse("google.navigation:q="+lat+","+lng+"");
@@ -440,6 +443,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
 
     }
+
     //region [OnMarkerClickListener methods]
     @Override
     public boolean onMarkerClick(Marker marker) {
