@@ -27,6 +27,7 @@ public class MainMapActivityViewModel extends AndroidViewModel {
     MutableLiveData<PlacesClient> placesClientLD;
     MediatorLiveData<MapMediator> mediator;
     MediatorLiveData<PlaceInfoHoulder> customPlaceLD;
+    MediatorLiveData<Boolean> isInitCameraMoveComplete;
 
     public void setUserLD(User user) {
         userLD.setValue(user);
@@ -51,6 +52,14 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         this.customPlaceLD.setValue(customPlace);
     }
 
+    public void setIsInitCameraMoveComplete(Boolean isInitCameraMoveComplete) {
+        this.isInitCameraMoveComplete.setValue(isInitCameraMoveComplete);
+    }
+
+    public MediatorLiveData<Boolean> getIsInitCameraMoveComplete() {
+        return isInitCameraMoveComplete;
+    }
+
     public MediatorLiveData<MapMediator> getMediator(){
         return mediator;
     }
@@ -61,6 +70,8 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         mapLD = new MutableLiveData<>();
         placesClientLD = new MutableLiveData<>();
         customPlaceLD = new MediatorLiveData<>();
+        isInitCameraMoveComplete = new MediatorLiveData<>();
+        isInitCameraMoveComplete.setValue(false);
 
         recentSessionsLD = Transformations.switchMap(userLD, (User user) -> {
             return daoRepository.getRecentSessionsWithLocationForUser(10, user.getId());

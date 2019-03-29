@@ -4,8 +4,6 @@ import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -27,7 +25,6 @@ import com.example.coursework.view.adapters.CustomMapInfoWindowAdapter;
 import com.example.coursework.viewmodel.MainMapActivityViewModel;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,8 +47,6 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -77,6 +72,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     MainMapActivityViewModel mapViewModel;
     private User user;
     private List<Session> recentSessions;
+    private Boolean isInitialCameraMoveComplete;
 
 
     @Override
@@ -100,6 +96,9 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mapViewModel.getUserLD().observe(this, userVal -> {
             user = userVal;
         });
+        mapViewModel.getIsInitCameraMoveComplete().observe(this, isComplete ->{
+            isInitialCameraMoveComplete = isComplete;
+        });
         mapViewModel.getMediator().observe(this, mediator -> {
             if (mediator != null) {
                 if(mMap == null)
@@ -119,7 +118,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
                 //redraw sessions
                 if (recentSessions != null && mMap != null ) {
-                    DrawItemsOnMap();
+                    DrawItemsOnMap(isInitialCameraMoveComplete);
                 }
             }
         });
@@ -234,7 +233,11 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         Log.d("gwyd", customPlaceInfo.toString());
 
         if ( customPlaceInfo.getLatLng() != null)
-            moveCameraToNewCustomPlace(customPlaceInfo,defaultZoom);
+            updateCustomPlace(customPlaceInfo,defaultZoom,true);
+        if (customPlaceInfo.getLatLng() != null)
+            moveCamera(customPlaceInfo.getLatLng(),defaultZoom);
+        else
+            moveCamera(customPlaceInfo.getViewPort().getCenter(),defaultZoom);
     }
 
 
@@ -270,14 +273,12 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         hideSoftKeyboard();
     }
-    private void moveCameraToNewCustomPlace(PlaceInfoHoulder place, float zoom){
+    private void updateCustomPlace(PlaceInfoHoulder place, float zoom, Boolean updateViewModel){
         LatLng coordinates;
         if (place.getLatLng() != null)
             coordinates = place.getLatLng();
         else
             coordinates = place.getViewPort().getCenter();
-        Log.d("gwyd", "moving camera to : " + coordinates.latitude + " " + coordinates.longitude);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, zoom));
         //Re-place old custom marker
         if (customPlaceInfo != null){
             //add the new custom marker (old marker removed in on place select)
@@ -285,27 +286,18 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                     .position(coordinates)
                     .title(place.getName())
                     .snippet(customPlaceInfo.displaySnippetDetails())));
-            mapViewModel.setCustomPlaceLD(customPlaceInfo);
+            if (updateViewModel)
+                mapViewModel.setCustomPlaceLD(customPlaceInfo);
         }
         hideSoftKeyboard();
     }
 
-    private void DrawItemsOnMap() {
+    private void DrawItemsOnMap(boolean initialFocusOnSessionBounds) {
         Log.d("gwyd", "drawing items on map");
 
         mMap.clear();
-        if (customPlaceInfo != null){
-            LatLng coordinates;
-            if (customPlaceInfo.getLatLng() != null)
-                coordinates = customPlaceInfo.getLatLng();
-            else
-                coordinates = customPlaceInfo.getViewPort().getCenter();
-            //add the new custom marker (old marker removed in on place select)
-            customPlaceInfo.setMarker(mMap.addMarker(new MarkerOptions()
-                    .position(coordinates)
-                    .title(customPlaceInfo.getName())
-                    .snippet(customPlaceInfo.displaySnippetDetails())));
-        }
+        if (customPlaceInfo != null)
+            updateCustomPlace(customPlaceInfo,defaultZoom, false);
 
         if (recentSessions != null ) {
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -337,7 +329,11 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             polygon = mMap.addPolygon(rectangle);
             polygon.setVisible(false);
 
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+            if(!initialFocusOnSessionBounds){
+                Log.d("gwyd","initial camera focus done");
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+                mapViewModel.setIsInitCameraMoveComplete(true);
+            }
         }
     }
 
