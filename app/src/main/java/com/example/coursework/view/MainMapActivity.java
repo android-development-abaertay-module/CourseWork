@@ -311,7 +311,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 marker.snippet(s.detailsSummaryForMap());
 
                 mMap.addMarker(marker);
-
                 //add marker to bonds (for auto zoom and focus)
                 builder.include(marker.getPosition());
             }
