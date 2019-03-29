@@ -59,6 +59,17 @@
         android:layout_alignParentEnd="true"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_rectangle"/>
+    <ImageView
+        android:id="@+id/ic_mapsChangeType"
+        android:onClick="mapsChangeType_Click"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/ic_mapsDrawPolygon"
+        android:layout_alignParentEnd="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_map_types_icon"/>
 
 
 </RelativeLayout>

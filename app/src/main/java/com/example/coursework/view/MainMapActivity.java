@@ -109,7 +109,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                     recentSessions = null;
                 //redraw sessions
                 if (recentSessions != null) {
-                    DrawSessionsOnMap();
+                    DrawItemsOnMap();
                 }
             }
         });
@@ -304,7 +304,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         hideSoftKeyboard();
     }
 
-    private void DrawSessionsOnMap() {
+    private void DrawItemsOnMap() {
         Log.d("gwyd", "drawing items on map");
 
         mMap.clear();
@@ -369,6 +369,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             mMap.setInfoWindowAdapter(new CustomMapInfoWindowAdapter(MainMapActivity.this));
             //enable on marker click
             mMap.setOnMarkerClickListener(this);
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             init();
         }
         // Do Other On load map stuff
@@ -420,6 +421,24 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             loadNavigationView(selectedLatLong.latitude,selectedLatLong.longitude);
         else
             toastAndLog("No Location Selected to Navigate to",LogType.INFO);
+    }
+    public void mapsChangeType_Click(View view) {
+        switch (mMap.getMapType()){
+            case GoogleMap.MAP_TYPE_NORMAL:
+                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                break;
+            case GoogleMap.MAP_TYPE_SATELLITE:
+                mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                break;
+            case GoogleMap.MAP_TYPE_TERRAIN:
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                break;
+            case GoogleMap.MAP_TYPE_HYBRID:
+                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                break;
+        }
+
+
     }
     //region [OnMarkerClickListener methods]
     @Override
