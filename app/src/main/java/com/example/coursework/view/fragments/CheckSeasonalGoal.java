@@ -18,6 +18,7 @@ import com.example.coursework.R;
 import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.helper.GoalCheckDTO;
 import com.example.coursework.model.helper.PrintNull;
 import com.example.coursework.viewmodel.CheckGoalsVM.CheckSeasonalGoalViewModel;
 
@@ -105,14 +106,11 @@ public class CheckSeasonalGoal extends Fragment {
         checkSeasonalGoalVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
             highestSportOS = highestSportOSVal;
             if (goalSeasonal != null){
-                if (highestSportOSVal != null){
-                    String output = highestSportOS.toString() + " : " + goalSeasonal.get_highestSportOnsight().toString();
-                    highestSportOSDisplay.setText(output);
-                    if (highestSportOS.getValue() > goalSeasonal.get_highestSportOnsight().getValue())
-                        highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                }else {
-                    //no routes in period
-                    highestSportOSDisplay.setText(R.string.no_routes_completed);
+                GoalCheckDTO result = goalSeasonal.checkHighestSportOnsightGoal(highestSportOS);
+                highestSportOSDisplay.setText(result.getOutput());
+                if (result.getIsAchieved()){
+                    highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+                }else{
                     highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
                 }
             }

@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.helper.GoalCheckDTO;
+
 import java.time.OffsetDateTime;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -70,6 +72,20 @@ public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestS
     }
 
     //region[Methods]
-
+    public GoalCheckDTO checkHighestSportOnsightGoal(Grades highestSportOSVal){
+        GoalCheckDTO result = new GoalCheckDTO();
+        if (highestSportOSVal != null){
+            result.setOutput(highestSportOSVal.toString() + " : " + _highestSportOnsight.toString());
+            if (highestSportOSVal.getValue() > _highestSportOnsight.getValue())
+                result.setIsAchieved(true);
+            else
+                result.setIsAchieved(false);
+        }else {
+            //no routes in period
+            result.setOutput("No Sport Routes Completed");
+            result.setIsAchieved(false);
+        }
+        return result;
+    }
     //endregion
 }
