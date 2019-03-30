@@ -104,49 +104,30 @@ public class CheckSeasonalGoal extends Fragment {
         });
         checkSeasonalGoalVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
             highestSportOS = highestSportOSVal;
-            if (goalSeasonal != null){
-                GoalCheckDTO result = goalSeasonal.checkHighestSportOnsightGoal(highestSportOS);
-                highestSportOSDisplay.setText(result.getOutput());
-                if (result.getIsAchieved())
-                    highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                else
-                    highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-            }
+            updateView(goalSeasonal.checkHighestSportOnsightGoal(highestSportOS), highestSportOSDisplay);
         });
         checkSeasonalGoalVM.getHighestBoulderOnsightLD().observe(this, highestBoulderOSVal -> {
             highestBoulderOS = highestBoulderOSVal;
-            if (goalSeasonal != null){
-                GoalCheckDTO result = goalSeasonal.checkHighestBoulderOnsightGoal(highestBoulderOS);
-                highestBoulderOSDisplay.setText(result.getOutput());
-                if (result.getIsAchieved())
-                    highestBoulderOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                else
-                    highestBoulderOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-            }
+            updateView(goalSeasonal.checkHighestBoulderOnsightGoal(highestBoulderOS), highestBoulderOSDisplay);
         });
         checkSeasonalGoalVM.getHighestSportWorkedLD().observe(this, highestSportWorkedVal -> {
             highestSportWorked = highestSportWorkedVal;
-            if (goalSeasonal != null) {
-                GoalCheckDTO result = goalSeasonal.checkHighestSportWorkedGoal(highestSportWorked);
-                highestSportWorkedDisplay.setText(result.getOutput());
-                if (result.getIsAchieved())
-                    highestSportWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                else
-                    highestSportWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-            }
+            updateView(goalSeasonal.checkHighestSportWorkedGoal(highestSportWorked), highestSportWorkedDisplay);
         });
         checkSeasonalGoalVM.getHighestBoulderWorkedLD().observe(this, highestBoulderWorkedVal -> {
             highestBoulderWorked = highestBoulderWorkedVal;
-            if ( goalSeasonal != null) {
-               GoalCheckDTO result = goalSeasonal.checkHighestBoulderWorkedGoal(highestBoulderWorked);
-               highestBoulderWorkedDisplay.setText(result.getOutput());
-               if (result.getIsAchieved())
-                   highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-               else
-                   highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-            }
+            updateView(goalSeasonal.checkHighestBoulderWorkedGoal(highestBoulderWorked), highestBoulderWorkedDisplay);
         });
         //endregion
     }
 
+    private void updateView(GoalCheckDTO result, TextView displayTextView) {
+        if (goalSeasonal != null) {
+            displayTextView.setText(result.getOutput());
+            if (result.getIsAchieved())
+                displayTextView.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.green));
+            else
+                displayTextView.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.red));
+        }
+    }
 }
