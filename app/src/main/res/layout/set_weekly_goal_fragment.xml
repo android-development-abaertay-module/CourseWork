@@ -7,13 +7,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
         android:orientation="vertical">
         <TextView
             android:id="@+id/weeklyTitleTxt"
             android:text="@string/set_goal_targets"
             android:gravity="center"
             android:textSize="24sp"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
@@ -24,6 +27,8 @@
         <Spinner
             android:id="@+id/weeklyNumberOfSportSpinner"
             android:entries="@array/number_routes_complete_options"
+            android:layout_marginVertical="15dp"
+            android:layout_marginHorizontal="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -34,6 +39,8 @@
         <Spinner
             android:id="@+id/weeklyNumberOfBoulderSpinner"
             android:entries="@array/number_routes_complete_options"
+            android:layout_marginVertical="15dp"
+            android:layout_marginHorizontal="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -43,6 +50,7 @@
             android:layout_height="wrap_content" />
         <Spinner
             android:id="@+id/weeklyAverageSportGradeSpinner"
+            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -52,6 +60,7 @@
             android:layout_height="wrap_content" />
         <Spinner
             android:id="@+id/weeklyAverageBoulderGradeSpinner"
+            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -65,6 +74,7 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/weeklyExpiresOnLabel"
+            android:layout_marginTop="15dp"
             android:text="@string/expires_on"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -72,12 +82,12 @@
             android:id="@+id/weeklyExpiresOnTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/resetWeeklyGoalBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:text="Reset Weekly Goal" />
-    </LinearLayout>
 
+    </LinearLayout>
+    <Button
+        android:id="@+id/resetWeeklyGoalBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary" />
 </FrameLayout>
