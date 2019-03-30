@@ -180,7 +180,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                     //no recent routes to display:
                     messageTxt.setText(getString(R.string.no_routes_to_display, PrintNull.Print(user.getCurSesh().getLocation())));
                 } else {
-                    getString(R.string.recent_routes,PrintNull.Print(user.getCurSesh().getLocation()));
+                    messageTxt.setText(getString(R.string.recent_routes,PrintNull.Print(user.getCurSesh().getLocation())));
                 }
                 RouteAdapter adapter = new RouteAdapter(getApplicationContext(), user.getCurSesh().getRoutes());
                 displayRecentRoutesLV.setAdapter(adapter);
@@ -271,6 +271,13 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         trainingActivityViewModel.addRoute(newRoute);
         addRouteForm.setVisibility(View.GONE);
         displayRecentRoutesLV.setVisibility(View.VISIBLE);
+
+        //TODO:check goals progress with the new route
+        checkGoalProgress();
+    }
+
+    private void checkGoalProgress() {
+
     }
 
     private void endSession_Click() {
@@ -306,13 +313,13 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.d("gwyd", "granted");
             trainingActivityViewModel.setLocationPermissionGranted(PermissionCheck.GRANTED);
-            //listening to both providers for speed
+            //listening to both providers for speed when getting initial location
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, (60 * 1000),0, this);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, (60 * 1000),0, this);
         }
         else{
-            Log.d("gwyd", "location manager requesting updates skipped because of lack or permissions. shouldn't get hit");
-            throw new RuntimeException("location manager requesting updates skipped because of lack or permissions. shouldn't get hit");
+            Log.d("gwyd", "location manager requesting updates skipped because of lack of permissions. shouldn't get hit");
+            throw new RuntimeException("location manager requesting updates skipped because of lack of permissions. shouldn't get hit");
         }
     }
 

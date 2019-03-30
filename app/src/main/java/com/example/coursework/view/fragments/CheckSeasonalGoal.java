@@ -18,6 +18,7 @@ import com.example.coursework.R;
 import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.helper.PrintNull;
 import com.example.coursework.viewmodel.CheckGoalsVM.CheckSeasonalGoalViewModel;
 
 import java.time.Duration;
@@ -78,11 +79,8 @@ public class CheckSeasonalGoal extends Fragment {
 
 
         //region [Register Observers]
-        checkSeasonalGoalVM.getUserLD(user.getId()).observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(@Nullable User userVal) {
-                user = userVal;
-            }
+        checkSeasonalGoalVM.getUserLD(user.getId()).observe(this, userVal -> {
+            user = userVal;
         });
         checkSeasonalGoalVM.getGoalSeasonalLD(user.getId()).observe(this, goalSeasonalVal -> {
             if (goalSeasonalVal != null){
@@ -96,7 +94,7 @@ public class CheckSeasonalGoal extends Fragment {
                     if (daysRemaining == 0)
                         seasonalGoalSummaryTxt.setText(R.string.goal_expires_today);
                     else
-                        seasonalGoalSummaryTxt.setText(daysRemaining + " Days Remaining");
+                        seasonalGoalSummaryTxt.setText(getString(R.string.days_remaining_for_goal,daysRemaining+""));
 
                 }
             }else{

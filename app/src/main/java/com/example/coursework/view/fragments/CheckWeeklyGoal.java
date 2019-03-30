@@ -97,7 +97,7 @@ public class CheckWeeklyGoal extends Fragment {
                     if (daysRemaining == 0)
                         weeklyGoalSummaryTxt.setText(R.string.goal_expires_today);
                     else
-                        weeklyGoalSummaryTxt.setText(daysRemaining + " Days Remaining");
+                        weeklyGoalSummaryTxt.setText(getString(R.string.days_remaining_for_goal,daysRemaining+""));
 
                 }
             }else{

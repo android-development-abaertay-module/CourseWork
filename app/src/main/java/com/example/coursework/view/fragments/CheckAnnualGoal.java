@@ -93,7 +93,7 @@ public class CheckAnnualGoal extends Fragment {
                     if (daysRemaining == 0)
                         annualGoalSummaryTxt.setText(R.string.goal_expires_today);
                     else
-                        annualGoalSummaryTxt.setText(daysRemaining + " Days Remaining");
+                        annualGoalSummaryTxt.setText(getString(R.string.days_remaining_for_goal,daysRemaining+""));
 
                 }
             }else{
