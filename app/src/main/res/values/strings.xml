@@ -75,9 +75,12 @@
     <string name="no_routes_completed">no Routes Completed</string>
     <string name="recent_routes">%s \nRecent Routes</string>
     <string name="recent_sessions">Recent Sessions</string>
+    <string name="update_annual_goal">UPDATE ANNUAL GOAL</string>
+    <string name="update_seasonal_goal">UPDATE SEASONAL GOAL</string>
+    <string name="update_weekly_goal">UPDATE WEEKLY GOAL</string>
     <string name="create_annual_goal">CREATE ANNUAL GOAL</string>
     <string name="create_seasonal_goal">CREATE SEASONAL GOAL</string>
-    <string name="greate_weekly_goal">CREATE WEEKLY GOAL</string>
+    <string name="create_weekly_goal">CREATE WEEKLY GOAL</string>
     <string name="reset_weekly_goal">RESET WEEKLY GOAL</string>
     <string name="reset_seasonal_goal">RESET SEASONAL GOAL</string>
     <string name="reset_annual_goal">RESET ANNUAL GOAL</string>

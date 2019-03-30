@@ -1,6 +1,5 @@
 package com.example.coursework.view.fragments;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,7 +22,6 @@ import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetWeeklyGoalViewModel;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
@@ -94,7 +92,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                 updateWeeklyGoalView(goalWeekly);
             }else {
                 //no weekly goal found
-                resetWeeklyGoalBtn.setText(R.string.greate_weekly_goal);
+                resetWeeklyGoalBtn.setText(R.string.create_weekly_goal);
                 resetWeeklyGoalBtn.setBackgroundColor(Color.RED);
             }
         });
@@ -107,12 +105,13 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         avgBoulderSpinner.setSelection(((ArrayAdapter<Grades>)avgBoulderSpinner.getAdapter()).getPosition(goalWeekly.getAverageBoulderGrade()));
         createdOnTxt.setText(goalWeekly.getDateCreated().toLocalDate().toString());
         expiresOnTxt.setText(goalWeekly.getDateExpires().toLocalDate().toString());
-        resetWeeklyGoalBtn.setText(R.string.reset_weekly_goal);
         if (goalWeekly.getDateExpires().isBefore(OffsetDateTime.now())) {
             //Weekly Goal Expired.
             resetWeeklyGoalBtn.setBackgroundColor(Color.RED);
+            resetWeeklyGoalBtn.setText(R.string.reset_weekly_goal);
         }else{
             resetWeeklyGoalBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
+            resetWeeklyGoalBtn.setText(R.string.update_weekly_goal);
         }
     }
 

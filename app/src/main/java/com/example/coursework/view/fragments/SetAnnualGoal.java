@@ -106,12 +106,14 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         sportWorkedSpinner.setSelection(((ArrayAdapter<Grades>)sportWorkedSpinner.getAdapter()).getPosition(goalAnnual.getHighestSportWorked()));
         createdOnTxt.setText(goalAnnual.getDateCreated().toLocalDate().toString());
         expiresOnTxt.setText(goalAnnual.getDateExpires().toLocalDate().toString());
-        resetAnnualGoalBtn.setText(R.string.reset_annual_goal);
         if (goalAnnual.getDateExpires().isBefore(OffsetDateTime.now())) {
             //Weekly Goal Expired.
             resetAnnualGoalBtn.setBackgroundColor(Color.RED);
+            resetAnnualGoalBtn.setText(R.string.reset_annual_goal);
+
         }else{
             resetAnnualGoalBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary,null));
+            resetAnnualGoalBtn.setText(R.string.update_annual_goal);
         }
     }
 
