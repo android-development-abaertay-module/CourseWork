@@ -108,26 +108,22 @@ public class CheckSeasonalGoal extends Fragment {
             if (goalSeasonal != null){
                 GoalCheckDTO result = goalSeasonal.checkHighestSportOnsightGoal(highestSportOS);
                 highestSportOSDisplay.setText(result.getOutput());
-                if (result.getIsAchieved()){
+                if (result.getIsAchieved())
                     highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                }else{
+                else
                     highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-                }
+
             }
         });
         checkSeasonalGoalVM.getHighestBoulderOnsightLD().observe(this, highestBoulderOSVal -> {
             highestBoulderOS = highestBoulderOSVal;
             if (goalSeasonal != null){
-                if (highestBoulderOSVal != null){
-                    String output = highestBoulderOS.toString() + " : " + goalSeasonal.get_highestBoulderOnsight().toString();
-                    highestBoulderOSDisplay.setText(output);
-                    if (highestBoulderOS.getValue() > goalSeasonal.get_highestBoulderOnsight().getValue())
-                        highestBoulderOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                }else{
-                    //no routes done in period
-                    highestBoulderOSDisplay.setText(R.string.no_routes_completed);
+                GoalCheckDTO result = goalSeasonal.checkHighestBoulderOnsightGoal(highestBoulderOS);
+                highestBoulderOSDisplay.setText(result.getOutput());
+                if (result.getIsAchieved())
+                    highestBoulderOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+                else
                     highestBoulderOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-                }
             }
         });
         checkSeasonalGoalVM.getHighestSportWorkedLD().observe(this, highestSportWorkedVal -> {
