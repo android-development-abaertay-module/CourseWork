@@ -82,7 +82,7 @@ public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestS
                 result.setIsAchieved(false);
         }else {
             //no routes in period
-            result.setOutput("No Sport Routes Completed Onsight");
+            result.setOutput("No Sport Routes Completed: Onsight");
             result.setIsAchieved(false);
         }
         return result;
@@ -97,7 +97,23 @@ public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestS
                 result.setIsAchieved(false);
         }else{
             //no routes done in period
-            result.setOutput("No Boulder Routes Completed Onsight");
+            result.setOutput("No Boulder Routes Completed: Onsight");
+            result.setIsAchieved(false);
+        }
+        return result;
+    }
+    public GoalCheckDTO checkHighestSportWorkedGoal(Grades highestSportWorkedVal){
+        GoalCheckDTO result = new GoalCheckDTO();
+        if (highestSportWorkedVal != null){
+            result.setOutput(highestSportWorkedVal.toString() + " : " + _highestSportWorked.toString());
+
+            if (highestSportWorkedVal.getValue() > _highestSportWorked.getValue())
+                result.setIsAchieved(true);
+            else
+                result.setIsAchieved(false);
+        }else{
+            //no routes logged in period yet
+            result.setOutput("No Sport Routes Completed: Worked");
             result.setIsAchieved(false);
         }
         return result;
