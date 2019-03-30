@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.helper.GoalCheckDTO;
+
 import java.time.OffsetDateTime;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -68,5 +70,23 @@ public class GoalAnnual extends Goal{
     public GoalAnnual()
     {
     }
+    //region [Methods]
+    public GoalCheckDTO checkAverageGradeForRouteTypeXGoal(Grades averageGradeForType, Grades averageGoalForType, String noRoutesMessage){
+        GoalCheckDTO result = new GoalCheckDTO();
 
+        if (averageGradeForType != null){
+            result.setOutput(averageGradeForType.toString() + " : " + averageGoalForType.toString());
+
+            if (averageGradeForType.getValue() >= averageGoalForType.getValue())
+                result.setIsAchieved(true);
+            else
+                result.setIsAchieved(false);
+        }else{
+            //no routes logged in period
+            result.setOutput(noRoutesMessage);
+            result.setIsAchieved(false);
+        }
+        return result;
+    }
+    //endregion
 }

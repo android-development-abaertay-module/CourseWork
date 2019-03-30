@@ -17,6 +17,7 @@ import com.example.coursework.R;
 import com.example.coursework.model.GoalAnnual;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.helper.GoalCheckDTO;
 import com.example.coursework.viewmodel.CheckGoalsVM.CheckAnnualGoalViewModel;
 
 import java.time.Duration;
@@ -100,65 +101,47 @@ public class CheckAnnualGoal extends Fragment {
         });
         checkGoalAnnualVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
             highestSportOS = highestSportOSVal;
-            if (goalAnnual != null){
-                if (highestSportOSVal != null){
-                    String output = highestSportOS.toString() + " : " + goalAnnual.getHighestSportOnsight().toString();
-                    highestSportOSDisplay.setText(output);
-                    if (highestSportOS.getValue() > goalAnnual.getHighestSportOnsight().getValue())
-                        highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                }else {
-                    //no routes in period
-                    highestSportOSDisplay.setText(R.string.no_routes_completed);
-                    highestSportOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-                }
-            }
+            if (goalAnnual != null)
+                    updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestSportOSVal,
+                            goalAnnual.getHighestSportOnsight(),
+                            "No Sport Routes Logged."),
+                            highestSportOSDisplay);
         });
         checkGoalAnnualVM.getHighestBoulderOnsightLD().observe(this, highestBoulderOSVal -> {
             highestBoulderOS = highestBoulderOSVal;
             if (goalAnnual != null){
-                if (highestBoulderOSVal != null){
-                    String output = highestBoulderOS.toString() + " : " + goalAnnual.getHighestBoulderOnsight().toString();
-                    highestBoulderOSDisplay.setText(output);
-                    if (highestBoulderOS.getValue() > goalAnnual.getHighestBoulderOnsight().getValue())
-                        highestBoulderOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                }else{
-                    //no routes done in period
-                    highestBoulderOSDisplay.setText(R.string.no_routes_completed);
-                    highestBoulderOSDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-                }
+                updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestBoulderOSVal,
+                        goalAnnual.getHighestBoulderOnsight(),
+                        "No Boulder Routes Logged."),
+                        highestBoulderOSDisplay);
             }
         });
         checkGoalAnnualVM.getHighestSportWorkedLD().observe(this, highestSportWorkedVal -> {
             highestSportWorked = highestSportWorkedVal;
             if (goalAnnual != null) {
-                if (highestSportWorkedVal != null){
-                    String output = highestSportWorked.toString() + " : " + goalAnnual.getHighestSportWorked().toString();
-                    highestSportWorkedDisplay.setText(output);
-                    if (highestSportWorked.getValue() > goalAnnual.getHighestSportWorked().getValue())
-                        highestSportWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                }else{
-                    //no routes logged in period yet
-                    highestSportWorkedDisplay.setText(R.string.no_routes_completed);
-                    highestSportWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-                }
+                updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestSportWorkedVal,
+                        goalAnnual.getHighestSportWorked(),
+                        "No Sport Routes Logged."),
+                        highestSportWorkedDisplay);
             }
         });
         checkGoalAnnualVM.getHighestBoulderWorkedLD().observe(this, highestBoulderWorkedVal -> {
             highestBoulderWorked = highestBoulderWorkedVal;
             if ( goalAnnual != null) {
-                if (highestBoulderWorked != null){
-                    String output = highestBoulderWorked.toString() + " : " + goalAnnual.getHighestBoulderWorked().toString();
-                    highestBoulderWorkedDisplay.setText(output);
-                    if (highestBoulderWorked.getValue() > goalAnnual.getHighestBoulderWorked().getValue())
-                        highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                }else{
-                    //no routes logged in period yet
-                    highestBoulderWorkedDisplay.setText(R.string.no_routes_completed);
-                    highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-                }
+                updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestBoulderWorkedVal,
+                        goalAnnual.getHighestBoulderWorked(),
+                        "No Boulder Routes Logged."),
+                        highestBoulderWorkedDisplay);
             }
         });
         //endregion
+    }
+    private void updateView(GoalCheckDTO result, TextView displayTextView) {
+        displayTextView.setText(result.getOutput());
+        if (result.getIsAchieved())
+            displayTextView.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.green));
+        else
+            displayTextView.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.red));
     }
 
 }
