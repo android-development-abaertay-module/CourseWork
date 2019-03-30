@@ -82,7 +82,7 @@ public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestS
                 result.setIsAchieved(false);
         }else {
             //no routes in period
-            result.setOutput("No Sport Routes Completed: Onsight");
+            result.setOutput("No Sport Routes Logged");
             result.setIsAchieved(false);
         }
         return result;
@@ -97,7 +97,7 @@ public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestS
                 result.setIsAchieved(false);
         }else{
             //no routes done in period
-            result.setOutput("No Boulder Routes Completed: Onsight");
+            result.setOutput("No Boulder Routes Logged");
             result.setIsAchieved(false);
         }
         return result;
@@ -113,7 +113,7 @@ public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestS
                 result.setIsAchieved(false);
         }else{
             //no routes logged in period yet
-            result.setOutput("No Sport Routes Completed: Worked");
+            result.setOutput("No Sport Routes Logged");
             result.setIsAchieved(false);
         }
         return result;
@@ -129,7 +129,7 @@ public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestS
                 result.setIsAchieved(false);
         }else{
             //no routes logged in period
-            result.setOutput("No Boulder Routes Completed: Worked");
+            result.setOutput("No Boulder Routes Logged");
             result.setIsAchieved(false);
         }
         return result;

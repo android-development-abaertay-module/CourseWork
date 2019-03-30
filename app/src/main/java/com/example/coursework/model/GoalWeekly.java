@@ -5,6 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.helper.GoalCheckDTO;
 
 import java.time.OffsetDateTime;
 
@@ -90,5 +91,32 @@ public class GoalWeekly extends Goal {
         }
 
 //-----------------------------------------------------------------------------Methods-----------------------------------------------------
+    public int checkNumberOfRoutesForTypeGoalPercentage(int numRoutesTypeXAchievedVal, int targetNumberOfRoutesTypeX){
+        int result;
+        if (numRoutesTypeXAchievedVal >= targetNumberOfRoutesTypeX) {
+            result = 100;
+        }else{
+            float fraction = (float) numRoutesTypeXAchievedVal / targetNumberOfRoutesTypeX;
+            result = (int) Math.floor(fraction * 100);
+        }
+        return result;
+    }
 
+    public GoalCheckDTO checkAverageGradeForRouteTypeXGoal(Grades averageGradeForType, Grades averageGoalForType, String noRoutesMessage){
+        GoalCheckDTO result = new GoalCheckDTO();
+
+        if (averageGradeForType != null){
+            result.setOutput(averageGradeForType.toString() + " : " + averageGoalForType.toString());
+
+            if (averageGradeForType.getValue() > averageGoalForType.getValue())
+                result.setIsAchieved(true);
+            else
+                result.setIsAchieved(false);
+        }else{
+            //no routes logged in period
+            result.setOutput(noRoutesMessage);
+            result.setIsAchieved(false);
+        }
+        return result;
+    }
 }
