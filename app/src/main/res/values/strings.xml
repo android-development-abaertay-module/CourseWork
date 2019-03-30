@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Route Log</string>
     <string name="submit_btn">Submit</string>
-    <string name="title_activity_landing">LandingActivity</string>
+    <string name="title_activity_landing">Route Log</string>
     <string-array name="userContextMenu">
         <item>Edit</item>
         <item>Delete</item>
