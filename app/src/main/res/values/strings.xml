@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CourseWork</string>
+    <string name="app_name">Route Log</string>
     <string name="submit_btn">Submit</string>
     <string name="title_activity_landing">LandingActivity</string>
     <string-array name="userContextMenu">
@@ -30,7 +30,7 @@
         <item>90</item>
         <item>100</item>
     </string-array>
-    <string name="title_activity_menu">MenuActivity</string>
+    <string name="title_activity_menu">Menu</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Route Log</string>
@@ -56,7 +56,7 @@
     <string name="created_on">Created On</string>
     <string name="expires_on">Expires On</string>
     <string name="set_goal_targets">Set  Targets</string>
-    <string name="title_activity_training">TrainingActivity</string>
+    <string name="title_activity_training">Training</string>
     <string name="title_start_session">Start Session</string>
     <string name="title_add_route">Add Route</string>
     <string name="title_end_session">End Session</string>
@@ -85,4 +85,6 @@
     <string name="reset_seasonal_goal">RESET SEASONAL GOAL</string>
     <string name="reset_annual_goal">RESET ANNUAL GOAL</string>
     <string name="title_activity_main_map">Map</string>
+    <string name="title_activity_check_goals">Check Progress</string>
+    <string name="title_activity_set_goals">Set Goals</string>
 </resources>
