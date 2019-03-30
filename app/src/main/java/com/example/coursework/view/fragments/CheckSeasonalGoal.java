@@ -104,30 +104,32 @@ public class CheckSeasonalGoal extends Fragment {
         });
         checkSeasonalGoalVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
             highestSportOS = highestSportOSVal;
-            updateView(goalSeasonal.checkHighestSportOnsightGoal(highestSportOS), highestSportOSDisplay);
+            if (goalSeasonal != null)
+                updateView(goalSeasonal.checkHighestSportOnsightGoal(highestSportOS), highestSportOSDisplay);
         });
         checkSeasonalGoalVM.getHighestBoulderOnsightLD().observe(this, highestBoulderOSVal -> {
             highestBoulderOS = highestBoulderOSVal;
-            updateView(goalSeasonal.checkHighestBoulderOnsightGoal(highestBoulderOS), highestBoulderOSDisplay);
+            if (goalSeasonal != null)
+                updateView(goalSeasonal.checkHighestBoulderOnsightGoal(highestBoulderOS), highestBoulderOSDisplay);
         });
         checkSeasonalGoalVM.getHighestSportWorkedLD().observe(this, highestSportWorkedVal -> {
             highestSportWorked = highestSportWorkedVal;
-            updateView(goalSeasonal.checkHighestSportWorkedGoal(highestSportWorked), highestSportWorkedDisplay);
+            if (goalSeasonal != null)
+                updateView(goalSeasonal.checkHighestSportWorkedGoal(highestSportWorked), highestSportWorkedDisplay);
         });
         checkSeasonalGoalVM.getHighestBoulderWorkedLD().observe(this, highestBoulderWorkedVal -> {
             highestBoulderWorked = highestBoulderWorkedVal;
-            updateView(goalSeasonal.checkHighestBoulderWorkedGoal(highestBoulderWorked), highestBoulderWorkedDisplay);
+            if (goalSeasonal != null)
+                updateView(goalSeasonal.checkHighestBoulderWorkedGoal(highestBoulderWorked), highestBoulderWorkedDisplay);
         });
         //endregion
     }
 
     private void updateView(GoalCheckDTO result, TextView displayTextView) {
-        if (goalSeasonal != null) {
             displayTextView.setText(result.getOutput());
             if (result.getIsAchieved())
                 displayTextView.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.green));
             else
                 displayTextView.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.red));
-        }
     }
 }
