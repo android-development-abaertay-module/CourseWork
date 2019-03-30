@@ -31,10 +31,6 @@ public class CheckAnnualGoal extends Fragment {
     private CheckAnnualGoalViewModel checkGoalAnnualVM;
     private GoalAnnual goalAnnual;
     private User user;
-    private Grades highestSportOS;
-    private Grades highestBoulderOS;
-    private Grades highestSportWorked;
-    private Grades highestBoulderWorked;
 
     private TextView highestSportOSDisplay;
     private TextView highestBoulderOSDisplay;
@@ -100,7 +96,6 @@ public class CheckAnnualGoal extends Fragment {
             }
         });
         checkGoalAnnualVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
-            highestSportOS = highestSportOSVal;
             if (goalAnnual != null)
                     updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestSportOSVal,
                             goalAnnual.getHighestSportOnsight(),
@@ -108,7 +103,6 @@ public class CheckAnnualGoal extends Fragment {
                             highestSportOSDisplay);
         });
         checkGoalAnnualVM.getHighestBoulderOnsightLD().observe(this, highestBoulderOSVal -> {
-            highestBoulderOS = highestBoulderOSVal;
             if (goalAnnual != null){
                 updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestBoulderOSVal,
                         goalAnnual.getHighestBoulderOnsight(),
@@ -117,7 +111,6 @@ public class CheckAnnualGoal extends Fragment {
             }
         });
         checkGoalAnnualVM.getHighestSportWorkedLD().observe(this, highestSportWorkedVal -> {
-            highestSportWorked = highestSportWorkedVal;
             if (goalAnnual != null) {
                 updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestSportWorkedVal,
                         goalAnnual.getHighestSportWorked(),
@@ -126,7 +119,6 @@ public class CheckAnnualGoal extends Fragment {
             }
         });
         checkGoalAnnualVM.getHighestBoulderWorkedLD().observe(this, highestBoulderWorkedVal -> {
-            highestBoulderWorked = highestBoulderWorkedVal;
             if ( goalAnnual != null) {
                 updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestBoulderWorkedVal,
                         goalAnnual.getHighestBoulderWorked(),

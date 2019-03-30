@@ -30,10 +30,6 @@ public class CheckSeasonalGoal extends Fragment {
     private CheckSeasonalGoalViewModel checkSeasonalGoalVM;
     private GoalSeasonal goalSeasonal;
     private User user;
-    private Grades highestSportOS;
-    private Grades highestBoulderOS;
-    private Grades highestSportWorked;
-    private Grades highestBoulderWorked;
 
     private TextView highestSportOSDisplay;
     private TextView highestBoulderOSDisplay;
@@ -99,22 +95,18 @@ public class CheckSeasonalGoal extends Fragment {
             }
         });
         checkSeasonalGoalVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
-            highestSportOS = highestSportOSVal;
             if (goalSeasonal != null)
                 updateView(goalSeasonal.checkGoalAvgGradeTypeX(highestSportOSVal,goalSeasonal.getHighestSportOnsight(),"No Sport Routes Logged."), highestSportOSDisplay);
         });
         checkSeasonalGoalVM.getHighestBoulderOnsightLD().observe(this, highestBoulderOSVal -> {
-            highestBoulderOS = highestBoulderOSVal;
             if (goalSeasonal != null)
                 updateView(goalSeasonal.checkGoalAvgGradeTypeX(highestBoulderOSVal,goalSeasonal.getHighestBoulderOnsight(),"No Boulder Routes Logged"), highestBoulderOSDisplay);
         });
         checkSeasonalGoalVM.getHighestSportWorkedLD().observe(this, highestSportWorkedVal -> {
-            highestSportWorked = highestSportWorkedVal;
             if (goalSeasonal != null)
                 updateView(goalSeasonal.checkGoalAvgGradeTypeX(highestSportWorkedVal,goalSeasonal.getHighestSportWorked(),"No Sport Routes Logged"), highestSportWorkedDisplay);
         });
         checkSeasonalGoalVM.getHighestBoulderWorkedLD().observe(this, highestBoulderWorkedVal -> {
-            highestBoulderWorked = highestBoulderWorkedVal;
             if (goalSeasonal != null)
                 updateView(goalSeasonal.checkGoalAvgGradeTypeX(highestBoulderWorkedVal, goalSeasonal.getHighestBoulderWorked(),"No Boulder Routes Logged"), highestBoulderWorkedDisplay);
         });
