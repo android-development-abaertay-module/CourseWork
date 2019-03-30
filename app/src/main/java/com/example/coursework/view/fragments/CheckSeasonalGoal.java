@@ -138,16 +138,12 @@ public class CheckSeasonalGoal extends Fragment {
         checkSeasonalGoalVM.getHighestBoulderWorkedLD().observe(this, highestBoulderWorkedVal -> {
             highestBoulderWorked = highestBoulderWorkedVal;
             if ( goalSeasonal != null) {
-                if (highestBoulderWorked != null){
-                    String output = highestBoulderWorked.toString() + " : " + goalSeasonal.get_highestBoulderWorked().toString();
-                    highestBoulderWorkedDisplay.setText(output);
-                    if (highestBoulderWorked.getValue() > goalSeasonal.get_highestBoulderWorked().getValue())
-                        highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
-                }else{
-                    //no routes logged in period yet
-                    highestBoulderWorkedDisplay.setText(R.string.no_routes_completed);
-                    highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
-                }
+               GoalCheckDTO result = goalSeasonal.checkHighestBoulderWorkedGoal(highestBoulderWorked);
+               highestBoulderWorkedDisplay.setText(result.getOutput());
+               if (result.getIsAchieved())
+                   highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.green));
+               else
+                   highestBoulderWorkedDisplay.setTextColor(ContextCompat.getColor(getView().getContext(),R.color.red));
             }
         });
         //endregion

@@ -118,5 +118,21 @@ public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestS
         }
         return result;
     }
+    public GoalCheckDTO checkHighestBoulderWorkedGoal(Grades highestBoulderWorkedVal){
+        GoalCheckDTO result = new GoalCheckDTO();
+        if (highestBoulderWorkedVal != null){
+            result.setOutput(highestBoulderWorkedVal.toString() + " : " + _highestBoulderWorked.toString());
+
+            if (highestBoulderWorkedVal.getValue() > _highestBoulderWorked.getValue())
+                result.setIsAchieved(true);
+            else
+                result.setIsAchieved(false);
+        }else{
+            //no routes logged in period
+            result.setOutput("No Boulder Routes Completed: Worked");
+            result.setIsAchieved(false);
+        }
+        return result;
+    }
     //endregion
 }
