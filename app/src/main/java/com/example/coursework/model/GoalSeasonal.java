@@ -68,4 +68,8 @@ public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestS
 
     public GoalSeasonal() {
     }
+
+    //region[Methods]
+
+    //endregion
 }
