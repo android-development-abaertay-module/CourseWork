@@ -79,11 +79,8 @@ public class CheckWeeklyGoal extends Fragment {
 
 
         //region [Register Observers]
-        checkWeeklyViewModel.getUserLD().observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(@Nullable User userVal) {
-                user = userVal;
-            }
+        checkWeeklyViewModel.getUserLD().observe(this, userVal -> {
+            user = userVal;
         });
         checkWeeklyViewModel.getGoalWeeklyLD().observe(this, goalWeeklyVal -> {
             if (goalWeeklyVal != null){

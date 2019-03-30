@@ -75,11 +75,8 @@ public class CheckAnnualGoal extends Fragment {
 
 
         //region [Register Observers]
-        checkGoalAnnualVM.getUserLD().observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(@Nullable User userVal) {
-                user = userVal;
-            }
+        checkGoalAnnualVM.getUserLD().observe(this, userVal -> {
+            user = userVal;
         });
         checkGoalAnnualVM.getGoalAnnualLD().observe(this, goalSeasonalVal -> {
             if (goalSeasonalVal != null){
