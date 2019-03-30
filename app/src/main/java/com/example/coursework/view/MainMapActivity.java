@@ -116,10 +116,11 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 else
                     recentSessions = mediator.getRecentSessions();
 
-                //redraw sessions
+                //redraw sessions and or custom marker
                 if (recentSessions != null && mMap != null ) {
                     DrawItemsOnMap(isInitialCameraMoveComplete);
-                }
+                }else if(customPlaceInfo != null && mMap != null)
+                    updateCustomPlace(customPlaceInfo,defaultZoom,false);
             }
         });
         //endregion
