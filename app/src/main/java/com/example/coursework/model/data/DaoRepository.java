@@ -3,7 +3,6 @@ package com.example.coursework.model.data;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
-import android.support.v4.app.INotificationSideChannel;
 import android.util.Log;
 
 import com.example.coursework.model.GoalAnnual;
@@ -16,7 +15,6 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -488,20 +486,20 @@ public class DaoRepository {
                 }
             }
             //check goal progress
-            if (highestBoulderOSValue < gs.get_highestBoulderOnsight().getValue()) {
+            if (highestBoulderOSValue < gs.getHighestBoulderOnsight().getValue()) {
                 wasComplete = false;
                 Log.d("gwyd","highest Boulder OS Goal Was NOT met");
             }
-            if (highestBoulderWorkedValue < gs.get_highestBoulderWorked().getValue()) {
+            if (highestBoulderWorkedValue < gs.getHighestBoulderWorked().getValue()) {
                 wasComplete = false;
                 Log.d("gwyd","highest Boulder Worked Goal Was NOT met");
 
             }
-            if (highestSportOSValue < gs.get_highestSportOnsight().getValue()) {
+            if (highestSportOSValue < gs.getHighestSportOnsight().getValue()) {
                 wasComplete = false;
                 Log.d("gwyd","highest Sport OS Goal Was NOT met");
             }
-            if (highestSportWorkedValue < gs.get_highestSportWorked().getValue()) {
+            if (highestSportWorkedValue < gs.getHighestSportWorked().getValue()) {
                 wasComplete = false;
                 Log.d("gwyd","highest Sport Worked Goal Was NOT met");
             }

@@ -1,6 +1,5 @@
 package com.example.coursework.view.fragments;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +17,9 @@ import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.helper.GoalCheckDTO;
-import com.example.coursework.model.helper.PrintNull;
 import com.example.coursework.viewmodel.CheckGoalsVM.CheckSeasonalGoalViewModel;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
@@ -105,22 +101,22 @@ public class CheckSeasonalGoal extends Fragment {
         checkSeasonalGoalVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
             highestSportOS = highestSportOSVal;
             if (goalSeasonal != null)
-                updateView(goalSeasonal.checkHighestSportOnsightGoal(highestSportOS), highestSportOSDisplay);
+                updateView(goalSeasonal.checkGoalAvgGradeTypeX(highestSportOSVal,goalSeasonal.getHighestSportOnsight(),"No Sport Routes Logged."), highestSportOSDisplay);
         });
         checkSeasonalGoalVM.getHighestBoulderOnsightLD().observe(this, highestBoulderOSVal -> {
             highestBoulderOS = highestBoulderOSVal;
             if (goalSeasonal != null)
-                updateView(goalSeasonal.checkHighestBoulderOnsightGoal(highestBoulderOS), highestBoulderOSDisplay);
+                updateView(goalSeasonal.checkGoalAvgGradeTypeX(highestBoulderOSVal,goalSeasonal.getHighestBoulderOnsight(),"No Boulder Routes Logged"), highestBoulderOSDisplay);
         });
         checkSeasonalGoalVM.getHighestSportWorkedLD().observe(this, highestSportWorkedVal -> {
             highestSportWorked = highestSportWorkedVal;
             if (goalSeasonal != null)
-                updateView(goalSeasonal.checkHighestSportWorkedGoal(highestSportWorked), highestSportWorkedDisplay);
+                updateView(goalSeasonal.checkGoalAvgGradeTypeX(highestSportWorkedVal,goalSeasonal.getHighestSportWorked(),"No Sport Routes Logged"), highestSportWorkedDisplay);
         });
         checkSeasonalGoalVM.getHighestBoulderWorkedLD().observe(this, highestBoulderWorkedVal -> {
             highestBoulderWorked = highestBoulderWorkedVal;
             if (goalSeasonal != null)
-                updateView(goalSeasonal.checkHighestBoulderWorkedGoal(highestBoulderWorked), highestBoulderWorkedDisplay);
+                updateView(goalSeasonal.checkGoalAvgGradeTypeX(highestBoulderWorkedVal, goalSeasonal.getHighestBoulderWorked(),"No Boulder Routes Logged"), highestBoulderWorkedDisplay);
         });
         //endregion
     }

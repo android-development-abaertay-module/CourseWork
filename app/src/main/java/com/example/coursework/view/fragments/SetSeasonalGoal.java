@@ -1,6 +1,5 @@
 package com.example.coursework.view.fragments;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,7 +22,6 @@ import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetSeasonalGoalViewModel;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
@@ -100,10 +98,10 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         });
     }
     private void updateSeasonalGoalView(GoalSeasonal goalSeasonal) {
-        boulderOSSpinner.setSelection(((ArrayAdapter<Grades>)boulderOSSpinner.getAdapter()).getPosition(goalSeasonal.get_highestBoulderOnsight()));
-        sportOsSpinner.setSelection(((ArrayAdapter<Grades>)sportOsSpinner.getAdapter()).getPosition(goalSeasonal.get_highestSportOnsight()));
-        boulderWorkedSpinner.setSelection(((ArrayAdapter<Grades>)boulderWorkedSpinner.getAdapter()).getPosition(goalSeasonal.get_highestBoulderWorked()));
-        sportWorkedSpinner.setSelection(((ArrayAdapter<Grades>)sportWorkedSpinner.getAdapter()).getPosition(goalSeasonal.get_highestSportWorked()));
+        boulderOSSpinner.setSelection(((ArrayAdapter<Grades>)boulderOSSpinner.getAdapter()).getPosition(goalSeasonal.getHighestBoulderOnsight()));
+        sportOsSpinner.setSelection(((ArrayAdapter<Grades>)sportOsSpinner.getAdapter()).getPosition(goalSeasonal.getHighestSportOnsight()));
+        boulderWorkedSpinner.setSelection(((ArrayAdapter<Grades>)boulderWorkedSpinner.getAdapter()).getPosition(goalSeasonal.getHighestBoulderWorked()));
+        sportWorkedSpinner.setSelection(((ArrayAdapter<Grades>)sportWorkedSpinner.getAdapter()).getPosition(goalSeasonal.getHighestSportWorked()));
         createdOnTxt.setText(goalSeasonal.getDateCreated().toLocalDate().toString());
         expiresOnTxt.setText(goalSeasonal.getDateExpires().toLocalDate().toString());
         if (goalSeasonal.getDateExpires().isBefore(OffsetDateTime.now())) {
@@ -152,10 +150,10 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
         Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
         Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
-        seasonalGoal.set_highestBoulderOnsight(bOs);
-        seasonalGoal.set_highestSportOnsight(sOs);
-        seasonalGoal.set_highestBoulderWorked(bWorked);
-        seasonalGoal.set_highestSportWorked(sWorked);
+        seasonalGoal.setHighestBoulderOnsight(bOs);
+        seasonalGoal.setHighestSportOnsight(sOs);
+        seasonalGoal.setHighestBoulderWorked(bWorked);
+        seasonalGoal.setHighestSportWorked(sWorked);
     }
     private void getNewSeasonalGoalFromForm() {
         Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();

@@ -15,40 +15,40 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 public class GoalSeasonal extends Goal {
     //-------------------------------------------------------------------------------------Attributes----------------------------------------------------
     @ColumnInfo(name = "highestBoulderOnsight")
-    private Grades _highestBoulderOnsight;
+    private Grades highestBoulderOnsight;
     @ColumnInfo(name = "highestSportOnsight")
-    private Grades _highestSportOnsight;
+    private Grades highestSportOnsight;
     @ColumnInfo(name = "highestBoulderWorked")
-    private Grades _highestBoulderWorked;
+    private Grades highestBoulderWorked;
     @ColumnInfo(name = "highestSportWorked")
-    private Grades _highestSportWorked;
+    private Grades highestSportWorked;
 
-    public Grades get_highestBoulderOnsight() {
-        return _highestBoulderOnsight;
+    public Grades getHighestBoulderOnsight() {
+        return highestBoulderOnsight;
     }
-    public void set_highestBoulderOnsight(Grades _highestBoulderOnsight) {
-        this._highestBoulderOnsight = _highestBoulderOnsight;
-    }
-
-    public Grades get_highestSportOnsight() {
-        return _highestSportOnsight;
-    }
-    public void set_highestSportOnsight(Grades _highestSportOnsight) {
-        this._highestSportOnsight = _highestSportOnsight;
+    public void setHighestBoulderOnsight(Grades highestBoulderOnsight) {
+        this.highestBoulderOnsight = highestBoulderOnsight;
     }
 
-    public Grades get_highestBoulderWorked() {
-        return _highestBoulderWorked;
+    public Grades getHighestSportOnsight() {
+        return highestSportOnsight;
     }
-    public void set_highestBoulderWorked(Grades _highestBoulderWorked) {
-        this._highestBoulderWorked = _highestBoulderWorked;
+    public void setHighestSportOnsight(Grades highestSportOnsight) {
+        this.highestSportOnsight = highestSportOnsight;
     }
 
-    public Grades get_highestSportWorked() {
-        return _highestSportWorked;
+    public Grades getHighestBoulderWorked() {
+        return highestBoulderWorked;
     }
-    public void set_highestSportWorked(Grades _highestSportWorked) {
-        this._highestSportWorked = _highestSportWorked;
+    public void setHighestBoulderWorked(Grades highestBoulderWorked) {
+        this.highestBoulderWorked = highestBoulderWorked;
+    }
+
+    public Grades getHighestSportWorked() {
+        return highestSportWorked;
+    }
+    public void setHighestSportWorked(Grades highestSportWorked) {
+        this.highestSportWorked = highestSportWorked;
     }
 
 //------------------------------------------------------------------------------------Constructor----------------------------------------------------
@@ -61,75 +61,30 @@ public GoalSeasonal(long iDUserFK, Grades highestBoulderOnsight, Grades highestS
         goalAchieved = false;
         this.dateCreated = dateCreated;
 
-        _highestBoulderOnsight = highestBoulderOnsight;
-        _highestSportOnsight = highestSportOnsight;
+        this.highestBoulderOnsight = highestBoulderOnsight;
+        this.highestSportOnsight = highestSportOnsight;
 
-        _highestBoulderWorked = highestBoulderWorked;
-        _highestSportWorked = highestSportWorked;
+        this.highestBoulderWorked = highestBoulderWorked;
+        this.highestSportWorked = highestSportWorked;
     }
 
     public GoalSeasonal() {
     }
 
     //region[Methods]
-    public GoalCheckDTO checkHighestSportOnsightGoal(Grades highestSportOSVal){
+    public GoalCheckDTO checkGoalAvgGradeTypeX(Grades averageGradeForType, Grades averageGoalForType, String noRoutesMessage){
         GoalCheckDTO result = new GoalCheckDTO();
-        if (highestSportOSVal != null){
-            result.setOutput(highestSportOSVal.toString() + " : " + _highestSportOnsight.toString());
-            if (highestSportOSVal.getValue() > _highestSportOnsight.getValue())
-                result.setIsAchieved(true);
-            else
-                result.setIsAchieved(false);
-        }else {
-            //no routes in period
-            result.setOutput("No Sport Routes Logged");
-            result.setIsAchieved(false);
-        }
-        return result;
-    }
-    public GoalCheckDTO checkHighestBoulderOnsightGoal(Grades highestBoulderOSVal){
-        GoalCheckDTO result = new GoalCheckDTO();
-        if (highestBoulderOSVal != null){
-            result.setOutput(highestBoulderOSVal.toString() + " : " + _highestBoulderOnsight.toString());
-            if (highestBoulderOSVal.getValue() >  _highestBoulderOnsight.getValue())
-                result.setIsAchieved(true);
-            else
-                result.setIsAchieved(false);
-        }else{
-            //no routes done in period
-            result.setOutput("No Boulder Routes Logged");
-            result.setIsAchieved(false);
-        }
-        return result;
-    }
-    public GoalCheckDTO checkHighestSportWorkedGoal(Grades highestSportWorkedVal){
-        GoalCheckDTO result = new GoalCheckDTO();
-        if (highestSportWorkedVal != null){
-            result.setOutput(highestSportWorkedVal.toString() + " : " + _highestSportWorked.toString());
 
-            if (highestSportWorkedVal.getValue() > _highestSportWorked.getValue())
-                result.setIsAchieved(true);
-            else
-                result.setIsAchieved(false);
-        }else{
-            //no routes logged in period yet
-            result.setOutput("No Sport Routes Logged");
-            result.setIsAchieved(false);
-        }
-        return result;
-    }
-    public GoalCheckDTO checkHighestBoulderWorkedGoal(Grades highestBoulderWorkedVal){
-        GoalCheckDTO result = new GoalCheckDTO();
-        if (highestBoulderWorkedVal != null){
-            result.setOutput(highestBoulderWorkedVal.toString() + " : " + _highestBoulderWorked.toString());
+        if (averageGradeForType != null){
+            result.setOutput(averageGradeForType.toString() + " : " + averageGoalForType.toString());
 
-            if (highestBoulderWorkedVal.getValue() > _highestBoulderWorked.getValue())
+            if (averageGradeForType.getValue() >= averageGoalForType.getValue())
                 result.setIsAchieved(true);
             else
                 result.setIsAchieved(false);
         }else{
             //no routes logged in period
-            result.setOutput("No Boulder Routes Logged");
+            result.setOutput(noRoutesMessage);
             result.setIsAchieved(false);
         }
         return result;
