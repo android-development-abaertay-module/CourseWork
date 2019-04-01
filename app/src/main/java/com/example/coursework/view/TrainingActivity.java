@@ -113,7 +113,6 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             user = new User(intent.getStringExtra(USERNAME));
             user.setId(intent.getLongExtra(USER_ID, 0));
             trainingActivityViewModel.setUserLD(user);
-            trainingActivityViewModel.getCurrentSession(user.getId());
         }
 
         //region [declare Properties]
