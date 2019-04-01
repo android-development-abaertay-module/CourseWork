@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TrainingActivityViewModel extends AndroidViewModel {
     DaoRepository daoRepository;
-    LiveData<User> userLD;
+    MutableLiveData<User> userLD;
     LiveData<Session> currentSessionLD;
     LiveData<List<Route>> recentRoutesLD;
     LiveData<List<Session>> recentSessionsLD;
@@ -57,11 +57,11 @@ public class TrainingActivityViewModel extends AndroidViewModel {
         this.locationPermissionGranted.setValue(locationPermissionGranted);
     }
 
-    public LiveData<User> getUserLD(long userId) {
-        if (userLD ==null)
-            userLD = daoRepository.getUserById(userId);
-
+    public MutableLiveData<User> getUserLD() {
         return userLD;
+    }
+    public  void setUserLD(User user){
+        userLD.setValue(user);
     }
     public LiveData<Session> getCurrentSession(long userId) {
         if (currentSessionLD == null)
@@ -86,6 +86,7 @@ public class TrainingActivityViewModel extends AndroidViewModel {
 
     public TrainingActivityViewModel(@NonNull Application application) {
         super(application);
+        userLD = new MutableLiveData<>();
         daoRepository = new DaoRepository(application);
     }
 

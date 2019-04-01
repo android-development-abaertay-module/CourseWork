@@ -112,7 +112,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         if (intent.hasExtra(USER_ID) && intent.hasExtra(USERNAME)) {
             user = new User(intent.getStringExtra(USERNAME));
             user.setId(intent.getLongExtra(USER_ID, 0));
-            trainingActivityViewModel.getUserLD(user.getId());
+            trainingActivityViewModel.setUserLD(user);
             trainingActivityViewModel.getCurrentSession(user.getId());
         }
 
@@ -153,7 +153,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 checkPermissions();
             }
         });
-        trainingActivityViewModel.getUserLD(user.getId()).observe(this, userVal -> {
+        trainingActivityViewModel.getUserLD().observe(this, userVal -> {
             user = userVal;
         });
         trainingActivityViewModel.getCurrentSession(user.getId()).observe(this, session -> {
