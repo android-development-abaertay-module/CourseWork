@@ -15,15 +15,15 @@ import com.example.coursework.model.enums.PermissionCheck;
 import java.util.List;
 
 public class TrainingActivityViewModel extends AndroidViewModel {
-    DaoRepository daoRepository;
-    MutableLiveData<User> userLD;
-    LiveData<Session> currentSessionLD;
-    LiveData<List<Route>> recentRoutesLD;
-    LiveData<List<Session>> recentSessionsLD;
+    private DaoRepository daoRepository;
+    private MutableLiveData<User> userLD;
+    private LiveData<Session> currentSessionLD;
+    private LiveData<List<Route>> recentRoutesLD;
+    private LiveData<List<Session>> recentSessionsLD;
 
-    MutableLiveData<PermissionCheck> locationPermissionGranted;
-    MutableLiveData<Double> currentLatitudeLD;
-    MutableLiveData<Double> currentLongitudeLD;
+    private MutableLiveData<PermissionCheck> locationPermissionGranted;
+    private MutableLiveData<Double> currentLatitudeLD;
+    private MutableLiveData<Double> currentLongitudeLD;
 
     public MutableLiveData<Double> getCurrentLatitudeLD() {
         if (currentLatitudeLD == null)
