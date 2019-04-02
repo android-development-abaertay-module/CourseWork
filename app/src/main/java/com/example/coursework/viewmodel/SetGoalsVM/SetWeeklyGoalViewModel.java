@@ -13,19 +13,22 @@ import com.example.coursework.model.data.DaoRepository;
 public class SetWeeklyGoalViewModel extends AndroidViewModel {
     private DaoRepository daoRepository;
     private LiveData<GoalWeekly> weeklyGoalLD;
-    private LiveData<User> userLD;
+    private MutableLiveData<User> userLD;
 
 
     public SetWeeklyGoalViewModel(@NonNull Application application) {
         super(application);
         daoRepository = new DaoRepository(application);
+        userLD = new MutableLiveData<>();
         weeklyGoalLD = new MutableLiveData<>();
         userLD = new MutableLiveData<>();
     }
 
-    public LiveData<User> getUserLD(long userId){
-        userLD =  daoRepository.getUserById(userId);
+    public LiveData<User> getUserLD(){
         return  userLD;
+    }
+    public void setUserLD(User user){
+        userLD.setValue(user);
     }
     public LiveData<GoalWeekly> getWeeklyGoalLD(long userId) {
         weeklyGoalLD = daoRepository.getMostRecentGoalWeekly(userId);

@@ -63,7 +63,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
             if (intent.hasExtra(USER_ID)){
                 user = new User(intent.getStringExtra(USERNAME));
                 user.setId(intent.getLongExtra(USER_ID,0));
-                mViewModel.getUserLD(user.getId());
+                mViewModel.setUserLD(user);
                 mViewModel.getWeeklyGoalLD(user.getId());
             }
         }
@@ -80,7 +80,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         resetWeeklyGoalBtn = getView().findViewById(R.id.resetWeeklyGoalBtn);
         resetWeeklyGoalBtn.setOnClickListener(this);
 
-        mViewModel.getUserLD(user.getId()).observe(this, userVal -> {
+        mViewModel.getUserLD().observe(this, userVal -> {
             user = userVal;
         });
 
