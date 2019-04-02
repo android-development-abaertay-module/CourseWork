@@ -61,7 +61,7 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
             if (intent.hasExtra(USER_ID)){
                 user = new User(intent.getStringExtra(USERNAME));
                 user.setId(intent.getLongExtra(USER_ID,0));
-                mViewModel.getUserLD(user.getId());
+                mViewModel.setUserLD(user);
                 mViewModel.getSeasonalGoalLD(user.getId());
             }
         }
@@ -82,7 +82,7 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         resetSeasonalGoalBtn = getView().findViewById(R.id.resetSeasonalGoalBtn);
         resetSeasonalGoalBtn.setOnClickListener(this);
 
-        mViewModel.getUserLD(user.getId()).observe(this, userVal -> {
+        mViewModel.getUserLD().observe(this, userVal -> {
             user = userVal;
         });
         mViewModel.getSeasonalGoalLD(user.getId()).observe(this, goalSeasonal -> {

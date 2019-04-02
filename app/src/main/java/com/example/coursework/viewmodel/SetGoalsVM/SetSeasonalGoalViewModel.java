@@ -13,17 +13,20 @@ import com.example.coursework.model.data.DaoRepository;
 public class SetSeasonalGoalViewModel extends AndroidViewModel {
     private DaoRepository daoRepository;
     private LiveData<GoalSeasonal> seasonalGoalLD;
-    private LiveData<User> userLD;
+    private MutableLiveData<User> userLD;
 
     public SetSeasonalGoalViewModel(@NonNull Application application) {
         super(application);
+        userLD = new MutableLiveData<>();
         daoRepository = new DaoRepository(application);
         seasonalGoalLD = new MutableLiveData<>();
         userLD = new MutableLiveData<>();
     }
-    public LiveData<User> getUserLD(long userId){
-        userLD = daoRepository.getUserById(userId);
+    public LiveData<User> getUserLD(){
         return userLD;
+    }
+    public void setUserLD(User user){
+        userLD.setValue(user);
     }
     public LiveData<GoalSeasonal> getSeasonalGoalLD(long userId) {
         seasonalGoalLD = daoRepository.getMostRecentGoalSeasonal(userId);
