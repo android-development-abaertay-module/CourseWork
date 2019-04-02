@@ -4,12 +4,15 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.example.coursework.model.GoalWeekly;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.data.DaoRepository;
+import com.example.coursework.model.data.RouteDAO;
 import com.example.coursework.model.enums.PermissionCheck;
 
 import java.util.List;
@@ -20,10 +23,17 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     private LiveData<Session> currentSessionLD;
     private LiveData<List<Route>> recentRoutesLD;
     private LiveData<List<Session>> recentSessionsLD;
+    private LiveData<GoalWeekly> goalWeeklyLD;
 
     private MutableLiveData<PermissionCheck> locationPermissionGranted;
     private MutableLiveData<Double> currentLatitudeLD;
     private MutableLiveData<Double> currentLongitudeLD;
+
+    public LiveData<GoalWeekly> getGoalWeeklyLD(long userId) {
+        if (goalWeeklyLD == null)
+            goalWeeklyLD = daoRepository.getMostRecentGoalWeekly(userId);
+        return goalWeeklyLD;
+    }
 
     public MutableLiveData<Double> getCurrentLatitudeLD() {
         if (currentLatitudeLD == null)
@@ -109,5 +119,9 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     }
     public void deleteSession(Session sessionToDelete) {
         daoRepository.deleteSession(sessionToDelete);
+    }
+
+    public void UpdateGoalSetWasWeeklyGoalMet(GoalWeekly weeklyGoal) {
+        daoRepository.UpdateGoalSetWasWeeklyGoalMet(weeklyGoal);
     }
 }

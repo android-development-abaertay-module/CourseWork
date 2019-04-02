@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coursework.R;
+import com.example.coursework.model.GoalWeekly;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
@@ -78,6 +79,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     LocationManager locationManager;
     private double latitude;
     private double longitude;
+    private GoalWeekly weeklyGoal;
 
     //endregion
 
@@ -288,6 +290,19 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 }
             }
         });
+
+        trainingActivityViewModel.getGoalWeeklyLD(user.getId()).observe(this ,goalWeeklyVal -> {
+            weeklyGoal = goalWeeklyVal;
+            //check if weekly goal is set
+            if (weeklyGoal != null){
+                //if achieved
+                if (weeklyGoal.getGoalAchieved()){
+                    Toast.makeText(TrainingActivity.this,"goal  achieved",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(TrainingActivity.this,"goal Not achieved",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         //endregion
     }
 
@@ -345,7 +360,8 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     }
 
     private void checkGoalProgress() {
-        
+        if (weeklyGoal != null)
+            trainingActivityViewModel.UpdateGoalSetWasWeeklyGoalMet(weeklyGoal);
     }
 
     private void endSession_Click() {

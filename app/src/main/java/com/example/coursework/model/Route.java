@@ -34,8 +34,6 @@ public  class Route
     private RouteType routeType;
     @ColumnInfo(name = "grade")
     private Grades grade;
-    @ColumnInfo(name = "gradeValue")
-    private int gradeValue;
 
     public long getId() {
         return id;
@@ -87,12 +85,6 @@ public  class Route
         this.grade = grade;
     }
 
-    public int getGradeValue() {
-        return gradeValue;
-    }
-    public void setGradeValue(int gradeValue) {
-        this.gradeValue = gradeValue;
-    }
 
     //------Constructor
 
@@ -105,7 +97,6 @@ public  class Route
     {
         this.userId = userId;
         this.grade = grade;
-        gradeValue = grade.getValue();//get enum index position and add one
         sessionId = sessionIDFK;
         this.styleDone = styleDone;
         this.routeType = routeType;

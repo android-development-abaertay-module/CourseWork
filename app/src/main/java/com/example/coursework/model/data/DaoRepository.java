@@ -359,14 +359,14 @@ public class DaoRepository {
         return goalWeeklyDAO.getMostRecentWeeklyGoalForUser(userId);
     }
 
-    public void closeGoalSetWasWeeklyGoalMet(GoalWeekly goalWeekly){
-        new CloseGoalSetWasWeeklyGoalMetAsyncTask(routeDAO,goalWeeklyDAO).execute(goalWeekly);
+    public void UpdateGoalSetWasWeeklyGoalMet(GoalWeekly goalWeekly){
+        new UpdateGoalSetWasWeeklyGoalMetAsyncTask(routeDAO,goalWeeklyDAO).execute(goalWeekly);
     }
-    private static class CloseGoalSetWasWeeklyGoalMetAsyncTask extends AsyncTask<GoalWeekly,Void,Void>{
+    private static class UpdateGoalSetWasWeeklyGoalMetAsyncTask extends AsyncTask<GoalWeekly,Void,Void>{
 
         private  GoalWeeklyDAO goalWeeklyDAO;
         private RouteDAO routeDAO;
-        CloseGoalSetWasWeeklyGoalMetAsyncTask(RouteDAO routeDAO, GoalWeeklyDAO goalWeeklyDAO) {
+        UpdateGoalSetWasWeeklyGoalMetAsyncTask(RouteDAO routeDAO, GoalWeeklyDAO goalWeeklyDAO) {
             this.routeDAO = routeDAO;
             this.goalWeeklyDAO = goalWeeklyDAO;
         }
@@ -384,6 +384,7 @@ public class DaoRepository {
             return null;
         }
     }
+
     //endregion
 
     //region [GoalSeasonal Get]
@@ -487,7 +488,7 @@ public class DaoRepository {
 
     //endregion
 
-    private static boolean isWeeklyGoalComplete( GoalWeekly gw, List<Route> routesInPeriod) {
+    public static boolean isWeeklyGoalComplete( GoalWeekly gw, List<Route> routesInPeriod) {
         boolean wasComplete =true;
         //===========Get Values
         List<Route> sport = new ArrayList<>();
@@ -500,16 +501,16 @@ public class DaoRepository {
         for (Route r:routesInPeriod) {
             if (r.getRouteType() == RouteType.BOULDER){
                 boulder.add(r);
-                totalBoulderScore += r.getGradeValue();
-                if (r.getGradeValue() > highestBoulder){
-                    highestBoulder = r.getGradeValue();
+                totalBoulderScore += r.getGrade().getValue();
+                if (r.getGrade().getValue() > highestBoulder){
+                    highestBoulder = r.getGrade().getValue();
                 }
             }
             if (r.getRouteType() == RouteType.SPORT){
                 sport.add(r);
-                totalSportScore = r.getGradeValue();
-                if (r.getGradeValue() > highestSport){
-                    highestSport = r.getGradeValue();
+                totalSportScore += r.getGrade().getValue();
+                if (r.getGrade().getValue() > highestSport){
+                    highestSport = r.getGrade().getValue();
                 }
             }
         }
@@ -529,7 +530,7 @@ public class DaoRepository {
             wasComplete = false;
         return wasComplete;
     }
-    private static boolean isSeasonalOrAnnualGoalComplete(List<Route> routesInPeriod, Grades highestBoulderOnsight, Grades highestBoulderWorked, Grades highestSportOnsight, Grades highestSportWorked) {
+    public static boolean isSeasonalOrAnnualGoalComplete(List<Route> routesInPeriod, Grades highestBoulderOnsight, Grades highestBoulderWorked, Grades highestSportOnsight, Grades highestSportWorked) {
         boolean wasComplete = true;
         int highestBoulderOSValue = 0;
         int highestBoulderWorkedValue = 0;

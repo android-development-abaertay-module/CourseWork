@@ -33,7 +33,7 @@ public class SetWeeklyGoalViewModel extends AndroidViewModel {
     }
 
     public void closeGoalSetWasMet(GoalWeekly weeklyGoal) {
-        daoRepository.closeGoalSetWasWeeklyGoalMet(weeklyGoal);
+        daoRepository.UpdateGoalSetWasWeeklyGoalMet(weeklyGoal);
     }
     public void updateGoalWeekly(GoalWeekly goalWeekly){
         daoRepository.updateWeeklyGoal(goalWeekly);
