@@ -26,11 +26,11 @@ public class CheckSeasonalGoalViewModel extends AndroidViewModel {
     LiveData<Grades> highestSportWorkedLD;
 
 
-    public LiveData<GoalSeasonal> getGoalSeasonalLD(long userId) {
+    public LiveData<GoalSeasonal> getGoalSeasonalLD() {
         return goalSeasonalLD;
     }
 
-    public MutableLiveData<User> getUserLD(long userId) {
+    public MutableLiveData<User> getUserLD() {
         return userLD;
     }
     public void setUserLD(User user) {

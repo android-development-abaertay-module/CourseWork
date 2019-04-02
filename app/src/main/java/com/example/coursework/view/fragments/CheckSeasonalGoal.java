@@ -72,10 +72,10 @@ public class CheckSeasonalGoal extends Fragment {
 
 
         //region [Register Observers]
-        checkSeasonalGoalVM.getUserLD(user.getId()).observe(this, userVal -> {
+        checkSeasonalGoalVM.getUserLD().observe(this, userVal -> {
             user = userVal;
         });
-        checkSeasonalGoalVM.getGoalSeasonalLD(user.getId()).observe(this, goalSeasonalVal -> {
+        checkSeasonalGoalVM.getGoalSeasonalLD().observe(this, goalSeasonalVal -> {
             if (goalSeasonalVal != null){
                 goalSeasonal = goalSeasonalVal;
                 if (goalSeasonal.getDateExpires().isBefore(OffsetDateTime.now())){
