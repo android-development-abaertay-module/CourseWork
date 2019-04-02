@@ -44,7 +44,7 @@ public class DaoRepository {
 
     private static  class InsertGoalAnnualAsyncTask extends AsyncTask<GoalAnnual,Void,Void> {
         GoalAnnualDAO anGoalDao;
-        public InsertGoalAnnualAsyncTask(GoalAnnualDAO goalAnnualDAO) {
+        InsertGoalAnnualAsyncTask(GoalAnnualDAO goalAnnualDAO) {
             this.anGoalDao = goalAnnualDAO;
         }
 
@@ -60,7 +60,7 @@ public class DaoRepository {
     }
     private static  class InsertGoalSeasonalAsyncTask extends AsyncTask<GoalSeasonal,Void,Void> {
         GoalSeasonalDAO seasonGoalDao;
-        public InsertGoalSeasonalAsyncTask(GoalSeasonalDAO goalSeasonalDAO) {
+        InsertGoalSeasonalAsyncTask(GoalSeasonalDAO goalSeasonalDAO) {
             this.seasonGoalDao = goalSeasonalDAO;
         }
 
@@ -76,7 +76,7 @@ public class DaoRepository {
     }
     private static  class InsertGoalWeeklyAsyncTask extends AsyncTask<GoalWeekly,Void,Void> {
         GoalWeeklyDAO goalWeeklyDAO;
-        public InsertGoalWeeklyAsyncTask(GoalWeeklyDAO goalWeeklyDAO) {
+        InsertGoalWeeklyAsyncTask(GoalWeeklyDAO goalWeeklyDAO) {
             this.goalWeeklyDAO = goalWeeklyDAO;
         }
 
@@ -94,7 +94,7 @@ public class DaoRepository {
     }
     private static  class InsertRouteAsyncTask extends AsyncTask<Route,Void,Void> {
         RouteDAO routeDAO;
-        public InsertRouteAsyncTask(RouteDAO routeDAO) {
+        InsertRouteAsyncTask(RouteDAO routeDAO) {
             this.routeDAO = routeDAO;
         }
 
@@ -110,7 +110,7 @@ public class DaoRepository {
     }
     private static  class InsertSessionAsyncTask extends AsyncTask<Session,Void,Void> {
         SessionDAO sessionDAO;
-        public InsertSessionAsyncTask(SessionDAO sessionDAO) {
+        InsertSessionAsyncTask(SessionDAO sessionDAO) {
             this.sessionDAO = sessionDAO;
         }
 
@@ -129,7 +129,7 @@ public class DaoRepository {
     private static class InsertUserAsyncTask extends AsyncTask<User,Void,Long> {
         UserDAO userDAO;
         long newUserId;
-        public InsertUserAsyncTask(UserDAO userDAO) {
+        InsertUserAsyncTask(UserDAO userDAO) {
             this.userDAO = userDAO;
         }
 
@@ -151,7 +151,7 @@ public class DaoRepository {
     }
     private static  class UpdateGoalAnnualAsyncTask extends AsyncTask<GoalAnnual,Void,Void> {
         GoalAnnualDAO anGoalDao;
-        public UpdateGoalAnnualAsyncTask(GoalAnnualDAO goalAnnualDAO) {
+        UpdateGoalAnnualAsyncTask(GoalAnnualDAO goalAnnualDAO) {
             this.anGoalDao = goalAnnualDAO;
         }
 
@@ -167,7 +167,7 @@ public class DaoRepository {
     }
     private static  class UpdateGoalSeasonalAsyncTask extends AsyncTask<GoalSeasonal,Void,Void> {
         GoalSeasonalDAO seasonGoalDao;
-        public UpdateGoalSeasonalAsyncTask(GoalSeasonalDAO goalSeasonalDAO) {
+        UpdateGoalSeasonalAsyncTask(GoalSeasonalDAO goalSeasonalDAO) {
             this.seasonGoalDao = goalSeasonalDAO;
         }
 
@@ -183,7 +183,7 @@ public class DaoRepository {
     }
     private static  class UpdateGoalWeeklyAsyncTask extends AsyncTask<GoalWeekly,Void,Void> {
         GoalWeeklyDAO goalWeeklyDAO;
-        public UpdateGoalWeeklyAsyncTask(GoalWeeklyDAO goalWeeklyDAO) {
+        UpdateGoalWeeklyAsyncTask(GoalWeeklyDAO goalWeeklyDAO) {
             this.goalWeeklyDAO = goalWeeklyDAO;
         }
 
@@ -200,7 +200,7 @@ public class DaoRepository {
     }
     private static  class UpdateRouteAsyncTask extends AsyncTask<Route,Void,Void> {
         RouteDAO routeDAO;
-        public UpdateRouteAsyncTask(RouteDAO routeDAO) {
+        UpdateRouteAsyncTask(RouteDAO routeDAO) {
             this.routeDAO = routeDAO;
         }
 
@@ -216,7 +216,7 @@ public class DaoRepository {
     }
     private static  class UpdateSessionAsyncTask extends AsyncTask<Session,Void,Void> {
         SessionDAO sessionDAO;
-        public UpdateSessionAsyncTask(SessionDAO sessionDAO) {
+        UpdateSessionAsyncTask(SessionDAO sessionDAO) {
             this.sessionDAO = sessionDAO;
         }
 
@@ -233,7 +233,7 @@ public class DaoRepository {
     }
     private static class UpdateUserAsyncTask extends AsyncTask<User,Void,Void> {
         UserDAO userDAO;
-        public UpdateUserAsyncTask(UserDAO userDAO) {
+        UpdateUserAsyncTask(UserDAO userDAO) {
             this.userDAO = userDAO;
         }
 
@@ -252,7 +252,7 @@ public class DaoRepository {
     }
     private static  class DeleteGoalAnnualAsyncTask extends AsyncTask<GoalAnnual,Void,Void> {
         GoalAnnualDAO anGoalDao;
-        public DeleteGoalAnnualAsyncTask(GoalAnnualDAO goalAnnualDAO) {
+        DeleteGoalAnnualAsyncTask(GoalAnnualDAO goalAnnualDAO) {
             this.anGoalDao = goalAnnualDAO;
         }
 
@@ -268,7 +268,7 @@ public class DaoRepository {
     }
     private static  class DeleteGoalSeasonalAsyncTask extends AsyncTask<GoalSeasonal,Void,Void> {
         GoalSeasonalDAO seasonGoalDao;
-        public DeleteGoalSeasonalAsyncTask(GoalSeasonalDAO goalSeasonalDAO) {
+        DeleteGoalSeasonalAsyncTask(GoalSeasonalDAO goalSeasonalDAO) {
             this.seasonGoalDao = goalSeasonalDAO;
         }
 
@@ -284,7 +284,7 @@ public class DaoRepository {
     }
     private static  class DeleteGoalWeeklyAsyncTask extends AsyncTask<GoalWeekly,Void,Void> {
         GoalWeeklyDAO goalWeeklyDAO;
-        public DeleteGoalWeeklyAsyncTask(GoalWeeklyDAO goalWeeklyDAO) {
+        DeleteGoalWeeklyAsyncTask(GoalWeeklyDAO goalWeeklyDAO) {
             this.goalWeeklyDAO = goalWeeklyDAO;
         }
 
@@ -300,7 +300,7 @@ public class DaoRepository {
     }
     private static  class DeleteRouteAsyncTask extends AsyncTask<Route,Void,Void> {
         RouteDAO routeDAO;
-        public DeleteRouteAsyncTask(RouteDAO routeDAO) {
+        DeleteRouteAsyncTask(RouteDAO routeDAO) {
             this.routeDAO = routeDAO;
         }
 
@@ -316,7 +316,7 @@ public class DaoRepository {
     }
     private static  class DeleteSessionAsyncTask extends AsyncTask<Session,Void,Void> {
         SessionDAO sessionDAO;
-        public DeleteSessionAsyncTask(SessionDAO sessionDAO) {
+        DeleteSessionAsyncTask(SessionDAO sessionDAO) {
             this.sessionDAO = sessionDAO;
         }
 
@@ -332,7 +332,7 @@ public class DaoRepository {
     }
     private static class DeleteUserAsyncTask extends AsyncTask<User,Void,Void> {
         UserDAO userDAO;
-        public DeleteUserAsyncTask(UserDAO userDAO) {
+        DeleteUserAsyncTask(UserDAO userDAO) {
             this.userDAO = userDAO;
         }
 
@@ -346,15 +346,10 @@ public class DaoRepository {
 
     //region [Users Get]
     public LiveData<List<User>> getAllUsers() {
-        LiveData<List<User>> users = userDAO.getAllUsers();
-        List<User> lit = users.getValue();
-        return users;
+        return userDAO.getAllUsers();
     }
     public LiveData<User> getUserById(long id) {
         return userDAO.getUserById(id);
-    }
-    public LiveData<User> getUserByName(String name) {
-         return userDAO.getUserByName(name);
     }
 
     //endregion
@@ -371,56 +366,18 @@ public class DaoRepository {
 
         private  GoalWeeklyDAO goalWeeklyDAO;
         private RouteDAO routeDAO;
-        public CloseGoalSetWasWeeklyGoalMetAsyncTask(RouteDAO routeDAO, GoalWeeklyDAO goalWeeklyDAO) {
+        CloseGoalSetWasWeeklyGoalMetAsyncTask(RouteDAO routeDAO, GoalWeeklyDAO goalWeeklyDAO) {
             this.routeDAO = routeDAO;
             this.goalWeeklyDAO = goalWeeklyDAO;
         }
 
         @Override
         protected Void doInBackground(GoalWeekly... goalWeeklies) {
-            Boolean wasComplete = true;
+            boolean wasComplete;
             GoalWeekly gw = goalWeeklies[0];
             List<Route> routesInPeriod = routeDAO.getAllRoutesForUserInPeriod(gw.getUserId(),gw.getDateCreated(),gw.getDateExpires());
-            List<Route> sport = new ArrayList<Route>();
-            int totalSportScore = 0;
-            int highestSport = 0;
 
-            //===========Get Values
-            List<Route> boulder = new ArrayList<Route>();
-            int totalBoulderScore = 0;
-            int highestBoulder = 0;
-
-            for (Route r:routesInPeriod) {
-                if (r.getRouteType() == RouteType.BOULDER){
-                    boulder.add(r);
-                    totalBoulderScore += r.getGradeValue();
-                    if (r.getGradeValue() > highestBoulder){
-                        highestBoulder = r.getGradeValue();
-                    }
-                }
-                if (r.getRouteType() == RouteType.SPORT){
-                    sport.add(r);
-                    totalSportScore = r.getGradeValue();
-                    if (r.getGradeValue() > highestSport){
-                        highestSport = r.getGradeValue();
-                    }
-                }
-            }
-            //==========Check Values
-            if (sport.size() < gw.getNumberOfSport())
-                wasComplete = false;
-
-            if (boulder.size() < gw.getNumberOfBoulder())
-                wasComplete =false;
-
-            double avgBoulder = (double) totalBoulderScore / boulder.size();
-            if (avgBoulder < gw.getAverageBoulderGrade().getValue())
-                wasComplete = false;
-
-            double avgSport = (double) totalSportScore / sport.size();
-            if (avgSport < gw.getAverageSportGrade().getValue())
-                wasComplete = false;
-
+            wasComplete = isWeeklyGoalComplete(gw, routesInPeriod);
             //Update Current Goal
             gw.setGoalAchieved(wasComplete);
             goalWeeklyDAO.update(gw);
@@ -440,75 +397,26 @@ public class DaoRepository {
     private static class CloseGoalSetWasSeasonalGoalMetAsyncTask extends AsyncTask<GoalSeasonal,Void,Void>{
         private GoalSeasonalDAO goalSeasonalDAO;
         private RouteDAO routeDAO;
-        public CloseGoalSetWasSeasonalGoalMetAsyncTask(RouteDAO routeDAO,GoalSeasonalDAO goalSeasonalDAO) {
+        CloseGoalSetWasSeasonalGoalMetAsyncTask(RouteDAO routeDAO,GoalSeasonalDAO goalSeasonalDAO) {
             this.routeDAO = routeDAO;
             this.goalSeasonalDAO = goalSeasonalDAO;
         }
 
         @Override
-        protected Void doInBackground(GoalSeasonal... goalSeasonals) {
-            Boolean wasComplete = true;
+        protected Void doInBackground(GoalSeasonal... goalSeasonal) {
+            boolean wasComplete;
             //============Get Data
-            GoalSeasonal gs = goalSeasonals[0];
+            GoalSeasonal gs = goalSeasonal[0];
             List<Route> routesInPeriod = routeDAO.getAllRoutesForUserInPeriod(gs.getUserId(),gs.getDateCreated(),gs.getDateExpires());
 
-            int highestBoulderOSValue = 0;
-            int highestBoulderWorkedValue = 0;
-            int highestSportOSValue = 0;
-            int highestSportWorkedValue = 0;
-            //organize Routes
-            for (Route r:routesInPeriod) {
-                //Sport Routes
-                if (r.getRouteType() == RouteType.SPORT){
-                    if (r.getStyleDone() == StyleDone.Onsight){
-                        if (r.getGrade().getValue() > highestSportOSValue) {
-                            highestSportOSValue = r.getGrade().getValue();
-                        }
-                    }
-                    if(r.getStyleDone() == StyleDone.Worked){
-                        if (r.getGrade().getValue() > highestSportWorkedValue){
-                            highestSportWorkedValue = r.getGrade().getValue();
-                        }
-                    }
-                }
-                //Boulder Routes
-                else if(r.getRouteType() == RouteType.BOULDER){
-                    if (r.getStyleDone() == StyleDone.Onsight){
-                        if (r.getGrade().getValue() > highestBoulderOSValue){
-                            highestBoulderOSValue = r.getGrade().getValue();
-                        }
-                    }
-                    if(r.getStyleDone() == StyleDone.Worked){
-                        if (r.getGrade().getValue() >highestBoulderWorkedValue){
-                            highestBoulderWorkedValue = r.getGrade().getValue();
-                        }
-                    }
-                }
-            }
-            //check goal progress
-            if (highestBoulderOSValue < gs.getHighestBoulderOnsight().getValue()) {
-                wasComplete = false;
-                Log.d("gwyd","highest Boulder OS Goal Was NOT met");
-            }
-            if (highestBoulderWorkedValue < gs.getHighestBoulderWorked().getValue()) {
-                wasComplete = false;
-                Log.d("gwyd","highest Boulder Worked Goal Was NOT met");
-
-            }
-            if (highestSportOSValue < gs.getHighestSportOnsight().getValue()) {
-                wasComplete = false;
-                Log.d("gwyd","highest Sport OS Goal Was NOT met");
-            }
-            if (highestSportWorkedValue < gs.getHighestSportWorked().getValue()) {
-                wasComplete = false;
-                Log.d("gwyd","highest Sport Worked Goal Was NOT met");
-            }
+            wasComplete = isSeasonalOrAnnualGoalComplete(routesInPeriod, gs.getHighestBoulderOnsight(), gs.getHighestBoulderWorked(), gs.getHighestSportOnsight(), gs.getHighestSportWorked());
             //Update Current Goal
             gs.setGoalAchieved(wasComplete);
             goalSeasonalDAO.update(gs);
             return null;
         }
     }
+
     //endregion
 
     //region [GoalAnnual Get]
@@ -522,70 +430,20 @@ public class DaoRepository {
     private static class CloseGoalSetWasAnnualGoalMetAsyncTask extends AsyncTask<GoalAnnual,Void,Void>{
         private GoalAnnualDAO goalAnnualDAO;
         private RouteDAO routeDAO;
-        public CloseGoalSetWasAnnualGoalMetAsyncTask(RouteDAO routeDAO,GoalAnnualDAO goalAnnualDAO) {
+        CloseGoalSetWasAnnualGoalMetAsyncTask(RouteDAO routeDAO, GoalAnnualDAO goalAnnualDAO) {
             this.routeDAO = routeDAO;
             this.goalAnnualDAO = goalAnnualDAO;
         }
 
         @Override
         protected Void doInBackground(GoalAnnual... goalAnnuals) {
-            Boolean wasComplete = true;
+            boolean wasComplete;
             //============Get Data
             GoalAnnual ga = goalAnnuals[0];
             List<Route> routesInPeriod = routeDAO.getAllRoutesForUserInPeriod(ga.getUserId(),ga.getDateCreated(),ga.getDateExpires());
 
-            int highestBoulderOSValue = 0;
-            int highestBoulderWorkedValue = 0;
-            int highestSportOSValue = 0;
-            int highestSportWorkedValue = 0;
-            //organize Routes
-            for (Route r:routesInPeriod) {
-                //Sport Routes
-                if (r.getRouteType() == RouteType.SPORT){
-                    if (r.getStyleDone() == StyleDone.Onsight){
-                        if (r.getGrade().getValue() > highestSportOSValue) {
-                            highestSportOSValue = r.getGrade().getValue();
-                        }
-                    }
-                    if(r.getStyleDone() == StyleDone.Worked){
-                        if (r.getGrade().getValue() > highestSportWorkedValue){
-                            highestSportWorkedValue = r.getGrade().getValue();
-                        }
-                    }
-                }
-                //Boulder Routes
-                else if(r.getRouteType() == RouteType.BOULDER){
-                    if (r.getStyleDone() == StyleDone.Onsight){
-                        if (r.getGrade().getValue() > highestBoulderOSValue){
-                            highestBoulderOSValue = r.getGrade().getValue();
-                        }
-                    }
-                    if(r.getStyleDone() == StyleDone.Worked){
-                        if (r.getGrade().getValue() >highestBoulderWorkedValue){
-                            highestBoulderWorkedValue = r.getGrade().getValue();
-                        }
-                    }
-                }
-            }
-            //check goal progress
-            if (highestBoulderOSValue < ga.getHighestBoulderOnsight().getValue()) {
-                wasComplete = false;
-                Log.d("gwyd","highest Boulder OS Goal Was NOT met");
-            }
-            if (highestBoulderWorkedValue < ga.getHighestBoulderWorked().getValue()) {
-                wasComplete = false;
-                Log.d("gwyd","highest Boulder Worked Goal Was NOT met");
-
-            }
-            if (highestSportOSValue < ga.getHighestSportOnsight().getValue()) {
-                wasComplete = false;
-                Log.d("gwyd","highest Sport OS Goal Was NOT met");
-            }
-            if (highestSportWorkedValue < ga.getHighestSportWorked().getValue()) {
-                wasComplete = false;
-                Log.d("gwyd","highest Sport Worked Goal Was NOT met");
-            }
-//Update Current Goal
+            wasComplete = isSeasonalOrAnnualGoalComplete(routesInPeriod, ga.getHighestBoulderOnsight(), ga.getHighestBoulderWorked(), ga.getHighestSportOnsight(), ga.getHighestSportWorked());
+            //Update Current Goal
             ga.setGoalAchieved(wasComplete);
             goalAnnualDAO.update(ga);
             return null;
@@ -628,4 +486,103 @@ public class DaoRepository {
 
 
     //endregion
+
+    private static boolean isWeeklyGoalComplete( GoalWeekly gw, List<Route> routesInPeriod) {
+        boolean wasComplete =true;
+        //===========Get Values
+        List<Route> sport = new ArrayList<>();
+        int totalSportScore = 0;
+        int highestSport = 0;
+        List<Route> boulder = new ArrayList<>();
+        int totalBoulderScore = 0;
+        int highestBoulder = 0;
+
+        for (Route r:routesInPeriod) {
+            if (r.getRouteType() == RouteType.BOULDER){
+                boulder.add(r);
+                totalBoulderScore += r.getGradeValue();
+                if (r.getGradeValue() > highestBoulder){
+                    highestBoulder = r.getGradeValue();
+                }
+            }
+            if (r.getRouteType() == RouteType.SPORT){
+                sport.add(r);
+                totalSportScore = r.getGradeValue();
+                if (r.getGradeValue() > highestSport){
+                    highestSport = r.getGradeValue();
+                }
+            }
+        }
+        //==========Check Values
+        if (sport.size() < gw.getNumberOfSport())
+            wasComplete = false;
+
+        if (boulder.size() < gw.getNumberOfBoulder())
+            wasComplete =false;
+
+        double avgBoulder = (double) totalBoulderScore / boulder.size();
+        if (avgBoulder < gw.getAverageBoulderGrade().getValue())
+            wasComplete = false;
+
+        double avgSport = (double) totalSportScore / sport.size();
+        if (avgSport < gw.getAverageSportGrade().getValue())
+            wasComplete = false;
+        return wasComplete;
+    }
+    private static boolean isSeasonalOrAnnualGoalComplete(List<Route> routesInPeriod, Grades highestBoulderOnsight, Grades highestBoulderWorked, Grades highestSportOnsight, Grades highestSportWorked) {
+        boolean wasComplete = true;
+        int highestBoulderOSValue = 0;
+        int highestBoulderWorkedValue = 0;
+        int highestSportOSValue = 0;
+        int highestSportWorkedValue = 0;
+        //organize Routes
+        for (Route r : routesInPeriod) {
+            //Sport Routes
+            if (r.getRouteType() == RouteType.SPORT) {
+                if (r.getStyleDone() == StyleDone.Onsight) {
+                    if (r.getGrade().getValue() > highestSportOSValue) {
+                        highestSportOSValue = r.getGrade().getValue();
+                    }
+                }
+                if (r.getStyleDone() == StyleDone.Worked) {
+                    if (r.getGrade().getValue() > highestSportWorkedValue) {
+                        highestSportWorkedValue = r.getGrade().getValue();
+                    }
+                }
+            }
+            //Boulder Routes
+            else if (r.getRouteType() == RouteType.BOULDER) {
+                if (r.getStyleDone() == StyleDone.Onsight) {
+                    if (r.getGrade().getValue() > highestBoulderOSValue) {
+                        highestBoulderOSValue = r.getGrade().getValue();
+                    }
+                }
+                if (r.getStyleDone() == StyleDone.Worked) {
+                    if (r.getGrade().getValue() > highestBoulderWorkedValue) {
+                        highestBoulderWorkedValue = r.getGrade().getValue();
+                    }
+                }
+            }
+        }
+        //check goal progress
+        if (highestBoulderOSValue < highestBoulderOnsight.getValue()) {
+            wasComplete = false;
+            Log.d("gwyd", "highest Boulder OS Goal Was NOT met");
+        }
+        if (highestBoulderWorkedValue < highestBoulderWorked.getValue()) {
+            wasComplete = false;
+            Log.d("gwyd", "highest Boulder Worked Goal Was NOT met");
+
+        }
+        if (highestSportOSValue < highestSportOnsight.getValue()) {
+            wasComplete = false;
+            Log.d("gwyd", "highest Sport OS Goal Was NOT met");
+        }
+        if (highestSportWorkedValue < highestSportWorked.getValue()) {
+            wasComplete = false;
+            Log.d("gwyd", "highest Sport Worked Goal Was NOT met");
+        }
+        return wasComplete;
+    }
+
 }
