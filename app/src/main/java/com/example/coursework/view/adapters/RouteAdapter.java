@@ -36,6 +36,7 @@ public class RouteAdapter extends ArrayAdapter<Route> {
         routeItemGrade.setText(route.getGrade().toString());
         routeItemStyle.setText(route.getStyleDone().toString());
         // Return the completed view to render on screen
+        convertView.setTag(route.getId());
         return convertView;
     }
 }

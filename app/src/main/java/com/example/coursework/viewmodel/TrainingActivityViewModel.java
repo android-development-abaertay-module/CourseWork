@@ -103,4 +103,11 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     public void addRoute(Route routeToAdd) {
         daoRepository.insertRoute(routeToAdd);
     }
+
+    public void deleteRoute(Route routeToDelete) {
+        daoRepository.deleteRoute(routeToDelete);
+    }
+    public void deleteSession(Session sessionToDelete) {
+        daoRepository.deleteSession(sessionToDelete);
+    }
 }

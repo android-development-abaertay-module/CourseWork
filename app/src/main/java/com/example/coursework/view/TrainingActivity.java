@@ -14,9 +14,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -31,6 +34,7 @@ import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
+import com.example.coursework.model.enums.LogType;
 import com.example.coursework.model.enums.PermissionCheck;
 import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
@@ -48,12 +52,15 @@ import java.util.Locale;
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
-public class TrainingActivity extends AppCompatActivity implements LocationListener {
+public class TrainingActivity extends AppCompatActivity implements LocationListener, View.OnTouchListener {
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     //region [Properties]
     private TrainingActivityViewModel trainingActivityViewModel;
     BottomNavigationView navigation;
+    private GestureDetector routeGestureDetector;
+    private GestureDetector sessionGestureDetector;
+
     MenuItem startMenuItem;
     MenuItem endMenuItem;
     MenuItem addRouteMenuItem;
@@ -121,11 +128,74 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         startMenuItem = navigation.getMenu().findItem(R.id.navigation_start_session);
         endMenuItem = navigation.getMenu().findItem(R.id.navigation_end_session);
         addRouteMenuItem = navigation.getMenu().findItem(R.id.navigation_add_route);
+        routeGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.OnGestureListener() {
 
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
+            @Override
+            public void onShowPress(MotionEvent e) {
+
+            }
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return false;
+            }
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return false;
+            }
+            @Override
+            public void onLongPress(MotionEvent e) {
+
+            }
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                Log.d("gwyd","onFling hit for Route");
+                int  startingPosition = displayRecentRoutesLV.pointToPosition((int) e1.getX(), (int) e1.getY());
+                Route routeToDelete = (Route) displayRecentRoutesLV.getAdapter().getItem(startingPosition);
+                trainingActivityViewModel.deleteRoute(routeToDelete);
+                toastAndLog("Route Deleted",LogType.DEBUG);
+                return true;
+            }
+        });
+        sessionGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
+            @Override
+            public void onShowPress(MotionEvent e) {
+
+            }
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return false;
+            }
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return false;
+            }
+            @Override
+            public void onLongPress(MotionEvent e) {
+
+            }
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                Log.d("gwyd","onFling hit for Session");
+                int  startingPosition = displayRecentSessionsLV.pointToPosition((int) e1.getX(), (int) e1.getY());
+                Session sessionToDelete = (Session) displayRecentSessionsLV.getAdapter().getItem(startingPosition);
+                deleteSession(sessionToDelete);
+                return true;
+            }
+        });
         messageTxt = findViewById(R.id.message);
 
         displayRecentRoutesLV = findViewById(R.id.displayRecentRoutesLV);
+        displayRecentRoutesLV.setOnTouchListener(this);
         displayRecentSessionsLV = findViewById(R.id.displayRecentSessionsLV);
+        displayRecentSessionsLV.setOnTouchListener(this);
         addRouteForm = findViewById(R.id.addRouteLayout);
 
         routeTypeRG = findViewById(R.id.routeTypeBtnGrp);
@@ -285,7 +355,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             user.getCurSesh().setEndTime(OffsetDateTime.now());
             trainingActivityViewModel.updateCurrentSession(user.getCurSesh());
         } else {
-            Toast.makeText(this, "No Active Session", Toast.LENGTH_SHORT).show();
+            toastAndLog("No Active Session",LogType.DEBUG);
         }
     }
 
@@ -321,6 +391,17 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         }
     }
 
+    private void deleteSession(Session sessionToDelete) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Session?")
+                .setMessage("Are you sure you want to delete this session? \nAll routes associated will also be deleted.")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                    trainingActivityViewModel.deleteSession(sessionToDelete);
+                    toastAndLog("Session Deleted",LogType.DEBUG);
+                })
+                .setNegativeButton(android.R.string.no, null).show();
+    }
     private String getAddressFromLocation(Session session) {
         String address = "";
         try {
@@ -405,4 +486,40 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
     }
     //endregion
+
+    //region[OnTouchListener]
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        Log.d("gwyd","onTouch hit");
+        switch (v.getId()){
+            case R.id.displayRecentRoutesLV:
+                routeGestureDetector.onTouchEvent(event);
+                break;
+            case R.id.displayRecentSessionsLV:
+                sessionGestureDetector.onTouchEvent(event);
+                break;
+        }
+        return true;
+    }
+    //endregion
+    private void toastAndLog(String message, LogType logType){
+        switch (logType){
+            case INFO:
+                Log.i("gwyd",message);
+                break;
+            case DEBUG:
+                Log.d("gwyd",message);
+                break;
+            case ERROR:
+                Log.e("gwyd",message);
+                break;
+            case VERBOSE:
+                Log.v("gwyd",message);
+                break;
+            case WARNING:
+                Log.w("gwyd",message);
+                break;
+        }
+        Toast.makeText(TrainingActivity.this,message,Toast.LENGTH_LONG).show();
+    }
 }
