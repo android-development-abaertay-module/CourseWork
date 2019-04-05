@@ -1,6 +1,9 @@
 package com.example.coursework.view;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,10 +12,14 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.RingtoneManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +41,7 @@ import com.example.coursework.model.GoalWeekly;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
+import com.example.coursework.model.enums.GoalType;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.enums.LogType;
 import com.example.coursework.model.enums.PermissionCheck;
@@ -56,6 +64,10 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 public class TrainingActivity extends AppCompatActivity implements LocationListener, View.OnTouchListener {
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
+    private static final String CHANNEL_ID = "trainingActivityForRouteLog";
+    public static final String GOAL_TYPE = "";
+    private int weeklyGoalNotificationID = 1;
+
     //region [Properties]
     private TrainingActivityViewModel trainingActivityViewModel;
     BottomNavigationView navigation;
@@ -114,9 +126,9 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
+        createNotificationChannel();
 
         trainingActivityViewModel = ViewModelProviders.of(this).get(TrainingActivityViewModel.class);
-
         Intent intent = getIntent();
         if (intent.hasExtra(USER_ID) && intent.hasExtra(USERNAME)) {
             user = new User(intent.getStringExtra(USERNAME));
@@ -125,6 +137,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         }
 
         //region [declare Properties]
+
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         startMenuItem = navigation.getMenu().findItem(R.id.navigation_start_session);
@@ -297,6 +310,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             if (weeklyGoal != null){
                 //if achieved
                 if (weeklyGoal.getGoalAchieved()){
+                    sendNotificationToSetGoals("Goal Accomplished","Weekly Goal Accomplished \n Review and Re-set Goal.",GoalType.WEEKLY);
                     Toast.makeText(TrainingActivity.this,"goal  achieved",Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(TrainingActivity.this,"goal Not achieved",Toast.LENGTH_SHORT).show();
@@ -304,6 +318,29 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             }
         });
         //endregion
+    }
+
+    private void sendNotificationToSetGoals(String title,String contentText, GoalType goalType) {
+        // Create an explicit intent for an Activity in your app
+        Intent i = new Intent(TrainingActivity.this, SetGoalsActivity.class);
+        i.putExtra(USER_ID,user.getId());
+        i.putExtra(USERNAME,user.getUserName());
+        i.putExtra(GOAL_TYPE,goalType);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(TrainingActivity.this, 0,i,0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(TrainingActivity.this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setContentTitle(title)
+                .setContentText(contentText)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(TrainingActivity.this);
+        notificationManager.notify(weeklyGoalNotificationID, builder.build());
     }
 
     @Override
@@ -518,6 +555,23 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         return true;
     }
     //endregion
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     private void toastAndLog(String message, LogType logType){
         switch (logType){
             case INFO:

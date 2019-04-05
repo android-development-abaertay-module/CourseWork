@@ -88,4 +88,6 @@
     <string name="title_activity_main_map">Map</string>
     <string name="title_activity_check_goals">Check Progress</string>
     <string name="title_activity_set_goals">Set Goals</string>
+    <string name="channel_name">triningNotificaionActivityChanel</string>
+    <string name="channel_description">training activity notifcation description</string>
 </resources>
