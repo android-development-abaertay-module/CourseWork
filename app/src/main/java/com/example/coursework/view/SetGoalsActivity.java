@@ -1,5 +1,6 @@
 package com.example.coursework.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -8,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.coursework.R;
 import com.example.coursework.view.adapters.TabsAdapterSetGoals;
+
+import static com.example.coursework.view.TrainingActivity.GOAL_TYPE;
 
 public class SetGoalsActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -47,5 +50,18 @@ public class SetGoalsActivity extends AppCompatActivity {
 
             }
         });
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            if (intent.hasExtra(GOAL_TYPE)) {
+                //came from notification.
+                //navigate to correct fragment
+                int value = intent.getIntExtra(GOAL_TYPE,0);
+                TabLayout.Tab tab = tabLayout.getTabAt(value);
+                if (tab != null)
+                    tab.select();
+
+            }
+        }
     }
 }

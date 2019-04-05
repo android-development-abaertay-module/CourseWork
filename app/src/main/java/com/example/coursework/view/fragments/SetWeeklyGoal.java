@@ -26,6 +26,7 @@ import java.time.OffsetDateTime;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
+import static com.example.coursework.view.TrainingActivity.GOAL_TYPE;
 
 public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
 
@@ -71,10 +72,10 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         numSportSpinner = getView().findViewById(R.id.weeklyNumberOfSportSpinner);
         numBoulderSpinner = getView().findViewById(R.id.weeklyNumberOfBoulderSpinner);
         avgSportSpinner = getView().findViewById(R.id.weeklyAverageSportGradeSpinner);
-        avgSportSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        avgSportSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
         avgBoulderSpinner = getView().findViewById(R.id.weeklyAverageBoulderGradeSpinner);
-        avgBoulderSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        avgBoulderSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
         createdOnTxt = getView().findViewById(R.id.weeklyCreatedOnTxt);
         expiresOnTxt = getView().findViewById(R.id.weeklyExpiresOnTxt);
         resetWeeklyGoalBtn = getView().findViewById(R.id.resetWeeklyGoalBtn);
