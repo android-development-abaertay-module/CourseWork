@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.example.coursework.model.GoalSeasonal;
@@ -13,7 +12,6 @@ import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.data.DaoRepository;
-import com.example.coursework.model.data.RouteDAO;
 import com.example.coursework.model.enums.PermissionCheck;
 
 import java.util.List;
