@@ -392,13 +392,13 @@ public class DaoRepository {
         return goalSeasonalDAO.getMostRecentSeasonalGoalForUser(userId);
     }
 
-    public void closeGoalSetWasSeasonalGoalMet(GoalSeasonal seasonalGoal) {
-        new CloseGoalSetWasSeasonalGoalMetAsyncTask(routeDAO,goalSeasonalDAO).execute(seasonalGoal);
+    public void UpdateGoalSetWasSeasonalGoalMet(GoalSeasonal seasonalGoal) {
+        new UpdateGoalSetWasSeasonalGoalMetAsyncTask(routeDAO,goalSeasonalDAO).execute(seasonalGoal);
     }
-    private static class CloseGoalSetWasSeasonalGoalMetAsyncTask extends AsyncTask<GoalSeasonal,Void,Void>{
+    private static class UpdateGoalSetWasSeasonalGoalMetAsyncTask extends AsyncTask<GoalSeasonal,Void,Void>{
         private GoalSeasonalDAO goalSeasonalDAO;
         private RouteDAO routeDAO;
-        CloseGoalSetWasSeasonalGoalMetAsyncTask(RouteDAO routeDAO,GoalSeasonalDAO goalSeasonalDAO) {
+        UpdateGoalSetWasSeasonalGoalMetAsyncTask(RouteDAO routeDAO, GoalSeasonalDAO goalSeasonalDAO) {
             this.routeDAO = routeDAO;
             this.goalSeasonalDAO = goalSeasonalDAO;
         }
@@ -409,7 +409,7 @@ public class DaoRepository {
             //============Get Data
             GoalSeasonal gs = goalSeasonal[0];
             List<Route> routesInPeriod = routeDAO.getAllRoutesForUserInPeriod(gs.getUserId(),gs.getDateCreated(),gs.getDateExpires());
-
+            //decide weather or not to set goal as achieved
             wasComplete = isSeasonalOrAnnualGoalComplete(routesInPeriod, gs.getHighestBoulderOnsight(), gs.getHighestBoulderWorked(), gs.getHighestSportOnsight(), gs.getHighestSportWorked());
             //Update Current Goal
             gs.setGoalAchieved(wasComplete);

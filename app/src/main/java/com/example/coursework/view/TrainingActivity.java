@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coursework.R;
+import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.GoalWeekly;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
@@ -65,8 +66,9 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     private static final String CHANNEL_ID = "trainingActivityForRouteLog";
-    public static final String GOAL_TYPE = "";
+    public static final String GOAL_TYPE = "goalType";
     private int weeklyGoalNotificationID = 1;
+    private int seasonalGoaNotificationID = 2;
 
     //region [Properties]
     private TrainingActivityViewModel trainingActivityViewModel;
@@ -92,6 +94,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     private double latitude;
     private double longitude;
     private GoalWeekly weeklyGoal;
+    private GoalSeasonal seasonalGoal;
 
     //endregion
 
@@ -310,22 +313,34 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             if (weeklyGoal != null){
                 //if achieved
                 if (weeklyGoal.getGoalAchieved()){
-                    sendNotificationToSetGoals("Goal Accomplished","Weekly Goal Accomplished \n Review and Re-set Goal.",GoalType.WEEKLY);
-                    Toast.makeText(TrainingActivity.this,"goal  achieved",Toast.LENGTH_SHORT).show();
+                    sendNotificationToSetGoals("Goal Accomplished","Weekly Goal Accomplished \n Review and Re-set Goal.",GoalType.WEEKLY, seasonalGoaNotificationID);
+                    Toast.makeText(TrainingActivity.this,"Weekly goal achieved",Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(TrainingActivity.this,"goal Not achieved",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TrainingActivity.this,"Weekly goal Not achieved",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        trainingActivityViewModel.getGoalSeasonalLD(user.getId()).observe(this, goalSeasonalVal ->{
+            seasonalGoal = goalSeasonalVal;
+            if(seasonalGoal !=null){
+                //if Achieved
+                if (seasonalGoal.getGoalAchieved()){
+                    sendNotificationToSetGoals("Goal Accomplished","Seasonal Goal Accomplished \n Review and Re-set Goal.",GoalType.SEASONAL,weeklyGoalNotificationID);
+                    Toast.makeText(TrainingActivity.this,"Seasonal goal  achieved",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(TrainingActivity.this,"Seasonal goal Not achieved",Toast.LENGTH_SHORT).show();
                 }
             }
         });
         //endregion
     }
 
-    private void sendNotificationToSetGoals(String title,String contentText, GoalType goalType) {
+    private void sendNotificationToSetGoals(String title,String contentText, GoalType goalType, int notificationID ) {
         // Create an explicit intent for an Activity in your app
         Intent i = new Intent(TrainingActivity.this, SetGoalsActivity.class);
         i.putExtra(USER_ID,user.getId());
         i.putExtra(USERNAME,user.getUserName());
-        i.putExtra(GOAL_TYPE,goalType);
+        i.putExtra(GOAL_TYPE,goalType.getValue());
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(TrainingActivity.this, 0,i,0);
 
@@ -333,6 +348,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(title)
                 .setContentText(contentText)
+                .setGroup("TrainingGoals")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
@@ -340,7 +356,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(TrainingActivity.this);
-        notificationManager.notify(weeklyGoalNotificationID, builder.build());
+        notificationManager.notify(notificationID, builder.build());
     }
 
     @Override
@@ -399,6 +415,8 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     private void checkGoalProgress() {
         if (weeklyGoal != null)
             trainingActivityViewModel.UpdateGoalSetWasWeeklyGoalMet(weeklyGoal);
+        if (seasonalGoal != null)
+            trainingActivityViewModel.UpdateGoalSetWasSeasonalGoalMet(seasonalGoal);
     }
 
     private void endSession_Click() {

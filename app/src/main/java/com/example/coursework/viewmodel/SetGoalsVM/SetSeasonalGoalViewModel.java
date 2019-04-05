@@ -42,6 +42,6 @@ public class SetSeasonalGoalViewModel extends AndroidViewModel {
     }
 
     public void closeSeasonalGoalSetWasMet(GoalSeasonal seasonalGoal) {
-        daoRepository.closeGoalSetWasSeasonalGoalMet(seasonalGoal);
+        daoRepository.UpdateGoalSetWasSeasonalGoalMet(seasonalGoal);
     }
 }

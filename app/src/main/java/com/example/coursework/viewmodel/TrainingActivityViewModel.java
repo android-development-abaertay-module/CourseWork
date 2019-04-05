@@ -7,6 +7,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.GoalWeekly;
 import com.example.coursework.model.Route;
 import com.example.coursework.model.Session;
@@ -24,6 +25,7 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     private LiveData<List<Route>> recentRoutesLD;
     private LiveData<List<Session>> recentSessionsLD;
     private LiveData<GoalWeekly> goalWeeklyLD;
+    private LiveData<GoalSeasonal> goalSeasonalLD;
 
     private MutableLiveData<PermissionCheck> locationPermissionGranted;
     private MutableLiveData<Double> currentLatitudeLD;
@@ -33,6 +35,12 @@ public class TrainingActivityViewModel extends AndroidViewModel {
         if (goalWeeklyLD == null)
             goalWeeklyLD = daoRepository.getMostRecentGoalWeekly(userId);
         return goalWeeklyLD;
+    }
+
+    public LiveData<GoalSeasonal> getGoalSeasonalLD(long userId) {
+        if (goalSeasonalLD == null)
+            goalSeasonalLD = daoRepository.getMostRecentGoalSeasonal(userId);
+        return goalSeasonalLD;
     }
 
     public MutableLiveData<Double> getCurrentLatitudeLD() {
@@ -123,5 +131,8 @@ public class TrainingActivityViewModel extends AndroidViewModel {
 
     public void UpdateGoalSetWasWeeklyGoalMet(GoalWeekly weeklyGoal) {
         daoRepository.UpdateGoalSetWasWeeklyGoalMet(weeklyGoal);
+    }
+    public void UpdateGoalSetWasSeasonalGoalMet(GoalSeasonal seasonalGoal) {
+        daoRepository.UpdateGoalSetWasSeasonalGoalMet(seasonalGoal);
     }
 }

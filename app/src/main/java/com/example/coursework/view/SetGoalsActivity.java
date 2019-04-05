@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.example.coursework.R;
 import com.example.coursework.view.adapters.TabsAdapterSetGoals;
@@ -61,7 +62,13 @@ public class SetGoalsActivity extends AppCompatActivity {
                 if (tab != null)
                     tab.select();
 
+            }else{
+                Log.d("gwyd","No Goal Type set");
             }
         }
+    }
+    @Override
+    protected void onNewIntent (Intent intent) {
+        setIntent(intent);
     }
 }
