@@ -39,6 +39,6 @@ public class SetAnnualGoalViewModel extends AndroidViewModel {
     }
 
     public void closeAnnualGoalSetWasMet(GoalAnnual annualGoal) {
-        daoRepository.closeGoalSetWasAnnualGoalMet(annualGoal);
+        daoRepository.updateGoalSetWasAnnualGoalMet(annualGoal);
     }
 }

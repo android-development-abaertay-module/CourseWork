@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coursework.R;
+import com.example.coursework.model.GoalAnnual;
 import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.GoalWeekly;
 import com.example.coursework.model.Route;
@@ -69,6 +70,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     public static final String GOAL_TYPE = "goalType";
     private int weeklyGoalNotificationID = 1;
     private int seasonalGoaNotificationID = 2;
+    private int annualGoalNotificationID = 3;
 
     //region [Properties]
     private TrainingActivityViewModel trainingActivityViewModel;
@@ -95,6 +97,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     private double longitude;
     private GoalWeekly weeklyGoal;
     private GoalSeasonal seasonalGoal;
+    private GoalAnnual annualGoal;
 
     //endregion
 
@@ -313,7 +316,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             if (weeklyGoal != null){
                 //if achieved
                 if (weeklyGoal.getGoalAchieved()){
-                    sendNotificationToSetGoals("Goal Accomplished","Weekly Goal Accomplished \n Review and Re-set Goal.",GoalType.WEEKLY, seasonalGoaNotificationID);
+                    sendNotificationToSetGoals("Goal Accomplished","Weekly Goal Accomplished \n Review and Re-set Goal.",GoalType.WEEKLY, seasonalGoaNotificationID,0);
                     Toast.makeText(TrainingActivity.this,"Weekly goal achieved",Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(TrainingActivity.this,"Weekly goal Not achieved",Toast.LENGTH_SHORT).show();
@@ -325,24 +328,30 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             if(seasonalGoal !=null){
                 //if Achieved
                 if (seasonalGoal.getGoalAchieved()){
-                    sendNotificationToSetGoals("Goal Accomplished","Seasonal Goal Accomplished \n Review and Re-set Goal.",GoalType.SEASONAL,weeklyGoalNotificationID);
+                    sendNotificationToSetGoals("Goal Accomplished","Seasonal Goal Accomplished \n Review and Re-set Goal.",GoalType.SEASONAL,weeklyGoalNotificationID,1);
                     Toast.makeText(TrainingActivity.this,"Seasonal goal  achieved",Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(TrainingActivity.this,"Seasonal goal Not achieved",Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        trainingActivityViewModel.getGoalAnnualLD(user.getId()).observe(this, goalAnnualVal ->{
+            annualGoal = goalAnnualVal;
+            if (annualGoal != null){
+                sendNotificationToSetGoals("Goal Accomplished","Annual Goal Accomplished \n Review and Re-set Goal.",GoalType.ANNUAL,annualGoalNotificationID,2);
+            }
+        });
         //endregion
     }
 
-    private void sendNotificationToSetGoals(String title,String contentText, GoalType goalType, int notificationID ) {
+    private void sendNotificationToSetGoals(String title,String contentText, GoalType goalType, int notificationID, int requestCode) {
         // Create an explicit intent for an Activity in your app
         Intent i = new Intent(TrainingActivity.this, SetGoalsActivity.class);
         i.putExtra(USER_ID,user.getId());
         i.putExtra(USERNAME,user.getUserName());
         i.putExtra(GOAL_TYPE,goalType.getValue());
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(TrainingActivity.this, 0,i,0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(TrainingActivity.this, requestCode,i,0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(TrainingActivity.this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
@@ -417,6 +426,8 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             trainingActivityViewModel.UpdateGoalSetWasWeeklyGoalMet(weeklyGoal);
         if (seasonalGoal != null)
             trainingActivityViewModel.UpdateGoalSetWasSeasonalGoalMet(seasonalGoal);
+        if (annualGoal != null)
+            trainingActivityViewModel.UpdateGoalSetWasAnnualGoalMet(annualGoal);
     }
 
     private void endSession_Click() {

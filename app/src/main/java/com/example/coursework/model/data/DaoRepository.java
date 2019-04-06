@@ -425,13 +425,13 @@ public class DaoRepository {
         return goalAnnualDAO.getMostRecentAnnualGoalForUser(userId);
     }
 
-    public void closeGoalSetWasAnnualGoalMet(GoalAnnual goalAnnual) {
-        new CloseGoalSetWasAnnualGoalMetAsyncTask(routeDAO,goalAnnualDAO).execute(goalAnnual);
+    public void updateGoalSetWasAnnualGoalMet(GoalAnnual goalAnnual) {
+        new UpdateGoalSetWasAnnualGoalMetAsyncTask(routeDAO,goalAnnualDAO).execute(goalAnnual);
     }
-    private static class CloseGoalSetWasAnnualGoalMetAsyncTask extends AsyncTask<GoalAnnual,Void,Void>{
+    private static class UpdateGoalSetWasAnnualGoalMetAsyncTask extends AsyncTask<GoalAnnual,Void,Void>{
         private GoalAnnualDAO goalAnnualDAO;
         private RouteDAO routeDAO;
-        CloseGoalSetWasAnnualGoalMetAsyncTask(RouteDAO routeDAO, GoalAnnualDAO goalAnnualDAO) {
+        UpdateGoalSetWasAnnualGoalMetAsyncTask(RouteDAO routeDAO, GoalAnnualDAO goalAnnualDAO) {
             this.routeDAO = routeDAO;
             this.goalAnnualDAO = goalAnnualDAO;
         }
