@@ -111,8 +111,14 @@ public class Session
     }
     //---Methods---
     public String detailsSummaryForMap(){
-        String snippet = "Start Time: " + startTime.format(DateTimeFormatter.ofPattern("MM/dd  HH:mm:ss")) + "\n" +
-                "End Time: " + endTime.format(DateTimeFormatter.ofPattern("MM/dd  HH:mm:ss")) + "\n" +
+        String st ="";
+        String et = "";
+        if (startTime != null)
+            st = startTime.format(DateTimeFormatter.ofPattern("MM/dd  HH:mm:ss"));
+        if (endTime != null)
+            et = endTime.format(DateTimeFormatter.ofPattern("MM/dd  HH:mm:ss"));
+        String snippet = "Start Time: " + st + "\n" +
+                "End Time: " + et + "\n" +
                 "Latitude: " + lat + "\n" +
                 "Longitude: " + lon;
         return  snippet;
