@@ -338,7 +338,12 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         trainingActivityViewModel.getGoalAnnualLD(user.getId()).observe(this, goalAnnualVal ->{
             annualGoal = goalAnnualVal;
             if (annualGoal != null){
-                sendNotificationToSetGoals("Goal Accomplished","Annual Goal Accomplished \n Review and Re-set Goal.",GoalType.ANNUAL,annualGoalNotificationID,2);
+                //if Achieved
+                if(annualGoal.getGoalAchieved()) {
+                    sendNotificationToSetGoals("Goal Accomplished", "Annual Goal Accomplished \n Review and Re-set Goal.", GoalType.ANNUAL, annualGoalNotificationID, 2);
+                }else{
+                    Toast.makeText(TrainingActivity.this,"Annual goal Not achieved",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         //endregion
