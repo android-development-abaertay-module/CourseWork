@@ -315,12 +315,16 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             //check if weekly goal is set
             if (weeklyGoal != null){
                 //if achieved
-                if (weeklyGoal.getGoalAchieved()){
-                    sendNotificationToSetGoals("Goal Accomplished","Weekly Goal Accomplished \n Review and Re-set Goal.",GoalType.WEEKLY, seasonalGoaNotificationID,0);
-                    Toast.makeText(TrainingActivity.this,"Weekly goal achieved",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(TrainingActivity.this,"Weekly goal Not achieved",Toast.LENGTH_SHORT).show();
-                }
+                if (weeklyGoal.getGoalAchieved()) {
+                    if (!weeklyGoal.isAchievedSent()){
+                        sendNotificationToSetGoals("Goal Accomplished", "Weekly Goal Accomplished \n Review and Re-set Goal.", GoalType.WEEKLY, seasonalGoaNotificationID, 0);
+                        weeklyGoal.setAchievedSent(true);
+                        trainingActivityViewModel.updateGoalWeekly(weeklyGoal);
+                }else
+                        Log.d("gwyd","Weekly goal achieved notification already sent.");
+
+                }else
+                    Log.d("gwyd","Weekly goal Not achieved");
             }
         });
         trainingActivityViewModel.getGoalSeasonalLD(user.getId()).observe(this, goalSeasonalVal ->{
@@ -328,11 +332,14 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             if(seasonalGoal !=null){
                 //if Achieved
                 if (seasonalGoal.getGoalAchieved()){
-                    sendNotificationToSetGoals("Goal Accomplished","Seasonal Goal Accomplished \n Review and Re-set Goal.",GoalType.SEASONAL,weeklyGoalNotificationID,1);
-                    Toast.makeText(TrainingActivity.this,"Seasonal goal  achieved",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(TrainingActivity.this,"Seasonal goal Not achieved",Toast.LENGTH_SHORT).show();
-                }
+                    if (!seasonalGoal.isAchievedSent()) {
+                        sendNotificationToSetGoals("Goal Accomplished", "Seasonal Goal Accomplished \n Review and Re-set Goal.", GoalType.SEASONAL, weeklyGoalNotificationID, 1);
+                        seasonalGoal.setAchievedSent(true);
+                        trainingActivityViewModel.updateGoalSeasonal(seasonalGoal);
+                    }else
+                        Log.d("gwyd","Seasonal goal achieved notification already sent.");
+                }else
+                    Log.d("gwyd","Seasonal goal Not achieved");
             }
         });
         trainingActivityViewModel.getGoalAnnualLD(user.getId()).observe(this, goalAnnualVal ->{
@@ -340,10 +347,15 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             if (annualGoal != null){
                 //if Achieved
                 if(annualGoal.getGoalAchieved()) {
-                    sendNotificationToSetGoals("Goal Accomplished", "Annual Goal Accomplished \n Review and Re-set Goal.", GoalType.ANNUAL, annualGoalNotificationID, 2);
-                }else{
-                    Toast.makeText(TrainingActivity.this,"Annual goal Not achieved",Toast.LENGTH_SHORT).show();
-                }
+                    if (!annualGoal.isAchievedSent()) {
+                        sendNotificationToSetGoals("Goal Accomplished", "Annual Goal Accomplished \n Review and Re-set Goal.", GoalType.ANNUAL, annualGoalNotificationID, 2);
+                        annualGoal.setAchievedSent(true);
+                        trainingActivityViewModel.updateGoalAnnual(annualGoal);
+                    }else
+                        Log.d("gwyd","Annual goal achieved notification already sent.");
+
+                }else
+                    Log.d("gwyd","Annual goal Not achieved");
             }
         });
         //endregion
@@ -428,11 +440,11 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
     private void checkGoalProgress() {
         if (weeklyGoal != null)
-            trainingActivityViewModel.UpdateGoalSetWasWeeklyGoalMet(weeklyGoal);
+            trainingActivityViewModel.updateGoalSetWasWeeklyGoalMet(weeklyGoal);
         if (seasonalGoal != null)
-            trainingActivityViewModel.UpdateGoalSetWasSeasonalGoalMet(seasonalGoal);
+            trainingActivityViewModel.updateGoalSetWasSeasonalGoalMet(seasonalGoal);
         if (annualGoal != null)
-            trainingActivityViewModel.UpdateGoalSetWasAnnualGoalMet(annualGoal);
+            trainingActivityViewModel.updateGoalSetWasAnnualGoalMet(annualGoal);
     }
 
     private void endSession_Click() {

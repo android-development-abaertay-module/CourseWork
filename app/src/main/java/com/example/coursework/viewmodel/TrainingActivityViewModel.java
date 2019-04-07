@@ -135,13 +135,23 @@ public class TrainingActivityViewModel extends AndroidViewModel {
         daoRepository.deleteSession(sessionToDelete);
     }
 
-    public void UpdateGoalSetWasWeeklyGoalMet(GoalWeekly weeklyGoal) {
+    public void updateGoalSetWasWeeklyGoalMet(GoalWeekly weeklyGoal) {
         daoRepository.UpdateGoalSetWasWeeklyGoalMet(weeklyGoal);
     }
-    public void UpdateGoalSetWasSeasonalGoalMet(GoalSeasonal seasonalGoal) {
+    public void updateGoalSetWasSeasonalGoalMet(GoalSeasonal seasonalGoal) {
         daoRepository.UpdateGoalSetWasSeasonalGoalMet(seasonalGoal);
     }
-    public void UpdateGoalSetWasAnnualGoalMet(GoalAnnual goalAnnual){
+    public void updateGoalSetWasAnnualGoalMet(GoalAnnual goalAnnual){
         daoRepository.updateGoalSetWasAnnualGoalMet(goalAnnual);
+    }
+
+    public void updateGoalWeekly(GoalWeekly goalWeekly) {
+        daoRepository.updateWeeklyGoal(goalWeekly);
+    }
+    public void updateGoalSeasonal(GoalSeasonal goalSeasonal){
+        daoRepository.updateSeasonalGoal(goalSeasonal);
+    }
+    public void updateGoalAnnual(GoalAnnual goalAnnual){
+        daoRepository.updateAnnualGoal(goalAnnual);
     }
 }

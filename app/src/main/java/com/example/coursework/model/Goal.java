@@ -19,6 +19,8 @@ public abstract class Goal {
     protected Boolean goalAchieved;
     @ColumnInfo(name = "goalDuration")
     protected int goalDuration;
+    @ColumnInfo(name = "isAchievedSent")
+    private boolean isAchievedSent;
 
     public long getId() {
         return id;
@@ -60,6 +62,14 @@ public abstract class Goal {
     }
     public void setGoalDuration(int goalDuration) {
         this.goalDuration = goalDuration;
+    }
+
+    public boolean isAchievedSent() {
+        return isAchievedSent;
+    }
+
+    public void setAchievedSent(boolean achievedSent) {
+        isAchievedSent = achievedSent;
     }
 
     //-----------Constructor
