@@ -173,7 +173,6 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             }
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                //TODO: fix on fling for both guesture detectors so taht it only deletes on horizontal fling
                 float originalX = e1.getX();
                 float originalY = e1.getY();
                 float newX = e2.getX();
