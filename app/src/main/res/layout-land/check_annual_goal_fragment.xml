@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.CheckAnnualGoal">
-
+    tools:context=".view.fragments.CheckSeasonalGoal"
+    android:rowCount="3"
+    android:columnCount="2">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
         <TextView
             android:id="@+id/checkGoalAnnualBoulderOSTxt"
             android:text="@string/boulder_onsight_goal"
@@ -25,7 +26,10 @@
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
         <TextView
             android:id="@+id/checkGoalAnnualSportOSTxt"
             android:text="@string/sport_onsight_goal"
@@ -42,7 +46,10 @@
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
         <TextView
             android:id="@+id/checkGoalAnnualBoulderWorkedTxt"
             android:text="@string/boulder_worked_goal"
@@ -59,7 +66,10 @@
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
         <TextView
             android:id="@+id/checkGoalAnnualSportWorkedTxt"
             android:text="@string/sport_worked_goal"
@@ -76,6 +86,11 @@
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1"
+        android:layout_columnSpan="2">
         <TextView
             android:id="@+id/isAnnualGoalActiveTxt"
             android:layout_marginTop="10dp"
@@ -92,5 +107,4 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
-</FrameLayout>
+    </GridLayout>
