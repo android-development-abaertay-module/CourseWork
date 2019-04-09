@@ -78,6 +78,7 @@ public class CheckWeeklyGoal extends Fragment {
             user = userVal;
         });
         checkWeeklyViewModel.getGoalWeeklyLD().observe(this, goalWeeklyVal -> {
+            //TODO: put code int to populate was achieved TextView that's already in the views
             if (goalWeeklyVal != null){
                 goalWeekly = goalWeeklyVal;
                 if (goalWeekly.getDateExpires().isBefore(OffsetDateTime.now())){

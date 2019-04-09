@@ -1,112 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.CheckWeeklyGoal">
-
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:rowCount="3"
-        android:columnCount="2">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_columnWeight="1">
-            <TextView
-                android:id="@+id/checkGoalWeeklyNoSportTxt"
-                android:text="@string/number_of_sport_routes_to_complete"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:textSize="18sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <ProgressBar
-                android:id="@+id/checkGoalWeeklyNoSportPB"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="?android:progressBarStyleHorizontal"/>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_columnWeight="1">
-            <TextView
-                android:id="@+id/checkGoalWeeklyNoBoulderTxt"
-                android:text="@string/number_of_boulder_problems_to_complete"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:textSize="18sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <ProgressBar
-                android:id="@+id/checkGoalWeeklyNoBoulderPB"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="?android:progressBarStyleHorizontal"/>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_columnWeight="1">
-            <TextView
-                android:id="@+id/checkGoalWeeklyAvgSportTxt"
-                android:text="@string/average_sport_grade"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:textSize="18sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/checkGoalWeeklyAvgSportTV"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_columnWeight="1">
-            <TextView
-                android:id="@+id/checkGoalWeeklyAvgBoulderTxt"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:textSize="18sp"
-                android:text="@string/average_boulder_grade"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/checkGoalWeeklyAvgBoulderTV"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_columnSpan="2"
-            android:layout_columnWeight="1">
-            <TextView
-                android:id="@+id/isWeeklyGoalActiveTxt"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/weeklyGoalSummaryTxt"
-                android:gravity="center"
-                android:textSize="24sp"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </GridLayout>
-</FrameLayout>
+    tools:context=".view.fragments.CheckWeeklyGoal"
+    android:rowCount="3"
+    android:columnCount="2">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/checkGoalWeeklyNoSportTxt"
+            android:text="@string/number_of_sport_routes_to_complete"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:id="@+id/checkGoalWeeklyNoSportPB"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:progressBarStyleHorizontal"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/checkGoalWeeklyNoBoulderTxt"
+            android:text="@string/number_of_boulder_problems_to_complete"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:id="@+id/checkGoalWeeklyNoBoulderPB"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:progressBarStyleHorizontal"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/checkGoalWeeklyAvgSportTxt"
+            android:text="@string/average_sport_grade"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/checkGoalWeeklyAvgSportTV"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/checkGoalWeeklyAvgBoulderTxt"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="18sp"
+            android:text="@string/average_boulder_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/checkGoalWeeklyAvgBoulderTV"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnSpan="2"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/isWeeklyGoalActiveTxt"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/weeklyGoalSummaryTxt"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</GridLayout>
