@@ -657,7 +657,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 sessionGestureDetector.onTouchEvent(event);
                 break;
         }
-        return true;
+        return super.onTouchEvent(event);
     }
     //endregion
 
