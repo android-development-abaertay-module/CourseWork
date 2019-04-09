@@ -15,5 +15,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:contentDescription="@string/nav_header_title"
-        android:src="@drawable/climb_draw_portrait"/>
+        android:src="@drawable/climb_draw_landscape"/>
 </LinearLayout>

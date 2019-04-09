@@ -21,18 +21,4 @@
             android:icon="@drawable/ic_action_map_icon"
             android:title="@string/my_map" />
     </group>
-
-    <item android:title="@string/Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/send" />
-        </menu>
-    </item>
-
 </menu>
