@@ -90,4 +90,5 @@
     <string name="title_activity_set_goals">Set Goals</string>
     <string name="channel_name">triningNotificaionActivityChanel</string>
     <string name="channel_description">training activity notifcation description</string>
+    <string name="route_type">Route Type</string>
 </resources>

@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Route Type"
+        android:text="@string/route_type"
         android:textAlignment="center"
         android:textSize="24sp" />
 
