@@ -27,8 +27,8 @@
         <Spinner
             android:id="@+id/weeklyNumberOfSportSpinner"
             android:entries="@array/number_routes_complete_options"
-            android:layout_marginVertical="15dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -39,8 +39,8 @@
         <Spinner
             android:id="@+id/weeklyNumberOfBoulderSpinner"
             android:entries="@array/number_routes_complete_options"
-            android:layout_marginVertical="15dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -50,7 +50,6 @@
             android:layout_height="wrap_content" />
         <Spinner
             android:id="@+id/weeklyAverageSportGradeSpinner"
-            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -60,7 +59,6 @@
             android:layout_height="wrap_content" />
         <Spinner
             android:id="@+id/weeklyAverageBoulderGradeSpinner"
-            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -74,7 +72,7 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/weeklyExpiresOnLabel"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="@string/expires_on"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
