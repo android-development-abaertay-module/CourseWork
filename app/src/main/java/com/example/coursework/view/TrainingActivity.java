@@ -186,14 +186,15 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                     distanceX = newX - originalX;
 
                 if (originalY > newY)
-                    distanceY = originalY = newY;
+                    distanceY = originalY - newY;
                 else
-                    distanceY = newY = originalY;
+                    distanceY = newY - originalY;
 
                 if (distanceX > distanceY){
+                    Log.d("gwyd", "onFling hit for Route : X distance : " + distanceX + ", y distance: " + distanceY);
                     deleteRoute(e1);
                 }else{
-                    Log.d("gwyd","Vertical fling. just scroll");
+                    Log.d("gwyd","Vertical fling. just scroll:  X distance : " + distanceX + ", y distance: " + distanceY);
                 }
 
 
@@ -235,17 +236,17 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                     distanceX = newX - originalX;
 
                 if (originalY > newY)
-                    distanceY = originalY = newY;
+                    distanceY = originalY - newY;
                 else
-                    distanceY = newY = originalY;
+                    distanceY = newY - originalY;
 
                 if (distanceX > distanceY) {
-                    Log.d("gwyd", "onFling hit for Session");
+                    Log.d("gwyd", "onFling hit for Session : X distance : " + distanceX + ", y distance: " + distanceY);
                     int startingPosition = displayRecentSessionsLV.pointToPosition((int) e1.getX(), (int) e1.getY());
                     Session sessionToDelete = (Session) displayRecentSessionsLV.getAdapter().getItem(startingPosition);
                     deleteSession(sessionToDelete);
                 }else{
-                    Log.d("gwyd","Vertical fling. just scroll");
+                    Log.d("gwyd","Vertical fling. just scroll:  X distance : " + distanceX + ", y distance: " + distanceY);
                 }
                     return true;
             }
