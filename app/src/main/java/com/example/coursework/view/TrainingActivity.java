@@ -173,11 +173,30 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             }
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                Log.d("gwyd","onFling hit for Route");
-                int  startingPosition = displayRecentRoutesLV.pointToPosition((int) e1.getX(), (int) e1.getY());
-                Route routeToDelete = (Route) displayRecentRoutesLV.getAdapter().getItem(startingPosition);
-                trainingActivityViewModel.deleteRoute(routeToDelete);
-                toastAndLog("Route Deleted",LogType.DEBUG);
+                //TODO: fix on fling for both guesture detectors so taht it only deletes on horizontal fling
+                float originalX = e1.getX();
+                float originalY = e1.getY();
+                float newX = e2.getX();
+                float newY = e2.getY();
+                float distanceY;
+                float distanceX;
+                if (originalX > newX)
+                    distanceX = originalX - newX;
+                else
+                    distanceX = newX - originalX;
+
+                if (originalY > newY)
+                    distanceY = originalY = newY;
+                else
+                    distanceY = newY = originalY;
+
+                if (distanceX > distanceY){
+                    deleteRoute(e1);
+                }else{
+                    Log.d("gwyd","Vertical fling. just scroll");
+                }
+
+
                 return true;
             }
         });
@@ -204,11 +223,31 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             }
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                Log.d("gwyd","onFling hit for Session");
-                int  startingPosition = displayRecentSessionsLV.pointToPosition((int) e1.getX(), (int) e1.getY());
-                Session sessionToDelete = (Session) displayRecentSessionsLV.getAdapter().getItem(startingPosition);
-                deleteSession(sessionToDelete);
-                return true;
+                float originalX = e1.getX();
+                float originalY = e1.getY();
+                float newX = e2.getX();
+                float newY = e2.getY();
+                float distanceY;
+                float distanceX;
+                if (originalX > newX)
+                    distanceX = originalX - newX;
+                else
+                    distanceX = newX - originalX;
+
+                if (originalY > newY)
+                    distanceY = originalY = newY;
+                else
+                    distanceY = newY = originalY;
+
+                if (distanceX > distanceY) {
+                    Log.d("gwyd", "onFling hit for Session");
+                    int startingPosition = displayRecentSessionsLV.pointToPosition((int) e1.getX(), (int) e1.getY());
+                    Session sessionToDelete = (Session) displayRecentSessionsLV.getAdapter().getItem(startingPosition);
+                    deleteSession(sessionToDelete);
+                }else{
+                    Log.d("gwyd","Vertical fling. just scroll");
+                }
+                    return true;
             }
         });
         messageTxt = findViewById(R.id.message);
@@ -361,6 +400,8 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         //endregion
     }
 
+
+
     private void sendNotificationToSetGoals(String title,String contentText, GoalType goalType, int notificationID, int requestCode) {
         // Create an explicit intent for an Activity in your app
         Intent i = new Intent(TrainingActivity.this, SetGoalsActivity.class);
@@ -500,6 +541,23 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                     toastAndLog("Session Deleted",LogType.DEBUG);
                 })
                 .setNegativeButton(android.R.string.no, null).show();
+    }
+    private void deleteRoute(MotionEvent e1) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Route?")
+                .setMessage("Are you sure you want to delete this Route?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                    //horizontal fling - delete
+                    Log.d("gwyd","onFling hit for Route");
+                    int  startingPosition = displayRecentRoutesLV.pointToPosition((int) e1.getX(), (int) e1.getY());
+                    Route routeToDelete = (Route) displayRecentRoutesLV.getAdapter().getItem(startingPosition);
+                    trainingActivityViewModel.deleteRoute(routeToDelete);
+                    toastAndLog("Route Deleted", LogType.DEBUG);
+                })
+                .setNegativeButton(android.R.string.no, null).show();
+
+
     }
     private String getAddressFromLocation(Session session) {
         String address = "";
