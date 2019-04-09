@@ -50,8 +50,8 @@
     <string name="sport_worked_goal">Sport Worked Goal</string>
     <string name="average_boulder_grade">Average Boulder Grade</string>
     <string name="average_sport_grade">Average Sport Grade</string>
-    <string name="number_of_boulder_problems_to_complete">Number of Boulder Problems to Complete</string>
-    <string name="number_of_sport_routes_to_complete">Number of Sport Routes to Complete</string>
+    <string name="number_of_boulder_problems_to_complete">Boulder Problems to Complete</string>
+    <string name="number_of_sport_routes_to_complete">Sport Routes to Complete</string>
     <string name="hours_training">Hours Training</string>
     <string name="created_on">Created On</string>
     <string name="expires_on">Expires On</string>

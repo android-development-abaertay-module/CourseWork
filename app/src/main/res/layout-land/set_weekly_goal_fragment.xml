@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragments.SetWeeklyGoal">
+<GridLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rowCount="3"
+    android:columnCount="2">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/weeklyNumberOfSportTxt"
+            android:layout_marginStart="10dp"
+            android:text="@string/number_of_sport_routes_to_complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/weeklyNumberOfSportSpinner"
+            android:entries="@array/number_routes_complete_options"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/weeklyNumberOfBoulderTxt"
+            android:layout_marginStart="10dp"
+            android:text="@string/number_of_boulder_problems_to_complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/weeklyNumberOfBoulderSpinner"
+            android:entries="@array/number_routes_complete_options"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/weeklyAverageSportGradeTxt"
+            android:layout_marginStart="10dp"
+            android:text="@string/average_sport_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/weeklyAverageSportGradeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/weeklyAverageBoulderGradeTxt"
+            android:layout_marginStart="10dp"
+            android:text="@string/average_boulder_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/weeklyAverageBoulderGradeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/weeklyCreatedOnLabel"
+            android:text="@string/created_on"
+            android:layout_marginStart="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/weeklyCreatedOnTxt"
+            android:layout_marginStart="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1">
+        <TextView
+            android:id="@+id/weeklyExpiresOnLabel"
+            android:text="@string/expires_on"
+            android:layout_marginStart="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/weeklyExpiresOnTxt"
+            android:layout_marginStart="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</GridLayout>
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:paddingHorizontal="10dp"-->
+        <!--android:paddingVertical="10dp"-->
+        <!--android:orientation="vertical">-->
+        <!--<TextView-->
+            <!--android:id="@+id/weeklyTitleTxt"-->
+            <!--android:text="@string/set_goal_targets"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="24sp"-->
+            <!--android:textStyle="bold"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<TextView-->
+            <!--android:id="@+id/weeklyNumberOfSportTxt"-->
+            <!--android:text="@string/number_of_sport_routes_to_complete"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<Spinner-->
+            <!--android:id="@+id/weeklyNumberOfSportSpinner"-->
+            <!--android:entries="@array/number_routes_complete_options"-->
+            <!--android:layout_marginVertical="10dp"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/weeklyNumberOfBoulderTxt"-->
+            <!--android:text="@string/number_of_boulder_problems_to_complete"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<Spinner-->
+            <!--android:id="@+id/weeklyNumberOfBoulderSpinner"-->
+            <!--android:entries="@array/number_routes_complete_options"-->
+            <!--android:layout_marginVertical="10dp"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/weeklyAverageSportGradeTxt"-->
+            <!--android:text="@string/average_sport_grade"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<Spinner-->
+            <!--android:id="@+id/weeklyAverageSportGradeSpinner"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/weeklyAverageBoulderGradeTxt"-->
+            <!--android:text="@string/average_boulder_grade"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<Spinner-->
+            <!--android:id="@+id/weeklyAverageBoulderGradeSpinner"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/weeklyCreatedOnLabel"-->
+            <!--android:text="@string/created_on"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<TextView-->
+            <!--android:id="@+id/weeklyCreatedOnTxt"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<TextView-->
+            <!--android:id="@+id/weeklyExpiresOnLabel"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:text="@string/expires_on"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<TextView-->
+            <!--android:id="@+id/weeklyExpiresOnTxt"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+
+    <!--</LinearLayout>-->
+    <Button
+        android:id="@+id/resetWeeklyGoalBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary" />
+</FrameLayout>
