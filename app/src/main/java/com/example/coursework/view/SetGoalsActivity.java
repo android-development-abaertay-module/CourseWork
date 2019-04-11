@@ -51,21 +51,6 @@ public class SetGoalsActivity extends AppCompatActivity {
 
             }
         });
-
-        Intent intent = getIntent();
-        if (intent != null) {
-            if (intent.hasExtra(GOAL_TYPE)) {
-                //came from notification.
-                //navigate to correct fragment
-                int value = intent.getIntExtra(GOAL_TYPE,0);
-                TabLayout.Tab tab = tabLayout.getTabAt(value);
-                if (tab != null)
-                    tab.select();
-
-            }else{
-                Log.d("gwyd","No Goal Type set");
-            }
-        }
     }
     @Override
     protected void onNewIntent (Intent intent) {

@@ -365,7 +365,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 //if achieved
                 if (weeklyGoal.getGoalAchieved()) {
                     if (!weeklyGoal.isAchievedSent()){
-                        sendNotificationToSetGoals("Goal Accomplished", "Weekly Goal Accomplished \n Review and Re-set Goal.", GoalType.WEEKLY, seasonalGoaNotificationID, 0);
+                        sendNotificationToCheckGoals("Goal Accomplished", "Weekly Goal Accomplished \n Review and Re-set Goal.", GoalType.WEEKLY, seasonalGoaNotificationID, 0);
                         weeklyGoal.setAchievedSent(true);
                         trainingActivityViewModel.updateGoalWeekly(weeklyGoal);
                 }else
@@ -381,7 +381,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 //if Achieved
                 if (seasonalGoal.getGoalAchieved()){
                     if (!seasonalGoal.isAchievedSent()) {
-                        sendNotificationToSetGoals("Goal Accomplished", "Seasonal Goal Accomplished \n Review and Re-set Goal.", GoalType.SEASONAL, weeklyGoalNotificationID, 1);
+                        sendNotificationToCheckGoals("Goal Accomplished", "Seasonal Goal Accomplished \n Review and Re-set Goal.", GoalType.SEASONAL, weeklyGoalNotificationID, 1);
                         seasonalGoal.setAchievedSent(true);
                         trainingActivityViewModel.updateGoalSeasonal(seasonalGoal);
                     }else
@@ -396,7 +396,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 //if Achieved
                 if(annualGoal.getGoalAchieved()) {
                     if (!annualGoal.isAchievedSent()) {
-                        sendNotificationToSetGoals("Goal Accomplished", "Annual Goal Accomplished \n Review and Re-set Goal.", GoalType.ANNUAL, annualGoalNotificationID, 2);
+                        sendNotificationToCheckGoals("Goal Accomplished", "Annual Goal Accomplished \n Review and Re-set Goal.", GoalType.ANNUAL, annualGoalNotificationID, 2);
                         annualGoal.setAchievedSent(true);
                         trainingActivityViewModel.updateGoalAnnual(annualGoal);
                     }else
@@ -411,9 +411,9 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
 
 
-    private void sendNotificationToSetGoals(String title,String contentText, GoalType goalType, int notificationID, int requestCode) {
+    private void sendNotificationToCheckGoals(String title, String contentText, GoalType goalType, int notificationID, int requestCode) {
         // Create an explicit intent for an Activity in your app
-        Intent i = new Intent(TrainingActivity.this, SetGoalsActivity.class);
+        Intent i = new Intent(TrainingActivity.this, CheckGoalsActivity.class);
         i.putExtra(USER_ID,user.getId());
         i.putExtra(USERNAME,user.getUserName());
         i.putExtra(GOAL_TYPE,goalType.getValue());
