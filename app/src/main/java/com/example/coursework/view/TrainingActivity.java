@@ -277,11 +277,12 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             longitude = longitudeVal;
         });
         trainingActivityViewModel.getAddRouteFormVisible().observe(this, isVisible ->{
-            if (isVisible){
-                addRouteForm.setVisibility(View.VISIBLE);
-            }else{
-                addRouteForm.setVisibility(View.GONE);
-            }
+            if (isVisible !=null)
+                if (isVisible){
+                    addRouteForm.setVisibility(View.VISIBLE);
+                }else{
+                    addRouteForm.setVisibility(View.GONE);
+                }
         });
         trainingActivityViewModel.getLocationPermissionGranted().observe(this, permissionCheckVal -> {
             permissionChecked = permissionCheckVal;
@@ -293,7 +294,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         trainingActivityViewModel.getUserLD().observe(this, userVal -> {
             user = userVal;
         });
-        trainingActivityViewModel.getCurrentSession(user.getId()).observe(this, session -> {
+        trainingActivityViewModel.getCurrentSession().observe(this, session -> {
             user.setCurSesh(session);
             if (user.getCurSesh() == null) {
                 //Display Start Session stuff
@@ -323,14 +324,14 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             }
         });
 
-        trainingActivityViewModel.getRecentSessionsLD(user.getId()).observe(this, sessions -> {
+        trainingActivityViewModel.getRecentSessionsLD().observe(this, sessions -> {
             if (sessions != null) {
                 user.setSessionsList((ArrayList<Session>) sessions);
                 SessionAdapter adapter = new SessionAdapter(getApplicationContext(), user.getSessionsList());
                 displayRecentSessionsLV.setAdapter(adapter);
             }
         });
-        trainingActivityViewModel.getRecentRoutesForUserLD(user.getId()).observe(this, routes -> {
+        trainingActivityViewModel.getRecentRoutesForUserLD().observe(this, routes -> {
             //if user has no current session then they have no routes to display in session
             if (user.getCurSesh() != null) {
                 user.getCurSesh().getRoutes().clear();
@@ -357,7 +358,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             }
         });
 
-        trainingActivityViewModel.getGoalWeeklyLD(user.getId()).observe(this ,goalWeeklyVal -> {
+        trainingActivityViewModel.getGoalWeeklyLD().observe(this ,goalWeeklyVal -> {
             weeklyGoal = goalWeeklyVal;
             //check if weekly goal is set
             if (weeklyGoal != null){
@@ -374,7 +375,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                     Log.d("gwyd","Weekly goal Not achieved");
             }
         });
-        trainingActivityViewModel.getGoalSeasonalLD(user.getId()).observe(this, goalSeasonalVal ->{
+        trainingActivityViewModel.getGoalSeasonalLD().observe(this, goalSeasonalVal ->{
             seasonalGoal = goalSeasonalVal;
             if(seasonalGoal !=null){
                 //if Achieved
@@ -389,7 +390,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                     Log.d("gwyd","Seasonal goal Not achieved");
             }
         });
-        trainingActivityViewModel.getGoalAnnualLD(user.getId()).observe(this, goalAnnualVal ->{
+        trainingActivityViewModel.getGoalAnnualLD().observe(this, goalAnnualVal ->{
             annualGoal = goalAnnualVal;
             if (annualGoal != null){
                 //if Achieved
@@ -484,7 +485,6 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         trainingActivityViewModel.setAddRouteFormVisible(false);
         displayRecentRoutesLV.setVisibility(View.VISIBLE);
 
-        //TODO:check goals progress with the new route
         checkGoalProgress();
     }
 
@@ -579,11 +579,6 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
 
             List<Address> localAddress = geocoder.getFromLocation(session.getLat(), session.getLon(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             address = localAddress.get(0).getAddressLine(0);
-//            city = localAddress.get(0).getLocality();
-//            state = localAddress.get(0).getAdminArea();
-//            country = localAddress.get(0).getCountryName();
-//            postalCode = localAddress.get(0).getPostalCode();
-//            knownName = localAddress.get(0).getFeatureName();
             Log.d("gwyd","lat and lon used for below address was: " + session.getLat() + "   " + session.getLon());
             Log.d("gwyd","address found for location was : " + address);
             return address;

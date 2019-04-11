@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 
 import com.example.coursework.model.GoalAnnual;
@@ -35,26 +36,17 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getAddRouteFormVisible() {
         return addRouteFormVisible;
     }
-
     public void setAddRouteFormVisible(boolean isAddRouteFormVisible) {
         this.addRouteFormVisible.setValue(isAddRouteFormVisible);
     }
 
-    public LiveData<GoalWeekly> getGoalWeeklyLD(long userId) {
-        if (goalWeeklyLD == null)
-            goalWeeklyLD = daoRepository.getMostRecentGoalWeekly(userId);
+    public LiveData<GoalWeekly> getGoalWeeklyLD() {
         return goalWeeklyLD;
     }
-
-    public LiveData<GoalSeasonal> getGoalSeasonalLD(long userId) {
-        if (goalSeasonalLD == null)
-            goalSeasonalLD = daoRepository.getMostRecentGoalSeasonal(userId);
+    public LiveData<GoalSeasonal> getGoalSeasonalLD() {
         return goalSeasonalLD;
     }
-
-    public LiveData<GoalAnnual> getGoalAnnualLD(long userId) {
-        if (goalAnnualLD == null)
-            goalAnnualLD = daoRepository.getMostRecentGoalAnnual(userId);
+    public LiveData<GoalAnnual> getGoalAnnualLD() {
         return goalAnnualLD;
     }
 
@@ -63,7 +55,6 @@ public class TrainingActivityViewModel extends AndroidViewModel {
             currentLatitudeLD = new MutableLiveData<>();
         return currentLatitudeLD;
     }
-
     public void setCurrentLatitudeLD(double currentLatitude) {
         this.currentLatitudeLD.setValue(currentLatitude);
     }
@@ -73,7 +64,6 @@ public class TrainingActivityViewModel extends AndroidViewModel {
             currentLongitudeLD = new MutableLiveData<>();
         return currentLongitudeLD;
     }
-
     public void setCurrentLongitudeLD(double currentLongitude) {
         this.currentLongitudeLD.setValue(currentLongitude);
     }
@@ -85,7 +75,6 @@ public class TrainingActivityViewModel extends AndroidViewModel {
         }
         return locationPermissionGranted;
     }
-
     public void setLocationPermissionGranted(PermissionCheck locationPermissionGranted) {
         this.locationPermissionGranted.setValue(locationPermissionGranted);
     }
@@ -96,24 +85,14 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     public  void setUserLD(User user){
         userLD.setValue(user);
     }
-    public LiveData<Session> getCurrentSession(long userId) {
-        if (currentSessionLD == null)
-            currentSessionLD = daoRepository.getCurrentSession(userId);
 
+    public LiveData<Session> getCurrentSession() {
         return currentSessionLD;
     }
-    public LiveData<List<Route>> getRecentRoutesForUserLD(long userId) {
-        if (recentRoutesLD == null)
-            recentRoutesLD =  daoRepository.getRecentRoutesForUser( 6,  userId);
-
+    public LiveData<List<Route>> getRecentRoutesForUserLD() {
         return recentRoutesLD;
     }
-
-    public LiveData<List<Session>> getRecentSessionsLD(long userId) {
-        //if null check the database as it may be first load
-        if (recentSessionsLD == null)
-            recentSessionsLD = daoRepository.getRecentSessionsForUser(6,userId);
-
+    public LiveData<List<Session>> getRecentSessionsLD() {
         return recentSessionsLD;
     }
 
@@ -122,6 +101,19 @@ public class TrainingActivityViewModel extends AndroidViewModel {
         userLD = new MutableLiveData<>();
         addRouteFormVisible = new MutableLiveData<>();
         daoRepository = new DaoRepository(application);
+        goalWeeklyLD = Transformations.switchMap(userLD, user -> daoRepository.getMostRecentGoalWeekly(getUserIdForQuery(user)));
+        goalSeasonalLD = Transformations.switchMap(userLD,user -> daoRepository.getMostRecentGoalSeasonal(getUserIdForQuery(user)));
+        goalAnnualLD = Transformations.switchMap(userLD, user -> daoRepository.getMostRecentGoalAnnual(getUserIdForQuery(user)));
+        currentSessionLD = Transformations.switchMap(userLD, user -> daoRepository.getCurrentSession(getUserIdForQuery(user)));
+        recentRoutesLD = Transformations.switchMap(userLD, user -> daoRepository.getRecentRoutesForUser(6, getUserIdForQuery(user)));
+        recentSessionsLD = Transformations.switchMap(userLD, user -> daoRepository.getRecentSessionsForUser(6, getUserIdForQuery(user)));
+    }
+
+    private long getUserIdForQuery(User user) {
+        long id = -1;
+        if (user != null)
+            id = user.getId();
+        return id;
     }
 
     public void updateCurrentSession(Session session){
