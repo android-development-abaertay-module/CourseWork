@@ -91,4 +91,5 @@
     <string name="channel_name">triningNotificaionActivityChanel</string>
     <string name="channel_description">training activity notifcation description</string>
     <string name="route_type">Route Type</string>
+    <string name="goal_achived">Goal Achieved</string>
 </resources>

@@ -37,6 +37,7 @@ public class CheckWeeklyGoal extends Fragment {
     private TextView avgSportAchievedDisplay;
     private TextView avgBoulderAchievedDisplay;
     private TextView weeklyGoalSummaryTxt;
+    private TextView isWeeklyGoalAchievedTat;
 
 
     public static CheckWeeklyGoal newInstance() {
@@ -70,6 +71,7 @@ public class CheckWeeklyGoal extends Fragment {
         avgSportAchievedDisplay = getView().findViewById(R.id.checkGoalWeeklyAvgSportTV);
         avgBoulderAchievedDisplay = getView().findViewById(R.id.checkGoalWeeklyAvgBoulderTV);
         weeklyGoalSummaryTxt = getView().findViewById(R.id.weeklyGoalSummaryTxt);
+        isWeeklyGoalAchievedTat = getView().findViewById(R.id.isWeeklyGoalActiveTxt);
         //endregion
 
 
@@ -81,6 +83,10 @@ public class CheckWeeklyGoal extends Fragment {
             //TODO: put code int to populate was achieved TextView that's already in the views
             if (goalWeeklyVal != null){
                 goalWeekly = goalWeeklyVal;
+                if (goalWeekly.getGoalAchieved())
+                    isWeeklyGoalAchievedTat.setText(R.string.goal_achived);
+                else
+                    isWeeklyGoalAchievedTat.setText("");
                 if (goalWeekly.getDateExpires().isBefore(OffsetDateTime.now())){
                     //goal has expired...
                     weeklyGoalSummaryTxt.setText(R.string.goal_expired_summary);

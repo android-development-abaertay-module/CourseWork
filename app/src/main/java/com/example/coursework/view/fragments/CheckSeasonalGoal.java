@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.example.coursework.R;
 import com.example.coursework.model.GoalSeasonal;
 import com.example.coursework.model.User;
-import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.helper.GoalCheckDTO;
 import com.example.coursework.viewmodel.CheckGoalsVM.CheckSeasonalGoalViewModel;
 
@@ -36,7 +35,7 @@ public class CheckSeasonalGoal extends Fragment {
     private TextView highestSportWorkedDisplay;
     private TextView highestBoulderWorkedDisplay;
     private TextView seasonalGoalSummaryTxt;
-
+    private TextView isSeasonalGoalAchievedTat;
 
     public static CheckSeasonalGoal newInstance() {
         return new CheckSeasonalGoal();
@@ -68,6 +67,7 @@ public class CheckSeasonalGoal extends Fragment {
         highestSportWorkedDisplay = getView().findViewById(R.id.checkGoalSeasonalSportWorkedTV);
         highestBoulderWorkedDisplay = getView().findViewById(R.id.checkGoalSeasonalBoulderWorkedTV);
         seasonalGoalSummaryTxt = getView().findViewById(R.id.seasonalGoalSummaryTxt);
+        isSeasonalGoalAchievedTat = getView().findViewById(R.id.isSeasonalGoalActiveTxt);
         //endregion
 
 
@@ -78,6 +78,10 @@ public class CheckSeasonalGoal extends Fragment {
         checkSeasonalGoalVM.getGoalSeasonalLD().observe(this, goalSeasonalVal -> {
             if (goalSeasonalVal != null){
                 goalSeasonal = goalSeasonalVal;
+                if (goalSeasonal.getGoalAchieved())
+                    isSeasonalGoalAchievedTat.setText(R.string.goal_achived);
+                else
+                    isSeasonalGoalAchievedTat.setText("");
                 if (goalSeasonal.getDateExpires().isBefore(OffsetDateTime.now())){
                     //goal has expired...
                     seasonalGoalSummaryTxt.setText(R.string.goal_expired_summary);

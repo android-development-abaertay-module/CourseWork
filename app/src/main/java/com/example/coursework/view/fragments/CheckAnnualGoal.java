@@ -1,6 +1,5 @@
 package com.example.coursework.view.fragments;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.example.coursework.R;
 import com.example.coursework.model.GoalAnnual;
 import com.example.coursework.model.User;
-import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.helper.GoalCheckDTO;
 import com.example.coursework.viewmodel.CheckGoalsVM.CheckAnnualGoalViewModel;
 
@@ -37,6 +35,7 @@ public class CheckAnnualGoal extends Fragment {
     private TextView highestSportWorkedDisplay;
     private TextView highestBoulderWorkedDisplay;
     private TextView annualGoalSummaryTxt;
+    private TextView isAnnualGoalAchievedTat;
 
     public static CheckAnnualGoal newInstance() {
         return new CheckAnnualGoal();
@@ -68,6 +67,7 @@ public class CheckAnnualGoal extends Fragment {
         highestSportWorkedDisplay = getView().findViewById(R.id.checkGoalAnnualSportWorkedTV);
         highestBoulderWorkedDisplay = getView().findViewById(R.id.checkGoalAnnualBoulderWorkedTV);
         annualGoalSummaryTxt = getView().findViewById(R.id.annualGoalSummaryTxt);
+        isAnnualGoalAchievedTat = getView().findViewById(R.id.isAnnualGoalActiveTxt);
         //endregion
 
 
@@ -78,6 +78,10 @@ public class CheckAnnualGoal extends Fragment {
         checkGoalAnnualVM.getGoalAnnualLD().observe(this, goalSeasonalVal -> {
             if (goalSeasonalVal != null){
                 goalAnnual = goalSeasonalVal;
+                if (goalAnnual.getGoalAchieved())
+                    isAnnualGoalAchievedTat.setText(R.string.goal_achived);
+                else
+                    isAnnualGoalAchievedTat.setText("");
                 if (goalAnnual.getDateExpires().isBefore(OffsetDateTime.now())){
                     //goal has expired...
                     annualGoalSummaryTxt.setText(R.string.goal_expired_summary);

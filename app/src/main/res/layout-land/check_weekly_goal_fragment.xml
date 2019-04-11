@@ -91,6 +91,7 @@
         android:layout_columnWeight="1">
         <TextView
             android:id="@+id/isWeeklyGoalActiveTxt"
+            android:gravity="center"
             android:layout_marginTop="10dp"
             android:paddingHorizontal="10dp"
             android:layout_width="match_parent"

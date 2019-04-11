@@ -73,6 +73,7 @@
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/isWeeklyGoalActiveTxt"
+        android:gravity="center"
         android:layout_marginTop="10dp"
         android:paddingHorizontal="10dp"
         android:layout_width="match_parent"
