@@ -11,13 +11,6 @@
         android:layout_height="wrap_content"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         tools:context=".view.MainMapActivity">
-        <!--<ImageView-->
-            <!--android:id="@+id/ic_magnify"-->
-            <!--android:layout_width="15dp"-->
-            <!--android:layout_height="15dp"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginStart="10dp"-->
-            <!--android:src="@drawable/ic_magnify"/>-->
     </fragment>
     <fragment
         android:id="@+id/map"
