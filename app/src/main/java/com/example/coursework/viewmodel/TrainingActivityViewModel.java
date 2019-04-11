@@ -30,6 +30,15 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     private MutableLiveData<PermissionCheck> locationPermissionGranted;
     private MutableLiveData<Double> currentLatitudeLD;
     private MutableLiveData<Double> currentLongitudeLD;
+    private MutableLiveData<Boolean> addRouteFormVisible;
+
+    public MutableLiveData<Boolean> getAddRouteFormVisible() {
+        return addRouteFormVisible;
+    }
+
+    public void setAddRouteFormVisible(boolean isAddRouteFormVisible) {
+        this.addRouteFormVisible.setValue(isAddRouteFormVisible);
+    }
 
     public LiveData<GoalWeekly> getGoalWeeklyLD(long userId) {
         if (goalWeeklyLD == null)
@@ -111,6 +120,7 @@ public class TrainingActivityViewModel extends AndroidViewModel {
     public TrainingActivityViewModel(@NonNull Application application) {
         super(application);
         userLD = new MutableLiveData<>();
+        addRouteFormVisible = new MutableLiveData<>();
         daoRepository = new DaoRepository(application);
     }
 

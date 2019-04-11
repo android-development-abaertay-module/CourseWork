@@ -114,10 +114,12 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 case R.id.navigation_add_route:
                     if (addRouteForm.getVisibility() != View.VISIBLE) {
                         addRouteForm.setVisibility(View.VISIBLE);
+                        trainingActivityViewModel.setAddRouteFormVisible(true);
                         displayRecentRoutesLV.setVisibility(View.GONE);
                     } else {
                         addRouteForm.setVisibility(View.GONE);
                         displayRecentRoutesLV.setVisibility(View.VISIBLE);
+                        trainingActivityViewModel.setAddRouteFormVisible(false);
                     }
                     return true;
                 case R.id.navigation_end_session:
@@ -274,7 +276,13 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         trainingActivityViewModel.getCurrentLongitudeLD().observe(this, longitudeVal -> {
             longitude = longitudeVal;
         });
-
+        trainingActivityViewModel.getAddRouteFormVisible().observe(this, isVisible ->{
+            if (isVisible){
+                addRouteForm.setVisibility(View.VISIBLE);
+            }else{
+                addRouteForm.setVisibility(View.GONE);
+            }
+        });
         trainingActivityViewModel.getLocationPermissionGranted().observe(this, permissionCheckVal -> {
             permissionChecked = permissionCheckVal;
             //if permissions already denied by user on this visit to TrainingActivity don't show dialog again.
@@ -473,6 +481,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         Route newRoute = new Route(user.getCurSesh().getId(), user.getId(), grade, routeType, styleDone, OffsetDateTime.now());
         trainingActivityViewModel.addRoute(newRoute);
         addRouteForm.setVisibility(View.GONE);
+        trainingActivityViewModel.setAddRouteFormVisible(false);
         displayRecentRoutesLV.setVisibility(View.VISIBLE);
 
         //TODO:check goals progress with the new route
@@ -489,8 +498,11 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
     }
 
     private void endSession_Click() {
-        if (addRouteForm.getVisibility() == View.VISIBLE)
+        if (addRouteForm.getVisibility() == View.VISIBLE){
             addRouteForm.setVisibility(View.GONE);
+            trainingActivityViewModel.setAddRouteFormVisible(false);
+        }
+
         if (user.getCurSesh() != null) {
             user.getCurSesh().setEndTime(OffsetDateTime.now());
             trainingActivityViewModel.updateCurrentSession(user.getCurSesh());
