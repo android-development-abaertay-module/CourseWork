@@ -74,7 +74,6 @@ public abstract class AppDatabase extends RoomDatabase {
             super.onCreate(db);
             Log.d("gwyd","Room database created successfully");
 
-            //TODO: sort out initial test data once models setup
             new InitialDataAsyncTask(instance).execute();
         }
     };
