@@ -23,11 +23,12 @@ public class MainMapActivityViewModel extends AndroidViewModel {
     private DaoRepository daoRepository;
     private MutableLiveData<User> userLD;
     private LiveData<List<Session>> recentSessionsLD;
+    private MediatorLiveData<MapMediator> mediator;
+
     private MutableLiveData<GoogleMap> mapLD;
     private MutableLiveData<PlacesClient> placesClientLD;
-    private MediatorLiveData<MapMediator> mediator;
-    private MediatorLiveData<PlaceInfoHoulder> customPlaceLD;
-    private MediatorLiveData<Boolean> isInitCameraMoveComplete;
+    private MutableLiveData<PlaceInfoHoulder> customPlaceLD;
+    private MutableLiveData<Boolean> isInitCameraMoveComplete;
     private MutableLiveData<Integer> mapTypeLD;
     private MutableLiveData<Boolean> isPollyVisibleLD;
 
@@ -74,7 +75,7 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         this.isInitCameraMoveComplete.setValue(isInitCameraMoveComplete);
     }
 
-    public MediatorLiveData<Boolean> getIsInitCameraMoveComplete() {
+    public MutableLiveData<Boolean> getIsInitCameraMoveComplete() {
         return isInitCameraMoveComplete;
     }
 
@@ -91,8 +92,8 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         userLD = new MutableLiveData<>();
         mapLD = new MutableLiveData<>();
         placesClientLD = new MutableLiveData<>();
-        customPlaceLD = new MediatorLiveData<>();
-        isInitCameraMoveComplete = new MediatorLiveData<>();
+        customPlaceLD = new MutableLiveData<>();
+        isInitCameraMoveComplete = new MutableLiveData<>();
         isInitCameraMoveComplete.setValue(false);
 
         recentSessionsLD = Transformations.switchMap(userLD, (User user) -> {
