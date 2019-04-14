@@ -327,7 +327,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                     .add(bottomLeft)
                     .add(topLeft);
             polygon = mMap.addPolygon(rectangle);
-            polygon.setVisible(false);
+                polygon.setVisible(mapViewModel.isPollyVisible().getValue());
 
             if(!initialFocusOnSessionBounds){
                 Log.d("gwyd","initial camera focus done");
@@ -407,11 +407,14 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
 
     public void mapsDrawPolygon_Click(View view) {
+        boolean vis;
         if (polygon != null){
             if (polygon.isVisible())
-                polygon.setVisible(false);
+                vis =false;
             else
-                polygon.setVisible(true);
+                vis = true;
+            polygon.setVisible(vis);
+            mapViewModel.setIsPollyVisibleLD(vis);
         }else
             toastAndLog("No Sessions To draw polygon around.", LogType.DEBUG);
 

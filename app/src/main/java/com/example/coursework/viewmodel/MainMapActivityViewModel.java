@@ -20,15 +20,24 @@ import java.util.List;
 
 public class MainMapActivityViewModel extends AndroidViewModel {
 
-    DaoRepository daoRepository;
-    MutableLiveData<User> userLD;
-    LiveData<List<Session>> recentSessionsLD;
-    MutableLiveData<GoogleMap> mapLD;
-    MutableLiveData<PlacesClient> placesClientLD;
-    MediatorLiveData<MapMediator> mediator;
-    MediatorLiveData<PlaceInfoHoulder> customPlaceLD;
-    MediatorLiveData<Boolean> isInitCameraMoveComplete;
-    MutableLiveData<Integer> mapTypeLD;
+    private DaoRepository daoRepository;
+    private MutableLiveData<User> userLD;
+    private LiveData<List<Session>> recentSessionsLD;
+    private MutableLiveData<GoogleMap> mapLD;
+    private MutableLiveData<PlacesClient> placesClientLD;
+    private MediatorLiveData<MapMediator> mediator;
+    private MediatorLiveData<PlaceInfoHoulder> customPlaceLD;
+    private MediatorLiveData<Boolean> isInitCameraMoveComplete;
+    private MutableLiveData<Integer> mapTypeLD;
+    private MutableLiveData<Boolean> isPollyVisibleLD;
+
+    public MutableLiveData<Boolean> isPollyVisible() {
+        return isPollyVisibleLD;
+    }
+
+    public void setIsPollyVisibleLD(boolean isVisible) {
+        this.isPollyVisibleLD.setValue(isVisible);
+    }
 
     public MutableLiveData<Integer> getMapTypeLD() {
         return mapTypeLD;
@@ -77,6 +86,8 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         daoRepository = new DaoRepository(application);
         mapTypeLD = new MutableLiveData<>();
         mapTypeLD.setValue(1);
+        isPollyVisibleLD = new MutableLiveData<>();
+        isPollyVisibleLD.setValue(false);
         userLD = new MutableLiveData<>();
         mapLD = new MutableLiveData<>();
         placesClientLD = new MutableLiveData<>();
