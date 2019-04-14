@@ -246,7 +246,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         Log.d("gwyd", "getting current location");
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
-            //TODO: decide between using location manager or google play services location (what i used in training activity vs the youtube guy)
             Task location = fusedLocationProviderClient.getLastLocation();
             location.addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -327,7 +326,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                     .add(bottomLeft)
                     .add(topLeft);
             polygon = mMap.addPolygon(rectangle);
-                polygon.setVisible(mapViewModel.isPollyVisible().getValue());
+            polygon.setVisible(mapViewModel.isPollyVisible().getValue());
 
             if(!initialFocusOnSessionBounds){
                 Log.d("gwyd","initial camera focus done");
