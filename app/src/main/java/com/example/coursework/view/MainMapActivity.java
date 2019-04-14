@@ -361,7 +361,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             mMap.setInfoWindowAdapter(new CustomMapInfoWindowAdapter(MainMapActivity.this));
             //enable on marker click
             mMap.setOnMarkerClickListener(this);
-            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            if (mapViewModel.getMapTypeLD().getValue()!= null)
+                mMap.setMapType(mapViewModel.getMapTypeLD().getValue());
 
 
             //setup listener for go to my location
@@ -436,8 +437,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 break;
         }
-
-
+        mapViewModel.setMapTypeLD(mMap.getMapType());
     }
 
     //region [OnMarkerClickListener methods]

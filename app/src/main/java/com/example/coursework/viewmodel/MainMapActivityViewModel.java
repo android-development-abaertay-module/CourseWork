@@ -28,6 +28,15 @@ public class MainMapActivityViewModel extends AndroidViewModel {
     MediatorLiveData<MapMediator> mediator;
     MediatorLiveData<PlaceInfoHoulder> customPlaceLD;
     MediatorLiveData<Boolean> isInitCameraMoveComplete;
+    MutableLiveData<Integer> mapTypeLD;
+
+    public MutableLiveData<Integer> getMapTypeLD() {
+        return mapTypeLD;
+    }
+
+    public void setMapTypeLD(int mapType) {
+        this.mapTypeLD.setValue(mapType);
+    }
 
     public void setUserLD(User user) {
         userLD.setValue(user);
@@ -66,6 +75,8 @@ public class MainMapActivityViewModel extends AndroidViewModel {
     public MainMapActivityViewModel(@NonNull Application application) {
         super(application);
         daoRepository = new DaoRepository(application);
+        mapTypeLD = new MutableLiveData<>();
+        mapTypeLD.setValue(1);
         userLD = new MutableLiveData<>();
         mapLD = new MutableLiveData<>();
         placesClientLD = new MutableLiveData<>();
