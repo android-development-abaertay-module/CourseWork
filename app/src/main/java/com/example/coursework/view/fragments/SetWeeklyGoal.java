@@ -23,10 +23,10 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetWeeklyGoalViewModel;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
-import static com.example.coursework.view.TrainingActivity.GOAL_TYPE;
 
 public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
 
@@ -39,10 +39,6 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
     TextView expiresOnTxt;
     Button resetWeeklyGoalBtn;
     GoalWeekly weeklyGoal;
-
-    public static SetWeeklyGoal newInstance() {
-        return new SetWeeklyGoal();
-    }
 
     User user;
     @Override
@@ -59,7 +55,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
 
         mViewModel = ViewModelProviders.of(this).get(SetWeeklyGoalViewModel.class);
 
-        Intent intent = getActivity().getIntent();
+        Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
                 user = new User(intent.getStringExtra(USERNAME));
@@ -69,7 +65,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
             }
         }
 
-        numSportSpinner = getView().findViewById(R.id.weeklyNumberOfSportSpinner);
+        numSportSpinner = Objects.requireNonNull(getView()).findViewById(R.id.weeklyNumberOfSportSpinner);
         numBoulderSpinner = getView().findViewById(R.id.weeklyNumberOfBoulderSpinner);
         avgSportSpinner = getView().findViewById(R.id.weeklyAverageSportGradeSpinner);
         avgSportSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
@@ -81,9 +77,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         resetWeeklyGoalBtn = getView().findViewById(R.id.resetWeeklyGoalBtn);
         resetWeeklyGoalBtn.setOnClickListener(this);
 
-        mViewModel.getUserLD().observe(this, userVal -> {
-            user = userVal;
-        });
+        mViewModel.getUserLD().observe(this, userVal -> user = userVal);
 
 
         mViewModel.getWeeklyGoalLD(user.getId()).observe(this, goalWeekly -> {

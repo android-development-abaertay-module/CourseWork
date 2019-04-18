@@ -23,6 +23,7 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetAnnualGoalViewModel;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
@@ -41,10 +42,6 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
     TextView expiresOnTxt;
     Button resetAnnualGoalBtn;
 
-    public static SetAnnualGoal newInstance() {
-        return new SetAnnualGoal();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -56,7 +53,7 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SetAnnualGoalViewModel.class);
 
-        Intent intent = getActivity().getIntent();
+        Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
                 user = new User(intent.getStringExtra(USERNAME));
@@ -66,7 +63,7 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
             }
         }
 
-        boulderOSSpinner = getView().findViewById(R.id.annualBoulderOsGoalSpinner);
+        boulderOSSpinner = Objects.requireNonNull(getView()).findViewById(R.id.annualBoulderOsGoalSpinner);
         boulderOSSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
         sportOsSpinner = getView().findViewById(R.id.annualSportOsGoalSpinner);
@@ -82,9 +79,8 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         resetAnnualGoalBtn = getView().findViewById(R.id.resetAnnualGoalBtn);
         resetAnnualGoalBtn.setOnClickListener(this);
 
-        mViewModel.getUserDL(user.getId()).observe(this, userVal -> {
-            user = userVal;
-        });
+        mViewModel.getUserDL(user.getId()).observe(this, userVal -> user = userVal);
+
         mViewModel.getAnnualGoalLD(user.getId()).observe(this, goalAnnualVal -> {
             annualGoal = goalAnnualVal;
             if (goalAnnualVal != null) {

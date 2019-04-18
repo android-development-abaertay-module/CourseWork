@@ -20,13 +20,13 @@ import com.example.coursework.viewmodel.CheckGoalsVM.CheckAnnualGoalViewModel;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class CheckAnnualGoal extends Fragment {
 
-    private CheckAnnualGoalViewModel checkGoalAnnualVM;
     private GoalAnnual goalAnnual;
     private User user;
 
@@ -37,10 +37,6 @@ public class CheckAnnualGoal extends Fragment {
     private TextView annualGoalSummaryTxt;
     private TextView isAnnualGoalAchievedTat;
 
-    public static CheckAnnualGoal newInstance() {
-        return new CheckAnnualGoal();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -50,9 +46,10 @@ public class CheckAnnualGoal extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        checkGoalAnnualVM = ViewModelProviders.of(this).get(CheckAnnualGoalViewModel.class);
+        CheckAnnualGoalViewModel checkGoalAnnualVM = ViewModelProviders.of(this).get(CheckAnnualGoalViewModel.class);
 
-        Intent intent = getActivity().getIntent();
+        //throw exception if get activity returns null, wont happen
+        Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
                 user = new User(intent.getStringExtra(USERNAME));
@@ -62,7 +59,7 @@ public class CheckAnnualGoal extends Fragment {
         }
 
         //region [Declare properties]
-        highestSportOSDisplay = getView().findViewById(R.id.checkGoalAnnualSportOSTV);
+        highestSportOSDisplay = Objects.requireNonNull(getView()).findViewById(R.id.checkGoalAnnualSportOSTV);
         highestBoulderOSDisplay = getView().findViewById(R.id.checkGoalAnnualBoulderOSTV);
         highestSportWorkedDisplay = getView().findViewById(R.id.checkGoalAnnualSportWorkedTV);
         highestBoulderWorkedDisplay = getView().findViewById(R.id.checkGoalAnnualBoulderWorkedTV);
@@ -72,9 +69,8 @@ public class CheckAnnualGoal extends Fragment {
 
 
         //region [Register Observers]
-        checkGoalAnnualVM.getUserLD().observe(this, userVal -> {
-            user = userVal;
-        });
+        checkGoalAnnualVM.getUserLD().observe(this, userVal -> user = userVal);
+
         checkGoalAnnualVM.getGoalAnnualLD().observe(this, goalSeasonalVal -> {
             if (goalSeasonalVal != null){
                 goalAnnual = goalSeasonalVal;
@@ -135,9 +131,9 @@ public class CheckAnnualGoal extends Fragment {
     private void updateView(GoalCheckDTO result, TextView displayTextView) {
         displayTextView.setText(result.getOutput());
         if (result.getIsAchieved())
-            displayTextView.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.green));
+            displayTextView.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getView()).getContext(), R.color.green));
         else
-            displayTextView.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.red));
+            displayTextView.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getView()).getContext(), R.color.red));
     }
 
 }

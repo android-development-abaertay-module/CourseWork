@@ -23,13 +23,13 @@ import com.example.coursework.viewmodel.CheckGoalsVM.CheckWeeklyGoalViewModel;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class CheckWeeklyGoal extends Fragment {
 
-    private CheckWeeklyGoalViewModel checkWeeklyViewModel;
     private GoalWeekly goalWeekly;
     private User user;
     private ProgressBar noSportAchievedPb;
@@ -39,10 +39,6 @@ public class CheckWeeklyGoal extends Fragment {
     private TextView weeklyGoalSummaryTxt;
     private TextView isWeeklyGoalAchievedTat;
 
-
-    public static CheckWeeklyGoal newInstance() {
-        return new CheckWeeklyGoal();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -54,9 +50,9 @@ public class CheckWeeklyGoal extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        checkWeeklyViewModel = ViewModelProviders.of(this).get(CheckWeeklyGoalViewModel.class);
+        CheckWeeklyGoalViewModel checkWeeklyViewModel = ViewModelProviders.of(this).get(CheckWeeklyGoalViewModel.class);
 
-        Intent intent = getActivity().getIntent();
+        Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
                 user = new User(intent.getStringExtra(USERNAME));
@@ -66,7 +62,7 @@ public class CheckWeeklyGoal extends Fragment {
         }
 
         //region [Declare properties]
-        noSportAchievedPb = getView().findViewById(R.id.checkGoalWeeklyNoSportPB);
+        noSportAchievedPb = Objects.requireNonNull(getView()).findViewById(R.id.checkGoalWeeklyNoSportPB);
         noBoulderAchievedPb = getView().findViewById(R.id.checkGoalWeeklyNoBoulderPB);
         avgSportAchievedDisplay = getView().findViewById(R.id.checkGoalWeeklyAvgSportTV);
         avgBoulderAchievedDisplay = getView().findViewById(R.id.checkGoalWeeklyAvgBoulderTV);
@@ -76,11 +72,9 @@ public class CheckWeeklyGoal extends Fragment {
 
 
         //region [Register Observers]
-        checkWeeklyViewModel.getUserLD().observe(this, userVal -> {
-            user = userVal;
-        });
+        checkWeeklyViewModel.getUserLD().observe(this, userVal -> user = userVal);
+
         checkWeeklyViewModel.getGoalWeeklyLD().observe(this, goalWeeklyVal -> {
-            //TODO: put code int to populate was achieved TextView that's already in the views
             if (goalWeeklyVal != null){
                 goalWeekly = goalWeeklyVal;
                 if (goalWeekly.getGoalAchieved())
@@ -128,8 +122,8 @@ public class CheckWeeklyGoal extends Fragment {
         GoalCheckDTO result = goalWeekly.checkAverageGradeForRouteTypeXGoal(avgGradeFor_TypeX, targetGradeFor_TypeX, noRoutesFoundMessage);
         textViewToUpdate.setText(result.getOutput());
         if (result.getIsAchieved())
-            textViewToUpdate.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.green));
+            textViewToUpdate.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getView()).getContext(), R.color.green));
         else
-            textViewToUpdate.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.red));
+            textViewToUpdate.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getView()).getContext(), R.color.red));
     }
 }

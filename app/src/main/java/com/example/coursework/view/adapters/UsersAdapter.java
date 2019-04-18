@@ -31,8 +31,10 @@ public class UsersAdapter extends ArrayAdapter<User> {
         // Lookup view for data population
         TextView tvName = convertView.findViewById(R.id.userLvItemTV);
         // Populate the data into the template view using the data object
-        tvName.setText(user.getUserName());
-        tvName.setTag(user.getId());
+        if (user != null){
+            tvName.setText(user.getUserName());
+            tvName.setTag(user.getId());
+        }
         // Return the completed view to render on screen
         return convertView;
     }

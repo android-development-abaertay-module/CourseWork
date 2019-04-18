@@ -20,13 +20,13 @@ import com.example.coursework.viewmodel.CheckGoalsVM.CheckSeasonalGoalViewModel;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class CheckSeasonalGoal extends Fragment {
 
-    private CheckSeasonalGoalViewModel checkSeasonalGoalVM;
     private GoalSeasonal goalSeasonal;
     private User user;
 
@@ -37,10 +37,6 @@ public class CheckSeasonalGoal extends Fragment {
     private TextView seasonalGoalSummaryTxt;
     private TextView isSeasonalGoalAchievedTat;
 
-    public static CheckSeasonalGoal newInstance() {
-        return new CheckSeasonalGoal();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -50,9 +46,9 @@ public class CheckSeasonalGoal extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        checkSeasonalGoalVM = ViewModelProviders.of(this).get(CheckSeasonalGoalViewModel.class);
+        CheckSeasonalGoalViewModel checkSeasonalGoalVM = ViewModelProviders.of(this).get(CheckSeasonalGoalViewModel.class);
 
-        Intent intent = getActivity().getIntent();
+        Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
                 user = new User(intent.getStringExtra(USERNAME));
@@ -62,7 +58,7 @@ public class CheckSeasonalGoal extends Fragment {
         }
 
         //region [Declare properties]
-        highestSportOSDisplay = getView().findViewById(R.id.checkGoalSeasonalSportOSTV);
+        highestSportOSDisplay = Objects.requireNonNull(getView()).findViewById(R.id.checkGoalSeasonalSportOSTV);
         highestBoulderOSDisplay = getView().findViewById(R.id.checkGoalSeasonalBoulderOSTV);
         highestSportWorkedDisplay = getView().findViewById(R.id.checkGoalSeasonalSportWorkedTV);
         highestBoulderWorkedDisplay = getView().findViewById(R.id.checkGoalSeasonalBoulderWorkedTV);
@@ -72,9 +68,8 @@ public class CheckSeasonalGoal extends Fragment {
 
 
         //region [Register Observers]
-        checkSeasonalGoalVM.getUserLD().observe(this, userVal -> {
-            user = userVal;
-        });
+        checkSeasonalGoalVM.getUserLD().observe(this, userVal -> user = userVal);
+
         checkSeasonalGoalVM.getGoalSeasonalLD().observe(this, goalSeasonalVal -> {
             if (goalSeasonalVal != null){
                 goalSeasonal = goalSeasonalVal;
@@ -120,8 +115,8 @@ public class CheckSeasonalGoal extends Fragment {
     private void updateView(GoalCheckDTO result, TextView displayTextView) {
             displayTextView.setText(result.getOutput());
             if (result.getIsAchieved())
-                displayTextView.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.green));
+                displayTextView.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getView()).getContext(), R.color.green));
             else
-                displayTextView.setTextColor(ContextCompat.getColor(getView().getContext(), R.color.red));
+                displayTextView.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getView()).getContext(), R.color.red));
     }
 }

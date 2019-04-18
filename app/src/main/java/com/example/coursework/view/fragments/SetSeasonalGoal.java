@@ -41,9 +41,6 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
     TextView expiresOnTxt;
     Button resetSeasonalGoalBtn;
 
-    public static SetSeasonalGoal newInstance() {
-        return new SetSeasonalGoal();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
