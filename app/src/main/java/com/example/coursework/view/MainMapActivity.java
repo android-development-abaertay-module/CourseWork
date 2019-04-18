@@ -198,7 +198,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             }
 
             @Override
-            public void onError(Status status) {
+            public void onError(@NonNull Status status) {
                 toastAndLog("Error: Unable to Find Location" + status,LogType.ERROR);
             }
         });
