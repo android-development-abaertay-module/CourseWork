@@ -166,7 +166,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private void initMap() {
         Log.d("gwyd", "initMap: initializing map");
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(MainMapActivity.this);
+        if (mapFragment != null)
+            mapFragment.getMapAsync(MainMapActivity.this);
 
         //* Initialize Places.
         if (!Places.isInitialized()) {
