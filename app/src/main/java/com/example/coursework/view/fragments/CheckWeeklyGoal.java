@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.coursework.R;
-import com.example.coursework.model.GoalWeekly;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.helper.GoalCheckDTO;
@@ -30,7 +29,6 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class CheckWeeklyGoal extends Fragment {
 
-    private GoalWeekly goalWeekly;
     private User user;
     private ProgressBar noSportAchievedPb;
     private ProgressBar noBoulderAchievedPb;
@@ -76,17 +74,17 @@ public class CheckWeeklyGoal extends Fragment {
 
         checkWeeklyViewModel.getGoalWeeklyLD().observe(this, goalWeeklyVal -> {
             if (goalWeeklyVal != null){
-                goalWeekly = goalWeeklyVal;
-                if (goalWeekly.getGoalAchieved())
+                user.setWeeklyGoal(goalWeeklyVal);
+                if (user.getWeeklyGoal().getGoalAchieved())
                     isWeeklyGoalAchievedTat.setText(R.string.goal_achived);
                 else
                     isWeeklyGoalAchievedTat.setText("");
-                if (goalWeekly.getDateExpires().isBefore(OffsetDateTime.now())){
+                if (user.getWeeklyGoal().getDateExpires().isBefore(OffsetDateTime.now())){
                     //goal has expired...
                     weeklyGoalSummaryTxt.setText(R.string.goal_expired_summary);
                 }else{
                     //display days remaining
-                    int daysRemaining = (int)Duration.between(LocalDateTime.now(),goalWeekly.getDateExpires()).toDays();
+                    int daysRemaining = (int)Duration.between(LocalDateTime.now(),user.getWeeklyGoal().getDateExpires()).toDays();
                     if (daysRemaining == 0)
                         weeklyGoalSummaryTxt.setText(R.string.goal_expires_today);
                     else
@@ -98,28 +96,28 @@ public class CheckWeeklyGoal extends Fragment {
             }
         });
         checkWeeklyViewModel.getNumberBoulderProgressLD().observe(this, numBoulderAchievedVal -> {
-            if (numBoulderAchievedVal != null && goalWeekly != null)
-                noBoulderAchievedPb.setProgress(goalWeekly.checkNumberOfRoutesForTypeGoalPercentage(numBoulderAchievedVal,goalWeekly.getNumberOfBoulder()));
+            if (numBoulderAchievedVal != null && user.getWeeklyGoal() != null)
+                noBoulderAchievedPb.setProgress(user.getWeeklyGoal().checkNumberOfRoutesForTypeGoalPercentage(numBoulderAchievedVal,user.getWeeklyGoal().getNumberOfBoulder()));
         });
         checkWeeklyViewModel.getNumberSportProgressLD().observe(this, numSportAchievedVal -> {
-            if (numSportAchievedVal != null && goalWeekly != null)
-                noSportAchievedPb.setProgress(goalWeekly.checkNumberOfRoutesForTypeGoalPercentage(numSportAchievedVal,goalWeekly.getNumberOfSport()));
+            if (numSportAchievedVal != null && user.getWeeklyGoal() != null)
+                noSportAchievedPb.setProgress(user.getWeeklyGoal().checkNumberOfRoutesForTypeGoalPercentage(numSportAchievedVal,user.getWeeklyGoal().getNumberOfSport()));
         });
         checkWeeklyViewModel.getAverageBoulderGradeLD().observe(this, avgBoulderGradeVal -> {
-            if (goalWeekly != null) {
-                updateView(avgBoulderGradeVal, goalWeekly.getAverageBoulderGrade(), "No Boulder Routes Logged", avgBoulderAchievedDisplay);
+            if (user.getWeeklyGoal() != null) {
+                updateView(avgBoulderGradeVal, user.getWeeklyGoal().getAverageBoulderGrade(), "No Boulder Routes Logged", avgBoulderAchievedDisplay);
             }
         });
         checkWeeklyViewModel.getAverageSportGradeLD().observe(this, avgSportGradeVal -> {
-            if (goalWeekly != null) {
-                updateView(avgSportGradeVal, goalWeekly.getAverageSportGrade(), "No Sport Routes Logged", avgSportAchievedDisplay);
+            if (user.getWeeklyGoal() != null) {
+                updateView(avgSportGradeVal, user.getWeeklyGoal().getAverageSportGrade(), "No Sport Routes Logged", avgSportAchievedDisplay);
             }
         });
         //endregion
     }
 
     private void updateView(Grades avgGradeFor_TypeX, Grades targetGradeFor_TypeX, String noRoutesFoundMessage, TextView textViewToUpdate) {
-        GoalCheckDTO result = goalWeekly.checkAverageGradeForRouteTypeXGoal(avgGradeFor_TypeX, targetGradeFor_TypeX, noRoutesFoundMessage);
+        GoalCheckDTO result = user.getWeeklyGoal().checkAverageGradeForRouteTypeXGoal(avgGradeFor_TypeX, targetGradeFor_TypeX, noRoutesFoundMessage);
         textViewToUpdate.setText(result.getOutput());
         if (result.getIsAchieved())
             textViewToUpdate.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getView()).getContext(), R.color.green));
