@@ -42,6 +42,11 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
     TextView expiresOnTxt;
     Button resetAnnualGoalBtn;
 
+    ArrayAdapter<Grades> boulderOSSpinnerAdapter;
+    ArrayAdapter<Grades> sportOSSpinnerAdapter;
+    ArrayAdapter<Grades> boulderWorkedSpinnerAdapter;
+    ArrayAdapter<Grades> sportWorkedSpinnerAdapter;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -64,16 +69,21 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         }
 
         boulderOSSpinner = Objects.requireNonNull(getView()).findViewById(R.id.annualBoulderOsGoalSpinner);
-        boulderOSSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        boulderOSSpinnerAdapter = new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
+        boulderOSSpinner.setAdapter(boulderOSSpinnerAdapter);
 
         sportOsSpinner = getView().findViewById(R.id.annualSportOsGoalSpinner);
-        sportOsSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        sportOSSpinnerAdapter = new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
+        sportOsSpinner.setAdapter(sportOSSpinnerAdapter);
 
         boulderWorkedSpinner = getView().findViewById(R.id.annualBoulderWorkedGoalSpinner);
-        boulderWorkedSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        boulderWorkedSpinnerAdapter = new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
+        boulderWorkedSpinner.setAdapter(boulderWorkedSpinnerAdapter);
 
         sportWorkedSpinner = getView().findViewById(R.id.annualSportWorkedGoalSpinner);
-        sportWorkedSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        sportWorkedSpinnerAdapter = new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
+        sportWorkedSpinner.setAdapter(sportWorkedSpinnerAdapter);
+
         createdOnTxt = getView().findViewById(R.id.annualCreatedOnTxt);
         expiresOnTxt = getView().findViewById(R.id.annualExpiresOnTxt);
         resetAnnualGoalBtn = getView().findViewById(R.id.resetAnnualGoalBtn);
@@ -94,10 +104,10 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
     }
 
     private void updateAnnualGoalView(GoalAnnual goalAnnual) {
-        boulderOSSpinner.setSelection(((ArrayAdapter<Grades>)boulderOSSpinner.getAdapter()).getPosition(goalAnnual.getHighestBoulderOnsight()));
-        sportOsSpinner.setSelection(((ArrayAdapter<Grades>)sportOsSpinner.getAdapter()).getPosition(goalAnnual.getHighestSportOnsight()));
-        boulderWorkedSpinner.setSelection(((ArrayAdapter<Grades>)boulderWorkedSpinner.getAdapter()).getPosition(goalAnnual.getHighestBoulderWorked()));
-        sportWorkedSpinner.setSelection(((ArrayAdapter<Grades>)sportWorkedSpinner.getAdapter()).getPosition(goalAnnual.getHighestSportWorked()));
+        boulderOSSpinner.setSelection(boulderOSSpinnerAdapter.getPosition(goalAnnual.getHighestBoulderOnsight()));
+        sportOsSpinner.setSelection(sportOSSpinnerAdapter.getPosition(goalAnnual.getHighestSportOnsight()));
+        boulderWorkedSpinner.setSelection(boulderWorkedSpinnerAdapter.getPosition(goalAnnual.getHighestBoulderWorked()));
+        sportWorkedSpinner.setSelection(sportWorkedSpinnerAdapter.getPosition(goalAnnual.getHighestSportWorked()));
         createdOnTxt.setText(goalAnnual.getDateCreated().toLocalDate().toString());
         expiresOnTxt.setText(goalAnnual.getDateExpires().toLocalDate().toString());
         if (goalAnnual.getDateExpires().isBefore(OffsetDateTime.now())) {

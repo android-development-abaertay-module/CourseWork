@@ -40,6 +40,10 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
     TextView createdOnTxt;
     TextView expiresOnTxt;
     Button resetSeasonalGoalBtn;
+    ArrayAdapter<Grades> boulderOSSpinnerAdapter;
+    ArrayAdapter<Grades> sportOSSpinnerAdapter;
+    ArrayAdapter<Grades> boulderWorkedSpinnerAdapter;
+    ArrayAdapter<Grades> sportWorkedSpinnerAdapter;
 
 
     @Override
@@ -64,16 +68,21 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         }
 
         boulderOSSpinner = Objects.requireNonNull(getView()).findViewById(R.id.seasonalBoulderOsGoalSpinner);
-        boulderOSSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        boulderOSSpinnerAdapter = new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
+        boulderOSSpinner.setAdapter(boulderOSSpinnerAdapter);
 
         sportOsSpinner = getView().findViewById(R.id.seasonalSportOsGoalSpinner);
-        sportOsSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        sportOSSpinnerAdapter = new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
+        sportOsSpinner.setAdapter(sportOSSpinnerAdapter);
 
         boulderWorkedSpinner = getView().findViewById(R.id.seasonalBoulderWorkedGoalSpinner);
-        boulderWorkedSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        boulderWorkedSpinnerAdapter = new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
+        boulderWorkedSpinner.setAdapter(boulderWorkedSpinnerAdapter);
 
         sportWorkedSpinner = getView().findViewById(R.id.seasonalSportWorkedGoalSpinner);
-        sportWorkedSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        sportWorkedSpinnerAdapter = new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
+        sportWorkedSpinner.setAdapter(sportWorkedSpinnerAdapter);
+
         createdOnTxt = getView().findViewById(R.id.seasonalCreatedOnTxt);
         expiresOnTxt = getView().findViewById(R.id.seasonalExpiresOnTxt);
         resetSeasonalGoalBtn = getView().findViewById(R.id.resetSeasonalGoalBtn);
@@ -94,10 +103,11 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         });
     }
     private void updateSeasonalGoalView(GoalSeasonal goalSeasonal) {
-        boulderOSSpinner.setSelection(((ArrayAdapter<Grades>)boulderOSSpinner.getAdapter()).getPosition(goalSeasonal.getHighestBoulderOnsight()));
-        sportOsSpinner.setSelection(((ArrayAdapter<Grades>)sportOsSpinner.getAdapter()).getPosition(goalSeasonal.getHighestSportOnsight()));
-        boulderWorkedSpinner.setSelection(((ArrayAdapter<Grades>)boulderWorkedSpinner.getAdapter()).getPosition(goalSeasonal.getHighestBoulderWorked()));
-        sportWorkedSpinner.setSelection(((ArrayAdapter<Grades>)sportWorkedSpinner.getAdapter()).getPosition(goalSeasonal.getHighestSportWorked()));
+        boulderOSSpinner.setSelection(boulderOSSpinnerAdapter.getPosition(goalSeasonal.getHighestBoulderOnsight()));
+        sportOsSpinner.setSelection(sportOSSpinnerAdapter.getPosition(goalSeasonal.getHighestSportOnsight()));
+        boulderWorkedSpinner.setSelection(boulderWorkedSpinnerAdapter.getPosition(goalSeasonal.getHighestBoulderWorked()));
+        sportWorkedSpinner.setSelection(sportWorkedSpinnerAdapter.getPosition(goalSeasonal.getHighestSportWorked()));
+
         createdOnTxt.setText(goalSeasonal.getDateCreated().toLocalDate().toString());
         expiresOnTxt.setText(goalSeasonal.getDateExpires().toLocalDate().toString());
         if (goalSeasonal.getDateExpires().isBefore(OffsetDateTime.now())) {

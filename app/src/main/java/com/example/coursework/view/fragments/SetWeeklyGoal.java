@@ -38,6 +38,8 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
     TextView createdOnTxt;
     TextView expiresOnTxt;
     Button resetWeeklyGoalBtn;
+    ArrayAdapter<Grades> avgSportSpinnerAdapter;
+    ArrayAdapter<Grades> avgBoulderSpinnerAdapter;
 
     User user;
     @Override
@@ -65,11 +67,15 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
 
         numSportSpinner = Objects.requireNonNull(getView()).findViewById(R.id.weeklyNumberOfSportSpinner);
         numBoulderSpinner = getView().findViewById(R.id.weeklyNumberOfBoulderSpinner);
+
         avgSportSpinner = getView().findViewById(R.id.weeklyAverageSportGradeSpinner);
-        avgSportSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        avgSportSpinnerAdapter =new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
+        avgSportSpinner.setAdapter(avgSportSpinnerAdapter);
 
         avgBoulderSpinner = getView().findViewById(R.id.weeklyAverageBoulderGradeSpinner);
-        avgBoulderSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        avgBoulderSpinnerAdapter =new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
+        avgBoulderSpinner.setAdapter(avgBoulderSpinnerAdapter);
+
         createdOnTxt = getView().findViewById(R.id.weeklyCreatedOnTxt);
         expiresOnTxt = getView().findViewById(R.id.weeklyExpiresOnTxt);
         resetWeeklyGoalBtn = getView().findViewById(R.id.resetWeeklyGoalBtn);
@@ -94,8 +100,8 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
     private void updateWeeklyGoalView(GoalWeekly goalWeekly) {
         numSportSpinner.setSelection(((ArrayAdapter<String>)numSportSpinner.getAdapter()).getPosition(goalWeekly.getNumberOfSport() +""));
         numBoulderSpinner.setSelection(((ArrayAdapter<String>)numBoulderSpinner.getAdapter()).getPosition(goalWeekly.getNumberOfBoulder() +""));
-        avgSportSpinner.setSelection(((ArrayAdapter<Grades>)avgSportSpinner.getAdapter()).getPosition(goalWeekly.getAverageSportGrade()));
-        avgBoulderSpinner.setSelection(((ArrayAdapter<Grades>)avgBoulderSpinner.getAdapter()).getPosition(goalWeekly.getAverageBoulderGrade()));
+        avgSportSpinner.setSelection(avgSportSpinnerAdapter.getPosition(goalWeekly.getAverageSportGrade()));
+        avgBoulderSpinner.setSelection(avgBoulderSpinnerAdapter.getPosition(goalWeekly.getAverageBoulderGrade()));
         createdOnTxt.setText(goalWeekly.getDateCreated().toLocalDate().toString());
         expiresOnTxt.setText(goalWeekly.getDateExpires().toLocalDate().toString());
         if (goalWeekly.getDateExpires().isBefore(OffsetDateTime.now())) {
