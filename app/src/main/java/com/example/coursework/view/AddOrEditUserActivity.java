@@ -53,8 +53,6 @@ public class AddOrEditUserActivity extends AppCompatActivity {
             Toast.makeText(this,"Username Required",Toast.LENGTH_LONG).show();
             return;
         }
-        //TODO: not sure we need this, re-visit view model design for old activity
-        addOrEditUserViewModel.updateUserList();
 
         for(User usr: allUsers) {
             if(usr.getUserName().equals(user.getUserName())){

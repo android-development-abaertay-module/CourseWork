@@ -14,19 +14,15 @@ public class AddOrEditUserViewModel extends AndroidViewModel {
     private DaoRepository daoRepository;
     private LiveData<List<User>> usersListLD;
 
-    public LiveData<List<User>> getUsersListLD() {
-        if (usersListLD == null){
-            usersListLD =  updateUserList();
-        }
-        return usersListLD;
-    }
+
     public LiveData<List<User>> updateUserList(){
-        return  daoRepository.getAllUsers();
+        if (usersListLD == null)
+            usersListLD = daoRepository.getAllUsers();
+        return  usersListLD;
     }
 
     public AddOrEditUserViewModel(@NonNull Application application) {
         super(application);
         daoRepository = new DaoRepository(application);
-        usersListLD = daoRepository.getAllUsers();
     }
 }
