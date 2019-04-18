@@ -2,7 +2,6 @@ package com.example.coursework.model.helper;
 
 import com.example.coursework.model.Session;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public class MapMediator {
     private List<Session> recentSessions;
     private GoogleMap map;
     private PlacesClient placesClient;
-    private PlaceInfoHoulder customPlace;
+    private PlaceInfoHolder customPlace;
 
     public List<Session> getRecentSessions() {
         return recentSessions;
@@ -37,15 +36,15 @@ public class MapMediator {
         this.placesClient = placesClient;
     }
 
-    public PlaceInfoHoulder getCustomPlace() {
+    public PlaceInfoHolder getCustomPlace() {
         return customPlace;
     }
 
-    public void setCustomPlace(PlaceInfoHoulder customPlace) {
+    public void setCustomPlace(PlaceInfoHolder customPlace) {
         this.customPlace = customPlace;
     }
 
-    public MapMediator(List<Session> recentSessions, GoogleMap map, PlacesClient client, PlaceInfoHoulder customPlace) {
+    public MapMediator(List<Session> recentSessions, GoogleMap map, PlacesClient client, PlaceInfoHolder customPlace) {
         this.recentSessions = recentSessions;
         this.map = map;
         this.placesClient = client;

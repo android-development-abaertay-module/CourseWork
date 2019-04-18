@@ -11,9 +11,9 @@ import com.example.coursework.view.fragments.CheckWeeklyGoal;
 public class TabsAdapterCheckGoals extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
 
-    public TabsAdapterCheckGoals(FragmentManager fm, int NoofTabs){
+    public TabsAdapterCheckGoals(FragmentManager fm, int NoOfTabs){
         super(fm);
-        this.mNumOfTabs = NoofTabs;
+        this.mNumOfTabs = NoOfTabs;
     }
 
     @Override

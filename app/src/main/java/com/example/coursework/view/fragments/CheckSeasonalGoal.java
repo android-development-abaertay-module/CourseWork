@@ -73,7 +73,7 @@ public class CheckSeasonalGoal extends Fragment {
             if (goalSeasonalVal != null){
                 user.setSeasonalGoal(goalSeasonalVal);
                 if (user.getSeasonalGoal().getGoalAchieved())
-                    isSeasonalGoalAchievedTat.setText(R.string.goal_achived);
+                    isSeasonalGoalAchievedTat.setText(R.string.goal_achieved);
                 else
                     isSeasonalGoalAchievedTat.setText("");
                 if (user.getSeasonalGoal().getDateExpires().isBefore(OffsetDateTime.now())){

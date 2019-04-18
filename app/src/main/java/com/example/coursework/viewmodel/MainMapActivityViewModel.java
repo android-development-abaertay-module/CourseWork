@@ -12,7 +12,7 @@ import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.data.DaoRepository;
 import com.example.coursework.model.helper.MapMediator;
-import com.example.coursework.model.helper.PlaceInfoHoulder;
+import com.example.coursework.model.helper.PlaceInfoHolder;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
@@ -26,7 +26,7 @@ public class MainMapActivityViewModel extends AndroidViewModel {
 
     private MutableLiveData<GoogleMap> mapLD;
     private MutableLiveData<PlacesClient> placesClientLD;
-    private MutableLiveData<PlaceInfoHoulder> customPlaceLD;
+    private MutableLiveData<PlaceInfoHolder> customPlaceLD;
     private MutableLiveData<Boolean> isInitCameraMoveComplete;
     private MutableLiveData<Integer> mapTypeLD;
     private MutableLiveData<Boolean> isPollyVisibleLD;
@@ -62,7 +62,7 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         placesClientLD.setValue(placesClientMutable);
     }
 
-    public void setCustomPlaceLD(PlaceInfoHoulder customPlace) {
+    public void setCustomPlaceLD(PlaceInfoHolder customPlace) {
         this.customPlaceLD.setValue(customPlace);
     }
 

@@ -76,7 +76,7 @@ public class CheckWeeklyGoal extends Fragment {
             if (goalWeeklyVal != null){
                 user.setWeeklyGoal(goalWeeklyVal);
                 if (user.getWeeklyGoal().getGoalAchieved())
-                    isWeeklyGoalAchievedTat.setText(R.string.goal_achived);
+                    isWeeklyGoalAchievedTat.setText(R.string.goal_achieved);
                 else
                     isWeeklyGoalAchievedTat.setText("");
                 if (user.getWeeklyGoal().getDateExpires().isBefore(OffsetDateTime.now())){

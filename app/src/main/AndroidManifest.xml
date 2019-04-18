@@ -35,12 +35,12 @@
             android:name=".view.MainMapActivity"
             android:label="@string/title_activity_main_map"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.CheckGoalsActivity"
             android:label="@string/title_activity_check_goals"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.TrainingActivity"
             android:label="@string/title_activity_training"

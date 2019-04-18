@@ -10,9 +10,9 @@ import com.example.coursework.view.fragments.SetWeeklyGoal;
 
 public class TabsAdapterSetGoals extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
-    public TabsAdapterSetGoals(FragmentManager fm, int NoofTabs){
+    public TabsAdapterSetGoals(FragmentManager fm, int NoOfTabs){
         super(fm);
-        this.mNumOfTabs = NoofTabs;
+        this.mNumOfTabs = NoOfTabs;
     }
     @Override
     public int getCount() {

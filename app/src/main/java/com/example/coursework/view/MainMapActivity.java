@@ -20,7 +20,7 @@ import com.example.coursework.R;
 import com.example.coursework.model.Session;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.LogType;
-import com.example.coursework.model.helper.PlaceInfoHoulder;
+import com.example.coursework.model.helper.PlaceInfoHolder;
 import com.example.coursework.view.adapters.CustomMapInfoWindowAdapter;
 import com.example.coursework.viewmodel.MainMapActivityViewModel;
 import com.google.android.gms.common.api.Status;
@@ -64,7 +64,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private SupportMapFragment mapFragment;
     private AutocompleteSupportFragment autocompleteFragment;
     private ImageView mGps;
-    private PlaceInfoHoulder customPlaceInfo;
+    private PlaceInfoHolder customPlaceInfo;
     private LatLng selectedLatLong;
     private  Polygon polygon;
 
@@ -93,12 +93,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         //endregion
 
         //region [Register observers]
-        mapViewModel.getUserLD().observe(this, userVal -> {
-            user = userVal;
-        });
-        mapViewModel.getIsInitCameraMoveComplete().observe(this, isComplete ->{
-            isInitialCameraMoveComplete = isComplete;
-        });
+        mapViewModel.getUserLD().observe(this, userVal -> user = userVal);
+        mapViewModel.getIsInitCameraMoveComplete().observe(this, isComplete -> isInitialCameraMoveComplete = isComplete);
         mapViewModel.getMediator().observe(this, mediator -> {
             if (mediator != null) {
                 if(mMap == null)
@@ -197,12 +193,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
                 // Construct a request object, passing the place ID and fields array.
                 FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
-                placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
-                    newCustomPlaceFound(response);
-
-                }).addOnFailureListener((exception) -> {
-                    toastAndLog("Place not Found..",LogType.ERROR);
-                });
+                placesClient.fetchPlace(request).addOnSuccessListener((response) -> newCustomPlaceFound(response)).addOnFailureListener((exception)
+                        -> toastAndLog("Place not Found..",LogType.ERROR));
             }
 
             @Override
@@ -218,7 +210,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             if (customPlaceInfo.getMarker() != null)
                 customPlaceInfo.getMarker().remove();
 
-        customPlaceInfo = new PlaceInfoHoulder();
+        customPlaceInfo = new PlaceInfoHolder();
         customPlaceInfo.setId(response.getPlace().getId());
         if (response.getPlace().getRating() != null)
             customPlaceInfo.setRating(response.getPlace().getRating());
@@ -272,7 +264,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         hideSoftKeyboard();
     }
-    private void updateCustomPlace(PlaceInfoHoulder place, float zoom, Boolean updateViewModel){
+    private void updateCustomPlace(PlaceInfoHolder place, float zoom, Boolean updateViewModel){
         LatLng coordinates;
         if (place.getLatLng() != null)
             coordinates = place.getLatLng();

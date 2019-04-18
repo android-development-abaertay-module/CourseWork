@@ -93,14 +93,14 @@ public  class Route
     }
 
     @Ignore
-    public Route(long sessionIDFK,long userId, Grades grade,RouteType routeType, StyleDone styleDone, OffsetDateTime dateAndtime)
+    public Route(long sessionIDFK,long userId, Grades grade,RouteType routeType, StyleDone styleDone, OffsetDateTime dateAndTime)
     {
         this.userId = userId;
         this.grade = grade;
         sessionId = sessionIDFK;
         this.styleDone = styleDone;
         this.routeType = routeType;
-        timeDone = dateAndtime;
+        timeDone = dateAndTime;
 
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
  * Created by User on 10/2/2017.
  */
 
-public class PlaceInfoHoulder {
+public class PlaceInfoHolder {
 
     private String name;
     private String address;
@@ -29,8 +29,8 @@ public class PlaceInfoHoulder {
     private LatLngBounds viewPort;
     private Marker marker;
 
-    public PlaceInfoHoulder(String name, String address, String phoneNumber, String id, Uri websiteUri,
-                            LatLng latLng, float rating, String attributions, OpeningHours openingHours,List<Type> types, LatLngBounds viewPort, Marker marker) {
+    public PlaceInfoHolder(String name, String address, String phoneNumber, String id, Uri websiteUri,
+                           LatLng latLng, float rating, String attributions, OpeningHours openingHours, List<Type> types, LatLngBounds viewPort, Marker marker) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -44,7 +44,7 @@ public class PlaceInfoHoulder {
         this.marker = marker;
     }
 
-    public PlaceInfoHoulder() {
+    public PlaceInfoHolder() {
 
     }
 

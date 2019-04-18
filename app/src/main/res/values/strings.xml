@@ -69,7 +69,7 @@
     <string name="grade">Grade</string>
     <string name="add_route">Add New Route To Session</string>
     <string name="no_routes_to_display">%s \nNo Recent Routes to Display</string>
-    <string name="no_recent_sesions_to_display">%s \nNo Recent Sessions to Display</string>
+    <string name="no_recent_sessions_to_display">%s \nNo Recent Sessions to Display</string>
     <string name="days_remaining_for_goal">%s Days Remaining</string>
     <string name="goal_expires_today">Goal Expires Today</string>
     <string name="goal_expired_summary">Goal Has Expired. Please Set a new Weekly goal</string>
@@ -88,8 +88,8 @@
     <string name="title_activity_main_map">Map</string>
     <string name="title_activity_check_goals">Check Progress</string>
     <string name="title_activity_set_goals">Set Goals</string>
-    <string name="channel_name">triningNotificaionActivityChanel</string>
-    <string name="channel_description">training activity notifcation description</string>
+    <string name="channel_name">trainingNotificationActivityChanel</string>
+    <string name="channel_description">training activity notification description</string>
     <string name="route_type">Route Type</string>
-    <string name="goal_achived">Goal Achieved</string>
+    <string name="goal_achieved">Goal Achieved</string>
 </resources>

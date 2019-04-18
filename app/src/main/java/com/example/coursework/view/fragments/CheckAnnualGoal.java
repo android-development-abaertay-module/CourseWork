@@ -73,7 +73,7 @@ public class CheckAnnualGoal extends Fragment {
             if (goalAnnualVal != null){
                 user.setAnnualGoal(goalAnnualVal);
                 if (user.getAnnualGoal().getGoalAchieved())
-                    isAnnualGoalAchievedTat.setText(R.string.goal_achived);
+                    isAnnualGoalAchievedTat.setText(R.string.goal_achieved);
                 else
                     isAnnualGoalAchievedTat.setText("");
                 if (user.getAnnualGoal().getDateExpires().isBefore(OffsetDateTime.now())){
