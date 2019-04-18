@@ -38,14 +38,12 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
     TextView createdOnTxt;
     TextView expiresOnTxt;
     Button resetWeeklyGoalBtn;
-    GoalWeekly weeklyGoal;
 
     User user;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.set_weekly_goal_fragment, container, false);
-
     }
 
     @Override
@@ -80,11 +78,11 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         mViewModel.getUserLD().observe(this, userVal -> user = userVal);
 
 
-        mViewModel.getWeeklyGoalLD(user.getId()).observe(this, goalWeekly -> {
-            weeklyGoal = goalWeekly;
-            if (goalWeekly != null) {
+        mViewModel.getWeeklyGoalLD(user.getId()).observe(this, goalWeeklyVal -> {
+            user.setWeeklyGoal(goalWeeklyVal);
+            if (user.getWeeklyGoal() != null) {
 
-                updateWeeklyGoalView(goalWeekly);
+                updateWeeklyGoalView(user.getWeeklyGoal());
             }else {
                 //no weekly goal found
                 resetWeeklyGoalBtn.setText(R.string.create_weekly_goal);
@@ -115,25 +113,25 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.resetWeeklyGoalBtn:
                 Log.d("gwyd","btn clicked");
-                if (weeklyGoal != null){
+                if (user.getWeeklyGoal() != null){
                     //user Has a goal
                     //check if goal expired
-                    if (weeklyGoal.getDateExpires().isBefore(OffsetDateTime.now())){
+                    if (user.getWeeklyGoal().getDateExpires().isBefore(OffsetDateTime.now())){
                         //goal Expired - Close it and create a new one
-                        mViewModel.closeGoalSetWasMet(weeklyGoal);
+                        mViewModel.closeGoalSetWasMet(user.getWeeklyGoal());
                         getNewWeeklyGoalFromForm();
-                        mViewModel.createGoalWeekly(weeklyGoal);
+                        mViewModel.createGoalWeekly(user.getWeeklyGoal());
                         mViewModel.getWeeklyGoalLD(user.getId());
                     }else{
                         //update current goal
                         updateWeeklyGoalFromForm();
-                        mViewModel.updateGoalWeekly(weeklyGoal);
+                        mViewModel.updateGoalWeekly(user.getWeeklyGoal());
                     }
 
                 }else{
                     //user doesn't have a goal - create one
                     getNewWeeklyGoalFromForm();
-                    mViewModel.createGoalWeekly(weeklyGoal);
+                    mViewModel.createGoalWeekly(user.getWeeklyGoal());
                 }
                 mViewModel.getWeeklyGoalLD(user.getId());
                 break;
@@ -145,16 +143,16 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         int numBoulder = Integer.parseInt(numBoulderSpinner.getSelectedItem().toString());
         Grades avgSport = (Grades) avgSportSpinner.getSelectedItem();
         Grades avgBoulder = (Grades) avgBoulderSpinner.getSelectedItem();
-        weeklyGoal.setNumberOfSport(numSport);
-        weeklyGoal.setNumberOfBoulder(numBoulder);
-        weeklyGoal.setAverageSportGrade(avgSport);
-        weeklyGoal.setAverageBoulderGrade(avgBoulder);
+        user.getWeeklyGoal().setNumberOfSport(numSport);
+        user.getWeeklyGoal().setNumberOfBoulder(numBoulder);
+        user.getWeeklyGoal().setAverageSportGrade(avgSport);
+        user.getWeeklyGoal().setAverageBoulderGrade(avgBoulder);
     }
     private void getNewWeeklyGoalFromForm() {
         int numSport = Integer.parseInt(numSportSpinner.getSelectedItem().toString());
         int numBoulder = Integer.parseInt(numBoulderSpinner.getSelectedItem().toString());
         Grades avgSport = (Grades) avgSportSpinner.getSelectedItem();
         Grades avgBoulder = (Grades) avgBoulderSpinner.getSelectedItem();
-        weeklyGoal = new GoalWeekly(user.getId(),numSport,numBoulder,avgSport,avgBoulder, OffsetDateTime.now());
+        user.setWeeklyGoal(new GoalWeekly(user.getId(),numSport,numBoulder,avgSport,avgBoulder, OffsetDateTime.now()));
     }
 }

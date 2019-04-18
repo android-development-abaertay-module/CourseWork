@@ -23,6 +23,7 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetSeasonalGoalViewModel;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
@@ -31,7 +32,6 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
 
     private SetSeasonalGoalViewModel mViewModel;
     User user;
-    GoalSeasonal seasonalGoal;
 
     Spinner boulderOSSpinner;
     Spinner sportOsSpinner;
@@ -53,7 +53,7 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SetSeasonalGoalViewModel.class);
 
-        Intent intent = getActivity().getIntent();
+        Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
                 user = new User(intent.getStringExtra(USERNAME));
@@ -63,7 +63,7 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
             }
         }
 
-        boulderOSSpinner = getView().findViewById(R.id.seasonalBoulderOsGoalSpinner);
+        boulderOSSpinner = Objects.requireNonNull(getView()).findViewById(R.id.seasonalBoulderOsGoalSpinner);
         boulderOSSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
         sportOsSpinner = getView().findViewById(R.id.seasonalSportOsGoalSpinner);
@@ -81,11 +81,11 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
 
         mViewModel.getUserLD().observe(this, userVal -> user = userVal);
 
-        mViewModel.getSeasonalGoalLD(user.getId()).observe(this, goalSeasonal -> {
-            seasonalGoal = goalSeasonal;
-            if (goalSeasonal != null) {
+        mViewModel.getSeasonalGoalLD(user.getId()).observe(this, goalSeasonalVal -> {
+            user.setSeasonalGoal(goalSeasonalVal);
+            if (user.getSeasonalGoal() != null) {
 
-                updateSeasonalGoalView(goalSeasonal);
+                updateSeasonalGoalView(user.getSeasonalGoal());
             }else {
                 //no weekly goal found
                 resetSeasonalGoalBtn.setText(R.string.create_seasonal_goal);
@@ -115,25 +115,25 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         switch (v.getId()){
             case R.id.resetSeasonalGoalBtn:
                 Log.d("gwyd","btn clicked");
-                if (seasonalGoal != null){
+                if (user.getSeasonalGoal() != null){
                     //user Has a goal
                     //check if goal expired
-                    if (seasonalGoal.getDateExpires().isBefore(OffsetDateTime.now())){
+                    if (user.getSeasonalGoal().getDateExpires().isBefore(OffsetDateTime.now())){
                         //goal Expired - Close it and create a new one
-                        mViewModel.closeSeasonalGoalSetWasMet(seasonalGoal);
+                        mViewModel.closeSeasonalGoalSetWasMet(user.getSeasonalGoal());
                         getNewSeasonalGoalFromForm();
-                        mViewModel.createGoalSeasonal(seasonalGoal);
+                        mViewModel.createGoalSeasonal(user.getSeasonalGoal());
                         mViewModel.getSeasonalGoalLD(user.getId());
                     }else{
                         //update current goal
                         updateSeasonalGoalFromForm();
-                        mViewModel.updateGoalSeasonal(seasonalGoal);
+                        mViewModel.updateGoalSeasonal(user.getSeasonalGoal());
                     }
 
                 }else{
                     //user doesn't have a goal - create one
                     getNewSeasonalGoalFromForm();
-                    mViewModel.createGoalSeasonal(seasonalGoal);
+                    mViewModel.createGoalSeasonal(user.getSeasonalGoal());
                 }
                 //refresh the view
                 mViewModel.getSeasonalGoalLD(user.getId());
@@ -146,16 +146,16 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
         Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
         Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
-        seasonalGoal.setHighestBoulderOnsight(bOs);
-        seasonalGoal.setHighestSportOnsight(sOs);
-        seasonalGoal.setHighestBoulderWorked(bWorked);
-        seasonalGoal.setHighestSportWorked(sWorked);
+        user.getSeasonalGoal().setHighestBoulderOnsight(bOs);
+        user.getSeasonalGoal().setHighestSportOnsight(sOs);
+        user.getSeasonalGoal().setHighestBoulderWorked(bWorked);
+        user.getSeasonalGoal().setHighestSportWorked(sWorked);
     }
     private void getNewSeasonalGoalFromForm() {
         Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
         Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
         Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
-        seasonalGoal = new GoalSeasonal(user.getId(),bOs,sOs,bWorked,sWorked,OffsetDateTime.now());
+        user.setSeasonalGoal(new GoalSeasonal(user.getId(),bOs,sOs,bWorked,sWorked,OffsetDateTime.now()));
     }
 }

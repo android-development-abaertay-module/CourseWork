@@ -32,7 +32,7 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
 
     private SetAnnualGoalViewModel mViewModel;
     User user;
-    GoalAnnual annualGoal;
+
 
     Spinner boulderOSSpinner;
     Spinner sportOsSpinner;
@@ -82,9 +82,9 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         mViewModel.getUserDL(user.getId()).observe(this, userVal -> user = userVal);
 
         mViewModel.getAnnualGoalLD(user.getId()).observe(this, goalAnnualVal -> {
-            annualGoal = goalAnnualVal;
+            user.setAnnualGoal(goalAnnualVal);
             if (goalAnnualVal != null) {
-                updateAnnualGoalView(goalAnnualVal);
+                updateAnnualGoalView(user.getAnnualGoal());
             }else {
                 //no weekly goal found
                 resetAnnualGoalBtn.setText(R.string.create_annual_goal);
@@ -116,25 +116,25 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         switch (v.getId()){
             case R.id.resetAnnualGoalBtn:
                 Log.d("gwyd","btn clicked");
-                if (annualGoal != null){
+                if (user.getAnnualGoal() != null){
                     //user Has a goal
                     //check if goal expired
-                    if (annualGoal.getDateExpires().isBefore(OffsetDateTime.now())){
+                    if (user.getAnnualGoal().getDateExpires().isBefore(OffsetDateTime.now())){
                         //goal Expired - Close it and create a new one
-                        mViewModel.closeAnnualGoalSetWasMet(annualGoal);
+                        mViewModel.closeAnnualGoalSetWasMet(user.getAnnualGoal());
                         getNewAnnualGoalFromForm();
-                        mViewModel.createGoalAnnual(annualGoal);
+                        mViewModel.createGoalAnnual(user.getAnnualGoal());
                         mViewModel.getAnnualGoalLD(user.getId());
                     }else{
                         //update current goal
                         updateAnnualGoalFromForm();
-                        mViewModel.updateGoalAnnual(annualGoal);
+                        mViewModel.updateGoalAnnual(user.getAnnualGoal());
                     }
 
                 }else{
                     //user doesn't have a goal - create one
                     getNewAnnualGoalFromForm();
-                    mViewModel.createGoalAnnual(annualGoal);
+                    mViewModel.createGoalAnnual(user.getAnnualGoal());
                 }
                 //refresh the view
                 mViewModel.getAnnualGoalLD(user.getId());
@@ -146,16 +146,16 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
         Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
         Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
-        annualGoal.setHighestBoulderOnsight(bOs);
-        annualGoal.setHighestSportOnsight(sOs);
-        annualGoal.setHighestBoulderWorked(bWorked);
-        annualGoal.setHighestSportWorked(sWorked);
+        user.getAnnualGoal().setHighestBoulderOnsight(bOs);
+        user.getAnnualGoal().setHighestSportOnsight(sOs);
+        user.getAnnualGoal().setHighestBoulderWorked(bWorked);
+        user.getAnnualGoal().setHighestSportWorked(sWorked);
     }
     private void getNewAnnualGoalFromForm() {
         Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
         Grades bWorked = (Grades) boulderWorkedSpinner.getSelectedItem();
         Grades sWorked = (Grades) sportWorkedSpinner.getSelectedItem();
-        annualGoal = new GoalAnnual(user.getId(),bOs,sOs,bWorked,sWorked, OffsetDateTime.now());
+        user.setAnnualGoal(new GoalAnnual(user.getId(),bOs,sOs,bWorked,sWorked, OffsetDateTime.now()));
     }
 }
