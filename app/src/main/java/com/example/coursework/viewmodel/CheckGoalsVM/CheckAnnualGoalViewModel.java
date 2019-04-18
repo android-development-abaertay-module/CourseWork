@@ -15,15 +15,15 @@ import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
 
 public class CheckAnnualGoalViewModel extends AndroidViewModel {
-    DaoRepository daoRepository;
+    private DaoRepository daoRepository;
 
-    MutableLiveData<User> userLD;
-    LiveData<GoalAnnual> goalAnnualLD;
+    private MutableLiveData<User> userLD;
+    private LiveData<GoalAnnual> goalAnnualLD;
 
-    LiveData<Grades> highestBoulderOnsightLD;
-    LiveData<Grades> highestSportOnsightLD;
-    LiveData<Grades> highestBoulderWorkedLD;
-    LiveData<Grades> highestSportWorkedLD;
+    private LiveData<Grades> highestBoulderOnsightLD;
+    private LiveData<Grades> highestSportOnsightLD;
+    private LiveData<Grades> highestBoulderWorkedLD;
+    private LiveData<Grades> highestSportWorkedLD;
 
 
     public LiveData<GoalAnnual> getGoalAnnualLD() {
@@ -65,28 +65,28 @@ public class CheckAnnualGoalViewModel extends AndroidViewModel {
         highestBoulderOnsightLD = Transformations.switchMap(goalAnnualLD, goal ->
         {
             if (goal != null)
-                return daoRepository.getHighestRouteInPeriod(userLD.getValue().getId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.BOULDER, StyleDone.Onsight);
+                return daoRepository.getHighestRouteInPeriod(goal.getUserId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.BOULDER, StyleDone.Onsight);
             else
                 return daoRepository.noGoalSetReturnNull();
         });
         highestSportOnsightLD = Transformations.switchMap(goalAnnualLD, goal ->
         {
             if (goal != null)
-                return daoRepository.getHighestRouteInPeriod(userLD.getValue().getId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.SPORT, StyleDone.Onsight);
+                return daoRepository.getHighestRouteInPeriod(goal.getUserId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.SPORT, StyleDone.Onsight);
             else
                 return daoRepository.noGoalSetReturnNull();
         });
         highestBoulderWorkedLD = Transformations.switchMap(goalAnnualLD, goal ->
         {
             if (goal != null)
-                return daoRepository.getHighestRouteInPeriod(userLD.getValue().getId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.BOULDER, StyleDone.Worked);
+                return daoRepository.getHighestRouteInPeriod(goal.getUserId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.BOULDER, StyleDone.Worked);
             else
                 return daoRepository.noGoalSetReturnNull();
         });
         highestSportWorkedLD = Transformations.switchMap(goalAnnualLD, goal ->
         {
             if (goal != null)
-                return daoRepository.getHighestRouteInPeriod(userLD.getValue().getId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.SPORT, StyleDone.Worked);
+                return daoRepository.getHighestRouteInPeriod(goal.getUserId(), goal.getDateCreated(), goal.getDateExpires(), RouteType.SPORT, StyleDone.Worked);
             else
                 return daoRepository.noGoalSetReturnNull();
         });

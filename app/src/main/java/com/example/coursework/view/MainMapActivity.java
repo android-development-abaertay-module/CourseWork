@@ -139,8 +139,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         } else {
             Log.d("gwyd", "access fine location permission already granted");
-            //permissions already granted initialize map if required
-//            if (mMap ==null)
+            //permissions already granted initialize map
             initMap();
         }
     }
@@ -352,10 +351,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);//hides the zoom to my location button (i've implemented it myself)
+            //hides the zoom to my location button (i've implemented it myself)
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
             mMap.getUiSettings().setCompassEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
-            //mMap.getUiSettings().setMapToolbarEnabled(true); //adds buttons for explicit intents to open in google maps.//TODO; try to do myself?
             //setup the custom info window
             mMap.setInfoWindowAdapter(new CustomMapInfoWindowAdapter(MainMapActivity.this));
             //enable on marker click
@@ -408,10 +407,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     public void mapsDrawPolygon_Click(View view) {
         boolean vis;
         if (polygon != null){
-            if (polygon.isVisible())
-                vis =false;
-            else
-                vis = true;
+            //toggle polygon visibility
+            vis = !polygon.isVisible();
             polygon.setVisible(vis);
             mapViewModel.setIsPollyVisibleLD(vis);
         }else

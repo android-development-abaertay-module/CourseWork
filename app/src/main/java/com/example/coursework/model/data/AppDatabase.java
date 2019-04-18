@@ -24,7 +24,6 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Database(entities = {

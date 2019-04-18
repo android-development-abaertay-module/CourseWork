@@ -1,31 +1,17 @@
 package com.example.coursework.view.adapters;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import com.example.coursework.R;
 import com.example.coursework.model.Session;
-import com.example.coursework.model.User;
-
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 
 public class SessionAdapter extends ArrayAdapter<Session> {
-
-    private String city;
-    private String state;
-    private String country;
-    private String postalCode;
-    private String knownName;
 
     public SessionAdapter(Context context, List<Session> sessions) {
         super(context, 0, sessions);
@@ -40,14 +26,20 @@ public class SessionAdapter extends ArrayAdapter<Session> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.session_list_item, parent, false);
         }
         // Lookup view for data population
-        TextView sessionDateTxt = (TextView) convertView.findViewById(R.id.sessionDateTimeTxt);
+        TextView sessionDateTxt = convertView.findViewById(R.id.sessionDateTimeTxt);
         TextView sessionLocation = convertView.findViewById(R.id.sessionLocationTxt);
         // Populate the data into the template view using the data object
-        String startTime = session.getStartTime().toLocalDate().toString();
+
+        String startTime;
         String endTime = "";
-        if (session.getEndTime() != null)
-            endTime =  " - " + session.getEndTime().toLocalDate().toString();
-        String display = startTime + endTime;
+        String display = "";
+        if (session != null){
+            startTime = session.getStartTime().toLocalDate().toString();
+            if (session.getEndTime() != null)
+                endTime =  " - " + session.getEndTime().toLocalDate().toString();
+            display = startTime + endTime;
+        }
+
 
         sessionDateTxt.setText(display);
         sessionDateTxt.setTag(session.getId());

@@ -7,8 +7,6 @@ import android.support.annotation.NonNull;
 
 import com.example.coursework.model.User;
 import com.example.coursework.model.data.DaoRepository;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class LandingActivityViewModel extends AndroidViewModel {

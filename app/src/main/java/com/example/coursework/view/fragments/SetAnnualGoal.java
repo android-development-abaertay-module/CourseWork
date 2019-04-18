@@ -1,6 +1,5 @@
 package com.example.coursework.view.fragments;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,7 +22,6 @@ import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.viewmodel.SetGoalsVM.SetAnnualGoalViewModel;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
@@ -69,16 +67,16 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         }
 
         boulderOSSpinner = getView().findViewById(R.id.annualBoulderOsGoalSpinner);
-        boulderOSSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        boulderOSSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
         sportOsSpinner = getView().findViewById(R.id.annualSportOsGoalSpinner);
-        sportOsSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        sportOsSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
         boulderWorkedSpinner = getView().findViewById(R.id.annualBoulderWorkedGoalSpinner);
-        boulderWorkedSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        boulderWorkedSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
         sportWorkedSpinner = getView().findViewById(R.id.annualSportWorkedGoalSpinner);
-        sportWorkedSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        sportWorkedSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
         createdOnTxt = getView().findViewById(R.id.annualCreatedOnTxt);
         expiresOnTxt = getView().findViewById(R.id.annualExpiresOnTxt);
         resetAnnualGoalBtn = getView().findViewById(R.id.resetAnnualGoalBtn);

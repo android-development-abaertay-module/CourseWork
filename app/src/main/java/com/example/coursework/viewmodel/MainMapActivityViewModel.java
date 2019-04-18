@@ -22,7 +22,6 @@ public class MainMapActivityViewModel extends AndroidViewModel {
 
     private DaoRepository daoRepository;
     private MutableLiveData<User> userLD;
-    private LiveData<List<Session>> recentSessionsLD;
     private MediatorLiveData<MapMediator> mediator;
 
     private MutableLiveData<GoogleMap> mapLD;
@@ -53,10 +52,6 @@ public class MainMapActivityViewModel extends AndroidViewModel {
     }
     public MutableLiveData<User> getUserLD(){
         return userLD;
-    }
-
-    public LiveData<List<Session>> getRecentSessionsLD() {
-        return recentSessionsLD;
     }
 
     public void setMapLD(GoogleMap map) {
@@ -96,30 +91,32 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         isInitCameraMoveComplete = new MutableLiveData<>();
         isInitCameraMoveComplete.setValue(false);
 
-        recentSessionsLD = Transformations.switchMap(userLD, (User user) -> {
-            return daoRepository.getRecentSessionsWithLocationForUser(10, user.getId());
-        });
+        LiveData<List<Session>> recentSessionsLD = Transformations.switchMap(userLD, (User user) -> daoRepository.getRecentSessionsWithLocationForUser(10, user.getId()));
 
         mediator = new MediatorLiveData<>();
         mediator.setValue(new MapMediator());
         mediator.addSource(recentSessionsLD, sessions -> {
             MapMediator med = mediator.getValue();
-            med.setRecentSessions(sessions);
+            if (med != null)
+                med.setRecentSessions(sessions);
             mediator.setValue(med);
         });
         mediator.addSource(mapLD, map ->{
             MapMediator med = mediator.getValue();
-            med.setMap(map);
+            if (med != null)
+                med.setMap(map);
             mediator.setValue(med);
         });
         mediator.addSource(placesClientLD,placesClient -> {
             MapMediator med = mediator.getValue();
-            med.setPlacesClient(placesClient);
+            if (med != null)
+                med.setPlacesClient(placesClient);
             mediator.setValue(med);
         });
         mediator.addSource(customPlaceLD, customPlace ->{
             MapMediator med = mediator.getValue();
-            med.setCustomPlace(customPlace);
+            if (med != null)
+                med.setCustomPlace(customPlace);
             mediator.setValue(med);
         });
     }

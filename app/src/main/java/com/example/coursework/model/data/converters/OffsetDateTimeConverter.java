@@ -1,13 +1,7 @@
 package com.example.coursework.model.data.converters;
 
 import android.arch.persistence.room.TypeConverter;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 
 public class OffsetDateTimeConverter {
     @TypeConverter

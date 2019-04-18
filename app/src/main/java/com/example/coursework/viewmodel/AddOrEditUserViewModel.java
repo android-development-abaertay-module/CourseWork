@@ -3,10 +3,7 @@ package com.example.coursework.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.coursework.model.User;
 import com.example.coursework.model.data.DaoRepository;

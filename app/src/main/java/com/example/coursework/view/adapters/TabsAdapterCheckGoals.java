@@ -9,7 +9,7 @@ import com.example.coursework.view.fragments.CheckSeasonalGoal;
 import com.example.coursework.view.fragments.CheckWeeklyGoal;
 
 public class TabsAdapterCheckGoals extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+    private int mNumOfTabs;
 
     public TabsAdapterCheckGoals(FragmentManager fm, int NoofTabs){
         super(fm);
@@ -24,14 +24,11 @@ public class TabsAdapterCheckGoals extends FragmentStatePagerAdapter {
     public Fragment getItem(int position){
         switch (position){
             case 0:
-                CheckWeeklyGoal weeklyGoal = new CheckWeeklyGoal();
-                return weeklyGoal;
+                return new CheckWeeklyGoal();
             case 1:
-                CheckSeasonalGoal seasonalGoal = new CheckSeasonalGoal();
-                return seasonalGoal;
+                return new CheckSeasonalGoal();
             case 2:
-                CheckAnnualGoal annualGoal = new CheckAnnualGoal();
-                return annualGoal;
+                return new CheckAnnualGoal();
             default:
                 return null;
         }

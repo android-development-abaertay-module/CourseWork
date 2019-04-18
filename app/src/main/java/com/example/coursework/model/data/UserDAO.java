@@ -26,6 +26,4 @@ public interface UserDAO {
     @Query("SELECT * FROM User")
     LiveData<List<User>> getAllUsers();
 
-    @Query("SELECT * FROM User WHERE userName ==:name")
-    LiveData<User> getUserByName(String name);
 }

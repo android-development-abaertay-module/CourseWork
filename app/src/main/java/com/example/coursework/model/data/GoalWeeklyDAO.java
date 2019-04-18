@@ -21,8 +21,6 @@ public interface GoalWeeklyDAO {
     @Delete
     void delete(GoalWeekly goalWeekly);
 
-    @Query("SELECT * FROM GoalWeekly WHERE userId ==:userId")
-    LiveData<List<GoalWeekly>> getAllWeeklyGoalsForUser(long userId);
 
     @Query("SELECT * FROM GoalWeekly WHERE userId ==:userId ORDER BY dateCreated DESC LIMIT 1")
     LiveData<GoalWeekly> getMostRecentWeeklyGoalForUser(long userId);

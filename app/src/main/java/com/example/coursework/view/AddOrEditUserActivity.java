@@ -1,10 +1,7 @@
 package com.example.coursework.view;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,8 +13,6 @@ import com.example.coursework.model.User;
 import com.example.coursework.viewmodel.AddOrEditUserViewModel;
 
 import java.util.List;
-
-import static android.app.PendingIntent.getActivity;
 
 public class AddOrEditUserActivity extends AppCompatActivity {
 
@@ -58,6 +53,7 @@ public class AddOrEditUserActivity extends AppCompatActivity {
             Toast.makeText(this,"Username Required",Toast.LENGTH_LONG).show();
             return;
         }
+        //TODO: not sure we need this, re-visit view model design for old activity
         addOrEditUserViewModel.updateUserList();
 
         for(User usr: allUsers) {

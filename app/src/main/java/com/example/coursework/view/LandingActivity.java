@@ -1,6 +1,5 @@
 package com.example.coursework.view;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,7 +44,6 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
         landingActivityViewModel = ViewModelProviders.of(this).get(LandingActivityViewModel.class);
         usersLV = findViewById(R.id.usersLV);
         usersLV.setOnItemClickListener(this);

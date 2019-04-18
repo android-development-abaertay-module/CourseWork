@@ -270,12 +270,8 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         //endregion
 
         //region [Register Observers]
-        trainingActivityViewModel.getCurrentLatitudeLD().observe(this, latitudeVal -> {
-            latitude = latitudeVal;
-        });
-        trainingActivityViewModel.getCurrentLongitudeLD().observe(this, longitudeVal -> {
-            longitude = longitudeVal;
-        });
+        trainingActivityViewModel.getCurrentLatitudeLD().observe(this, latitudeVal -> latitude = latitudeVal);
+        trainingActivityViewModel.getCurrentLongitudeLD().observe(this, longitudeVal -> longitude = longitudeVal);
         trainingActivityViewModel.getAddRouteFormVisible().observe(this, isVisible ->{
             if (isVisible !=null)
                 if (isVisible){
@@ -291,9 +287,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 checkPermissions();
             }
         });
-        trainingActivityViewModel.getUserLD().observe(this, userVal -> {
-            user = userVal;
-        });
+        trainingActivityViewModel.getUserLD().observe(this, userVal -> user = userVal);
         trainingActivityViewModel.getCurrentSession().observe(this, session -> {
             user.setCurSesh(session);
             if (user.getCurSesh() == null) {
@@ -365,7 +359,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 //if achieved
                 if (weeklyGoal.getGoalAchieved()) {
                     if (!weeklyGoal.isAchievedSent()){
-                        sendNotificationToCheckGoals("Goal Accomplished", "Weekly Goal Accomplished \n Review and Re-set Goal.", GoalType.WEEKLY, seasonalGoaNotificationID, 0);
+                        sendNotificationToCheckGoals("Weekly Goal Accomplished", "Weekly Goal Accomplished \n Review and Re-set Goal.", GoalType.WEEKLY, seasonalGoaNotificationID, 0);
                         weeklyGoal.setAchievedSent(true);
                         trainingActivityViewModel.updateGoalWeekly(weeklyGoal);
                 }else
@@ -381,7 +375,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 //if Achieved
                 if (seasonalGoal.getGoalAchieved()){
                     if (!seasonalGoal.isAchievedSent()) {
-                        sendNotificationToCheckGoals("Goal Accomplished", "Seasonal Goal Accomplished \n Review and Re-set Goal.", GoalType.SEASONAL, weeklyGoalNotificationID, 1);
+                        sendNotificationToCheckGoals("Seasonal Goal Accomplished", "Seasonal Goal Accomplished \n Review and Re-set Goal.", GoalType.SEASONAL, weeklyGoalNotificationID, 1);
                         seasonalGoal.setAchievedSent(true);
                         trainingActivityViewModel.updateGoalSeasonal(seasonalGoal);
                     }else
@@ -396,7 +390,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 //if Achieved
                 if(annualGoal.getGoalAchieved()) {
                     if (!annualGoal.isAchievedSent()) {
-                        sendNotificationToCheckGoals("Goal Accomplished", "Annual Goal Accomplished \n Review and Re-set Goal.", GoalType.ANNUAL, annualGoalNotificationID, 2);
+                        sendNotificationToCheckGoals("Annual Goal Accomplished", "Annual Goal Accomplished \n Review and Re-set Goal.", GoalType.ANNUAL, annualGoalNotificationID, 2);
                         annualGoal.setAchievedSent(true);
                         trainingActivityViewModel.updateGoalAnnual(annualGoal);
                     }else

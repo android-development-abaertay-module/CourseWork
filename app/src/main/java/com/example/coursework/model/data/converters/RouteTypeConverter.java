@@ -1,9 +1,8 @@
 package com.example.coursework.model.data.converters;
 
 import android.arch.persistence.room.TypeConverter;
-
 import com.example.coursework.model.enums.RouteType;
-import com.example.coursework.model.enums.StyleDone;
+
 
 public class RouteTypeConverter {
     @TypeConverter

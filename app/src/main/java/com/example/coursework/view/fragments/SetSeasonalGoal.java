@@ -67,24 +67,23 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         }
 
         boulderOSSpinner = getView().findViewById(R.id.seasonalBoulderOsGoalSpinner);
-        boulderOSSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        boulderOSSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
         sportOsSpinner = getView().findViewById(R.id.seasonalSportOsGoalSpinner);
-        sportOsSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        sportOsSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
         boulderWorkedSpinner = getView().findViewById(R.id.seasonalBoulderWorkedGoalSpinner);
-        boulderWorkedSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        boulderWorkedSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
 
         sportWorkedSpinner = getView().findViewById(R.id.seasonalSportWorkedGoalSpinner);
-        sportWorkedSpinner.setAdapter(new ArrayAdapter<Grades>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
+        sportWorkedSpinner.setAdapter(new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values()));
         createdOnTxt = getView().findViewById(R.id.seasonalCreatedOnTxt);
         expiresOnTxt = getView().findViewById(R.id.seasonalExpiresOnTxt);
         resetSeasonalGoalBtn = getView().findViewById(R.id.resetSeasonalGoalBtn);
         resetSeasonalGoalBtn.setOnClickListener(this);
 
-        mViewModel.getUserLD().observe(this, userVal -> {
-            user = userVal;
-        });
+        mViewModel.getUserLD().observe(this, userVal -> user = userVal);
+
         mViewModel.getSeasonalGoalLD(user.getId()).observe(this, goalSeasonal -> {
             seasonalGoal = goalSeasonal;
             if (goalSeasonal != null) {
