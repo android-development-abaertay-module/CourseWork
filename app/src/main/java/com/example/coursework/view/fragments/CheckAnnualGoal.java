@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.coursework.R;
-import com.example.coursework.model.GoalAnnual;
 import com.example.coursework.model.User;
 import com.example.coursework.model.helper.GoalCheckDTO;
 import com.example.coursework.viewmodel.CheckGoalsVM.CheckAnnualGoalViewModel;
@@ -27,7 +26,6 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class CheckAnnualGoal extends Fragment {
 
-    private GoalAnnual goalAnnual;
     private User user;
 
     private TextView highestSportOSDisplay;
@@ -71,19 +69,19 @@ public class CheckAnnualGoal extends Fragment {
         //region [Register Observers]
         checkGoalAnnualVM.getUserLD().observe(this, userVal -> user = userVal);
 
-        checkGoalAnnualVM.getGoalAnnualLD().observe(this, goalSeasonalVal -> {
-            if (goalSeasonalVal != null){
-                goalAnnual = goalSeasonalVal;
-                if (goalAnnual.getGoalAchieved())
+        checkGoalAnnualVM.getGoalAnnualLD().observe(this, goalAnnualVal -> {
+            if (goalAnnualVal != null){
+                user.setAnnualGoal(goalAnnualVal);
+                if (user.getAnnualGoal().getGoalAchieved())
                     isAnnualGoalAchievedTat.setText(R.string.goal_achived);
                 else
                     isAnnualGoalAchievedTat.setText("");
-                if (goalAnnual.getDateExpires().isBefore(OffsetDateTime.now())){
+                if (user.getAnnualGoal().getDateExpires().isBefore(OffsetDateTime.now())){
                     //goal has expired...
                     annualGoalSummaryTxt.setText(R.string.goal_expired_summary);
                 }else{
                     //display days remaining
-                    int daysRemaining = (int) Duration.between(OffsetDateTime.now(), goalAnnual.getDateExpires()).toDays();
+                    int daysRemaining = (int) Duration.between(OffsetDateTime.now(), user.getAnnualGoal().getDateExpires()).toDays();
                     if (daysRemaining == 0)
                         annualGoalSummaryTxt.setText(R.string.goal_expires_today);
                     else
@@ -96,32 +94,32 @@ public class CheckAnnualGoal extends Fragment {
             }
         });
         checkGoalAnnualVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
-            if (goalAnnual != null)
-                    updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestSportOSVal,
-                            goalAnnual.getHighestSportOnsight(),
+            if (user.getAnnualGoal() != null)
+                    updateView(user.getAnnualGoal().checkAverageGradeForRouteTypeXGoal(highestSportOSVal,
+                            user.getAnnualGoal().getHighestSportOnsight(),
                             "No Sport Routes Logged."),
                             highestSportOSDisplay);
         });
         checkGoalAnnualVM.getHighestBoulderOnsightLD().observe(this, highestBoulderOSVal -> {
-            if (goalAnnual != null){
-                updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestBoulderOSVal,
-                        goalAnnual.getHighestBoulderOnsight(),
+            if (user.getAnnualGoal() != null){
+                updateView(user.getAnnualGoal().checkAverageGradeForRouteTypeXGoal(highestBoulderOSVal,
+                        user.getAnnualGoal().getHighestBoulderOnsight(),
                         "No Boulder Routes Logged."),
                         highestBoulderOSDisplay);
             }
         });
         checkGoalAnnualVM.getHighestSportWorkedLD().observe(this, highestSportWorkedVal -> {
-            if (goalAnnual != null) {
-                updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestSportWorkedVal,
-                        goalAnnual.getHighestSportWorked(),
+            if (user.getAnnualGoal() != null) {
+                updateView(user.getAnnualGoal().checkAverageGradeForRouteTypeXGoal(highestSportWorkedVal,
+                        user.getAnnualGoal().getHighestSportWorked(),
                         "No Sport Routes Logged."),
                         highestSportWorkedDisplay);
             }
         });
         checkGoalAnnualVM.getHighestBoulderWorkedLD().observe(this, highestBoulderWorkedVal -> {
-            if ( goalAnnual != null) {
-                updateView(goalAnnual.checkAverageGradeForRouteTypeXGoal(highestBoulderWorkedVal,
-                        goalAnnual.getHighestBoulderWorked(),
+            if ( user.getAnnualGoal() != null) {
+                updateView(user.getAnnualGoal().checkAverageGradeForRouteTypeXGoal(highestBoulderWorkedVal,
+                        user.getAnnualGoal().getHighestBoulderWorked(),
                         "No Boulder Routes Logged."),
                         highestBoulderWorkedDisplay);
             }
