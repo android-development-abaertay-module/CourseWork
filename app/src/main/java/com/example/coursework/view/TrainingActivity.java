@@ -244,8 +244,10 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 if (distanceX > distanceY) {
                     Log.d("gwyd", "onFling hit for Session : X distance : " + distanceX + ", y distance: " + distanceY);
                     int startingPosition = displayRecentSessionsLV.pointToPosition((int) e1.getX(), (int) e1.getY());
-                    Session sessionToDelete = (Session) displayRecentSessionsLV.getAdapter().getItem(startingPosition);
-                    deleteSession(sessionToDelete);
+                    if (startingPosition != -1){
+                        Session sessionToDelete = (Session) displayRecentSessionsLV.getAdapter().getItem(startingPosition);
+                        deleteSession(sessionToDelete);
+                    }
                 }else{
                     Log.d("gwyd","Vertical fling. just scroll:  X distance : " + distanceX + ", y distance: " + distanceY);
                 }
@@ -549,19 +551,23 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
                 .setNegativeButton(android.R.string.no, null).show();
     }
     private void deleteRoute(MotionEvent e1) {
-        new AlertDialog.Builder(this)
-                .setTitle("Delete Route?")
-                .setMessage("Are you sure you want to delete this Route?")
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
-                    //horizontal fling - delete
-                    Log.d("gwyd","onFling hit for Route");
-                    int  startingPosition = displayRecentRoutesLV.pointToPosition((int) e1.getX(), (int) e1.getY());
-                    Route routeToDelete = (Route) displayRecentRoutesLV.getAdapter().getItem(startingPosition);
-                    trainingActivityViewModel.deleteRoute(routeToDelete);
-                    toastAndLog("Route Deleted", LogType.DEBUG);
-                })
-                .setNegativeButton(android.R.string.no, null).show();
+        int  startingPosition = displayRecentRoutesLV.pointToPosition((int) e1.getX(), (int) e1.getY());
+        if(startingPosition  != -1){
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Route?")
+                    .setMessage("Are you sure you want to delete this Route?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                        //horizontal fling - delete
+                        Log.d("gwyd","onFling hit for Route");
+
+                        Route routeToDelete = (Route) displayRecentRoutesLV.getAdapter().getItem(startingPosition);
+                        trainingActivityViewModel.deleteRoute(routeToDelete);
+                        toastAndLog("Route Deleted", LogType.DEBUG);
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
+        }
+
 
 
     }
