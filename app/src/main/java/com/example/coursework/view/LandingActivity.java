@@ -27,14 +27,14 @@ import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
 import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class LandingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
+    //region [properties]
     private static final int ADD_USER_REQUEST = 1;
     private static final int EDIT_USER_REQUEST = 2;
     LandingActivityViewModel landingActivityViewModel;
     ListView usersLV;
     UsersAdapter userAdapter;
     List<User> allUsers;
-
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +46,12 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         landingActivityViewModel = ViewModelProviders.of(this).get(LandingActivityViewModel.class);
         usersLV = findViewById(R.id.usersLV);
         usersLV.setOnItemClickListener(this);
+        //Register context menu for list View (edit/delete menu)
         registerForContextMenu(usersLV);
+
+        //get users List from ViewModel
         landingActivityViewModel.getUsers().observe(this, users -> {
+            //update users List View to contain users
             if(users != null) {
                 userAdapter =new UsersAdapter(getApplicationContext(), users);
                 usersLV.setAdapter(userAdapter);
@@ -59,12 +63,14 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
 
     public void addNewUserBtn_Click(View view) {
         Intent intent = new Intent(LandingActivity.this,AddOrEditUserActivity.class);
+        //navigate to add or edit user activity in add new mode
         startActivityForResult(intent, ADD_USER_REQUEST);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //determine what action to do to complete add or edit request
         switch (requestCode){
             case ADD_USER_REQUEST:
                 if (resultCode ==  RESULT_OK){
@@ -84,9 +90,10 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (view.getId()){
             case R.id.userListItemLL:
+                //get text view item that was clicked
                 LinearLayout ll = (LinearLayout) view;
                 TextView tv = ll.findViewById(R.id.userLvItemTV);
-                //Go to Menu Activity
+                //Go to Menu Activity using selected user details (stored in text view)
                 Intent intent = new Intent(LandingActivity.this,MenuActivity.class);
                 intent.putExtra(USER_ID,tv.getTag().toString());
                 intent.putExtra(USERNAME,tv.getText().toString());
@@ -99,22 +106,30 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId()==R.id.usersLV) {
+            //create context menu for selected item
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            //set context menu header
             menu.setHeaderTitle(allUsers.get(info.position).getUserName());
+            //get menu items from strings resource file
             String[] menuItems = getResources().getStringArray(R.array.userContextMenu);
+            //populate menu
             for (int i = 0; i<menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);
             }
         }
     }
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        //get selected item
         int menuItemIndex = item.getItemId();
         String[] menuItems = getResources().getStringArray(R.array.userContextMenu);
         String menuItemName = menuItems[menuItemIndex];
+        //get selected user from its position
         User selectedUser = allUsers.get(info.position);
 
+        //decide what action to perform based on context menu item clicked
         switch (menuItemName){
             case "Edit":
                 Intent intent = new Intent(LandingActivity.this,AddOrEditUserActivity.class);
