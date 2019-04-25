@@ -23,6 +23,8 @@ public class MenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        //region [properties]
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -35,7 +37,9 @@ public class MenuActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //endregion
 
+        //user pulled from intent
         Intent intent = getIntent();
         if (intent.hasExtra(USER_ID) && intent.hasExtra(USERNAME)){
             user = new User(intent.getStringExtra(USERNAME));
@@ -45,43 +49,32 @@ public class MenuActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        //if back button pressed when navigation draw visible hide it.
         DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            //else perform normal back action
             super.onBackPressed();
         }
     }
 
-    //This Creates the top right settings menu (menu) . don't need for now
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        //Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu, menu);
-//        return true;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        // int id = item.getItemId();
-
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        //get id from selected item
         if (id == R.id.nav_set_goals) {
             goToActivity(SetGoalsActivity.class);
         } else if (id == R.id.nav_check_goals) {
@@ -98,6 +91,7 @@ public class MenuActivity extends AppCompatActivity
     }
 
     private void goToActivity(Class goToClass) {
+        //go to the selected activity with the users details
         Intent intent = new Intent(MenuActivity.this, goToClass);
         intent.putExtra(USER_ID,user.getId());
         intent.putExtra(USERNAME,user.getUserName());
