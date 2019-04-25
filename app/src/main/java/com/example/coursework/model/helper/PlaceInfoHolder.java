@@ -30,7 +30,7 @@ public class PlaceInfoHolder {
     private Marker marker;
 
     public PlaceInfoHolder(String name, String address, String phoneNumber, String id, Uri websiteUri,
-                           LatLng latLng, float rating, String attributions, OpeningHours openingHours, List<Type> types, LatLngBounds viewPort, Marker marker) {
+                           LatLng latLng, float rating, OpeningHours openingHours, List<Type> types, LatLngBounds viewPort, Marker marker) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;

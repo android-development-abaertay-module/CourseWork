@@ -91,6 +91,8 @@ public class GoalWeekly extends Goal {
         }
 
 //-----------------------------------------------------------------------------Methods-----------------------------------------------------
+        //determine weather goal has been met by comparing it against the goals targets.
+        //works for check number of properties
     public int checkNumberOfRoutesForTypeGoalPercentage(int numRoutesTypeXAchievedVal, int targetNumberOfRoutesTypeX){
         int result;
         if (numRoutesTypeXAchievedVal >= targetNumberOfRoutesTypeX) {
@@ -101,8 +103,9 @@ public class GoalWeekly extends Goal {
         }
         return result;
     }
-
-    public GoalCheckDTO checkAverageGradeForRouteTypeXGoal(Grades averageGradeForType, Grades averageGoalForType, String noRoutesMessage){
+    //determine weather goal has been met by comparing it against the goals targets.
+    //works for each goal property
+    public GoalCheckDTO checkAverageGradeForRouteTypeXGoal(Grades averageGradeForType, Grades averageGoalForType, String errorMessage){
         GoalCheckDTO result = new GoalCheckDTO();
 
         if (averageGradeForType != null){
@@ -114,7 +117,7 @@ public class GoalWeekly extends Goal {
                 result.setIsAchieved(false);
         }else{
             //no routes logged in period
-            result.setOutput(noRoutesMessage);
+            result.setOutput(errorMessage);
             result.setIsAchieved(false);
         }
         return result;

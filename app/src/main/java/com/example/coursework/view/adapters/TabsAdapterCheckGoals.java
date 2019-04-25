@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.example.coursework.view.fragments.CheckAnnualGoal;
 import com.example.coursework.view.fragments.CheckSeasonalGoal;
 import com.example.coursework.view.fragments.CheckWeeklyGoal;
-
+//TabsAdapterCheckGoals: an adapter to decide what fragment to load when user uses the tabbed navigation in  CheckGoals activity
 public class TabsAdapterCheckGoals extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
 
@@ -22,6 +22,7 @@ public class TabsAdapterCheckGoals extends FragmentStatePagerAdapter {
     }
     @Override
     public Fragment getItem(int position){
+        //switch to decide what fragment to load based on selected tab index
         switch (position){
             case 0:
                 return new CheckWeeklyGoal();

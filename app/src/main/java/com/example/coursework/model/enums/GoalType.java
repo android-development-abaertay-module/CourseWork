@@ -11,26 +11,7 @@ public enum GoalType {
         this.value = value;
     }
 
-    public static GoalType getFromInteger(int value) {
-        GoalType result;
-        switch (value) {
-            case 0:
-                result = GoalType.WEEKLY;
-                break;
-            case 1:
-                result = GoalType.SEASONAL;
-                break;
-            case 2:
-                result = GoalType.ANNUAL;
-                break;
-            default:
-                result = null;
-                break;
-        }
-        if (result != null)
-            result.value = value;
-        return result;
-    }
+    //get numerical value of enum
     public int getValue() {
         return value;
     }

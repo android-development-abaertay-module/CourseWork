@@ -25,7 +25,7 @@ import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
 
 import java.time.OffsetDateTime;
-
+//defining tables to use in Room database
 @Database(entities = {
         GoalAnnual.class,
         GoalSeasonal.class,
@@ -33,6 +33,7 @@ import java.time.OffsetDateTime;
         Route.class,
         Session.class,
         User.class}, version = 1)
+//defining type converters to use in Room database
 @TypeConverters({GradeConverter.class,
         StyleConverter.class,
         OffsetDateTimeConverter.class,
@@ -49,8 +50,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static synchronized AppDatabase getInstance(Context context){
         if (instance == null){
-            //fallback to destructive migration. delete then recreate
-            //Singleton Design pattern
+            //populating database singleton
+            //allow room to rebuild database if required during dev
+            //setup callback methods for on create and open database
             Log.d("gwyd","initializing database");
             instance = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class, "app_database")
                     .fallbackToDestructiveMigration()
@@ -64,12 +66,14 @@ public abstract class AppDatabase extends RoomDatabase {
     private  static RoomDatabase.Callback callback = new RoomDatabase.Callback(){
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            //callback fired when database opened
             super.onOpen(db);
             Log.d("gwyd","Room database opened successfully");
         }
 
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            //callback fired when database created
             super.onCreate(db);
             Log.d("gwyd","Room database created successfully");
 
@@ -92,7 +96,7 @@ public abstract class AppDatabase extends RoomDatabase {
             sessionDAO = appDatabase.sessionDAO();
             userDAO = appDatabase.userDAO();
         }
-
+        //Async  task to create initial test data
         @Override
         protected Void doInBackground(Void... voids) {
             User user = new User("gwyd");

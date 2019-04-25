@@ -1,6 +1,7 @@
 package com.example.coursework.view;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -130,6 +131,7 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
         }
     };
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -679,7 +681,8 @@ public class TrainingActivity extends AppCompatActivity implements LocationListe
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            if(notificationManager != null)
+                notificationManager.createNotificationChannel(channel);
         }
     }
 

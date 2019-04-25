@@ -8,10 +8,12 @@ public enum RouteType {
     RouteType(int value) {
         this.value = value;
     }
+
+    //get numerical value of enum
     public int getValue() {
         return value;
     }
-
+    //get enum type from integer value
     public static RouteType getFromInteger(int value){
         RouteType result;
         switch(value) {

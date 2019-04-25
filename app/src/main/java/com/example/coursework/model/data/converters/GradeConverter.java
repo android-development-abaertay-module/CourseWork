@@ -3,7 +3,7 @@ package com.example.coursework.model.data.converters;
 import android.arch.persistence.room.TypeConverter;
 
 import com.example.coursework.model.enums.Grades;
-
+//Grade converter to convert data types to and from SQLite
 public class GradeConverter {
     @TypeConverter
     public static int gradeToInt(Grades grade){

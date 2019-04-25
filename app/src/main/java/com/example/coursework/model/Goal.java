@@ -80,6 +80,4 @@ public abstract class Goal {
         userId = iDUserFK;
         goalAchieved = false;
     }
-
-
 }

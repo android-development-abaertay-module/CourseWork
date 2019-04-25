@@ -8,6 +8,8 @@ public enum StyleDone {
     StyleDone(int value) {
         this.value = value;
     }
+
+    //get enum type from numeric value
     public static StyleDone getFromInteger(int value){
         StyleDone result;
         switch(value) {
@@ -27,7 +29,7 @@ public enum StyleDone {
         result.value = value;
         return result;
     }
-
+    //get enum value in numeric format
     public int getValue() {
         return value;
     }

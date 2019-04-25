@@ -25,11 +25,11 @@ public class SessionAdapter extends ArrayAdapter<Session> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.session_list_item, parent, false);
         }
-        // Lookup view for data population
+        // Lookup view items for data population
         TextView sessionDateTxt = convertView.findViewById(R.id.sessionDateTimeTxt);
         TextView sessionLocation = convertView.findViewById(R.id.sessionLocationTxt);
-        // Populate the data into the template view using the data object
 
+        // Populate the data into the template view using the data object
         String startTime;
         String endTime = "";
         String display = "";

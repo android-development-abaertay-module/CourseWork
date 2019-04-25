@@ -13,7 +13,7 @@ import com.example.coursework.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//UsersAdapter: adapter for user ListView items
 public class UsersAdapter extends ArrayAdapter<User> {
 
     public UsersAdapter(Context context, List<User> users) {

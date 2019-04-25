@@ -1,5 +1,6 @@
 package com.example.coursework.model.helper;
 
+//GoalCheckDTO is simple holder class used to store information about goal status
 public class GoalCheckDTO {
     private String output;
     private Boolean isAchieved;

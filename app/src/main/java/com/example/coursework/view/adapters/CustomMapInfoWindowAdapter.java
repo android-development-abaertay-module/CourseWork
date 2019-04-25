@@ -15,6 +15,7 @@ import org.w3c.dom.Text;
 
 import static android.text.Html.fromHtml;
 
+//adapter for map marker info window adapters
 public class CustomMapInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     private View window;
@@ -22,10 +23,12 @@ public class CustomMapInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     public CustomMapInfoWindowAdapter(Context context) {
         this.context = context;
+        //get the parent layout for the info window
         window = LayoutInflater.from(context).inflate(R.layout.custom_map_marker_info,null);
     }
 
     private void renderWindowText(Marker marker,  View view){
+        //set values for the custom info window display
         String title = marker.getTitle();
         TextView titleTV = view.findViewById(R.id.mapMarkerTitle);
         titleTV.setText(PrintNull.Print(title));

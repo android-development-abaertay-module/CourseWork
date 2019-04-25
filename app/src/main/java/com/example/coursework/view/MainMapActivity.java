@@ -193,9 +193,12 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                         Place.Field.OPENING_HOURS,Place.Field.WEBSITE_URI,Place.Field.TYPES,Place.Field.VIEWPORT);
 
                 // Construct a request object, passing the place ID and fields array.
-                FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
-                placesClient.fetchPlace(request).addOnSuccessListener((response) -> newCustomPlaceFound(response)).addOnFailureListener((exception)
-                        -> toastAndLog("Place not Found..",LogType.ERROR));
+                FetchPlaceRequest request;
+                if (placeId != null){
+                    request = FetchPlaceRequest.builder(placeId, placeFields).build();
+                    placesClient.fetchPlace(request).addOnSuccessListener((response) -> newCustomPlaceFound(response)).addOnFailureListener((exception)
+                            -> toastAndLog("Place not Found..",LogType.ERROR));
+                }
             }
 
             @Override

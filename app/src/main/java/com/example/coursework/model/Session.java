@@ -117,10 +117,10 @@ public class Session
             st = startTime.format(DateTimeFormatter.ofPattern("MM/dd  HH:mm:ss"));
         if (endTime != null)
             et = endTime.format(DateTimeFormatter.ofPattern("MM/dd  HH:mm:ss"));
-        String snippet = "Start Time: " + st + "\n" +
+        //summary string to return
+        return "Start Time: " + st + "\n" +
                 "End Time: " + et + "\n" +
                 "Latitude: " + lat + "\n" +
                 "Longitude: " + lon;
-        return  snippet;
     }
 }

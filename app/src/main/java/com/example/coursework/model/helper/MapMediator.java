@@ -5,7 +5,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.util.List;
-
+//MapMediator class:
+//used in maps activity ViewModel to notify Maps activity about any changes to data that relates to the map
 public class MapMediator {
     private List<Session> recentSessions;
     private GoogleMap map;

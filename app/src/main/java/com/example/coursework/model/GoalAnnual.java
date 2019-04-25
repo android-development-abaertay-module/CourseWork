@@ -70,8 +70,11 @@ public class GoalAnnual extends Goal{
     public GoalAnnual()
     {
     }
+
     //region [Methods]
-    public GoalCheckDTO checkAverageGradeForRouteTypeXGoal(Grades averageGradeForType, Grades averageGoalForType, String noRoutesMessage){
+    //determine weather goal has been met by comparing it against the goals targets.
+    //works for each goal property
+    public GoalCheckDTO checkAverageGradeForRouteTypeXGoal(Grades averageGradeForType, Grades averageGoalForType, String errorMessage){
         GoalCheckDTO result = new GoalCheckDTO();
 
         if (averageGradeForType != null){
@@ -83,7 +86,7 @@ public class GoalAnnual extends Goal{
                 result.setIsAchieved(false);
         }else{
             //no routes logged in period
-            result.setOutput(noRoutesMessage);
+            result.setOutput(errorMessage);
             result.setIsAchieved(false);
         }
         return result;

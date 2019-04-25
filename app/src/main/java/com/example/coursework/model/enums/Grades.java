@@ -30,6 +30,7 @@ public enum Grades {
     Grades(int value) {
         this.value = value;
     }
+    //get enum from integer value
     public static Grades getFromInteger(int value){
         Grades result;
         switch(value) {
@@ -112,7 +113,7 @@ public enum Grades {
         result.value = value;
         return result;
     }
-
+    //get integer value of enum (good for storage etc)
     public int getValue() {
         return value;
     }

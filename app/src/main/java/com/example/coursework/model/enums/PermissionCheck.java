@@ -9,27 +9,9 @@ public enum PermissionCheck {
     PermissionCheck(int value) {
         this.value = value;
     }
+    //get numerical value of enum
     public int getValue() {
         return value;
-    }
-
-    public static PermissionCheck getFromInteger(int value){
-        PermissionCheck result;
-        switch(value) {
-            case 1:
-                result = PermissionCheck.NOT_REQUESTED;
-                break;
-            case 2:
-                result = PermissionCheck.GRANTED;
-                break;
-            case 3:
-                result = PermissionCheck.DENIED;
-                break;
-            default:
-                throw new IndexOutOfBoundsException("only route values of 1 or 2 accepted");
-        }
-        result.value = value;
-        return result;
     }
 
     @Override

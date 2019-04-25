@@ -2,8 +2,7 @@ package com.example.coursework.model.data.converters;
 
 import android.arch.persistence.room.TypeConverter;
 import com.example.coursework.model.enums.RouteType;
-
-
+//Grade converter to convert data types to and from SQLite
 public class RouteTypeConverter {
     @TypeConverter
     public static int routeTypeToInt(RouteType routeType){

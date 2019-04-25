@@ -11,7 +11,7 @@ import com.example.coursework.R;
 import com.example.coursework.model.Route;
 
 import java.util.List;
-
+//RoutesAdapter: adapter for routes ListView items
 public class RouteAdapter extends ArrayAdapter<Route> {
     public RouteAdapter(Context context, List<Route> routes) {
         super(context, 0, routes);
@@ -25,11 +25,12 @@ public class RouteAdapter extends ArrayAdapter<Route> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.route_list_item, parent, false);
             convertView.setTag(route.getId());
         }
-        // Lookup view for data population
+        // Lookup view items for data population
         TextView routeTimeDone =  convertView.findViewById(R.id.routeItemTimeDone);
         TextView routeItemType =  convertView.findViewById(R.id.routeItemTypeTxt);
         TextView routeItemGrade =  convertView.findViewById(R.id.routeItemGradeTxt);
         TextView routeItemStyle =  convertView.findViewById(R.id.routeItemStyleTxt);
+
         // Populate the data into the template view using the data object
         routeTimeDone.setText(route.getTimeDone().toString());
         routeItemType.setText(route.getRouteType().toString());
