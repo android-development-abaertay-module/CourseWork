@@ -139,8 +139,6 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
                 break;
             case "Delete":
                 landingActivityViewModel.getDaoRepository().deleteUser(selectedUser);
-                //Refresh all users list
-                landingActivityViewModel.getDaoRepository().getAllUsers();
                 break;
         }
         Toast.makeText(this,selectedUser.getUserName(),Toast.LENGTH_SHORT).show();
@@ -148,14 +146,14 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
     }
     private void createNewUser(@Nullable Intent data) {
         if (data != null){
+            //get user details from intent
             User user = new User();
             user.setUserName(data.getStringExtra(USERNAME));
             //create user, get id then create logbook for user
             //create user logbook
             try{
+                //save new user
                 user.setId(landingActivityViewModel.getDaoRepository().insertUser(user));
-                //refresh loaded list
-                landingActivityViewModel.updateUsersList();
             }catch (Exception ex){
                 Toast.makeText(this,"Error Creating User. Please contact support",Toast.LENGTH_SHORT).show();
             }
@@ -163,19 +161,20 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
     }
     private void editUser(@Nullable Intent data) {
         if (data != null){
+            //get updated user details from intent
             User user = new User();
             user.setUserName(data.getStringExtra(USERNAME));
             //create user, get id then create logbook for user
             long id = data.getLongExtra(USER_ID,0);
             if (id == 0){
+                //if id not returned correctly stop
                 Toast.makeText(this,"error Updating User. Please contact support",Toast.LENGTH_SHORT).show();
                 return;
             }
             user.setId(id);
             try{
+                //save new details
                 landingActivityViewModel.getDaoRepository().updateUser(user);
-                //refresh loaded list
-                landingActivityViewModel.updateUsersList();
             }catch (Exception ex){
                 Toast.makeText(this,"error Updating User. Please contact support",Toast.LENGTH_SHORT).show();
             }
