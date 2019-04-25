@@ -56,13 +56,11 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
+    //region [properties]
     private static final int ACCESS_FINE_LOCATION_REQUEST = 1;
     private final  float defaultZoom = 15f;
     private GoogleMap mMap;
-    private FusedLocationProviderClient fusedLocationProviderClient;
     private PlacesClient placesClient;
-    private SupportMapFragment mapFragment;
-    private AutocompleteSupportFragment autocompleteFragment;
     private ImageView mGps;
     private PlaceInfoHolder customPlaceInfo;
     private LatLng selectedLatLong;
@@ -73,7 +71,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private User user;
     private List<Session> recentSessions;
     private Boolean isInitialCameraMoveComplete;
-
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,26 +91,33 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         //endregion
 
         //region [Register observers]
+        //get user from ViewModel
         mapViewModel.getUserLD().observe(this, userVal -> user = userVal);
+
+        //get isInitialCameraMoveComplete from View model (initial camera move performs extra actions)
         mapViewModel.getIsInitCameraMoveComplete().observe(this, isComplete -> isInitialCameraMoveComplete = isComplete);
+        //get mediator live from ViewModel - the map mediator holds all the live data related to the map.
         mapViewModel.getMediator().observe(this, mediator -> {
             if (mediator != null) {
+                //if map hasn't been retrieved apply it
                 if(mMap == null)
                     mMap = mediator.getMap();
 
+                //if map hasn't been retrieved apply it
                 if (placesClient == null)
                     placesClient = mediator.getPlacesClient();
 
+                //if customPlaceInfo hasn't been retrieved apply it
                 if (customPlaceInfo == null)
                     customPlaceInfo = mediator.getCustomPlace();
 
-                //read data from the Mediator
+                //if Recent Sessions hasn't been retrieved apply it
                 if (mediator.getRecentSessions() == null || mediator.getRecentSessions().size() == 0)
                     recentSessions = null;
                 else
                     recentSessions = mediator.getRecentSessions();
 
-                //redraw sessions and or custom marker
+                //redraw sessions and/or custom marker
                 if (recentSessions != null && mMap != null ) {
                     DrawItemsOnMap(isInitialCameraMoveComplete);
                 }else if(customPlaceInfo != null && mMap != null)
@@ -121,14 +126,15 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         });
         //endregion
 
-        //Request permissions and initialise map
+        //Request permissions
         checkPermissions();
     }
 
     private void checkPermissions() {
+        //check if permissions granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d("gwyd", "access fine location permission not granted. Requesting permission");
-
+            //not granted - request permission
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_REQUEST);
@@ -142,16 +148,16 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //check permission request results
         switch (requestCode) {
             case ACCESS_FINE_LOCATION_REQUEST:
                 Log.d("gwyd", "ACCESS_FINE_LOCATION_REQUEST received");
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //permissions granted initialize map
-//                    if (mMap ==null)
                     initMap();
 
                 } else {
-                    //permission denied
+                    //permission denied - return to main menu
                     toastAndLog("Turn on Location Permissions to access Map functionality.", LogType.INFO);
                     Intent intent = new Intent(MainMapActivity.this, MenuActivity.class);
                     intent.putExtra(USER_ID, user.getId() + "");
@@ -164,8 +170,9 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     //init map is called. this then triggers onMapReady
     private void initMap() {
+        //setup essential map stuff..
         Log.d("gwyd", "initMap: initializing map");
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null)
             mapFragment.getMapAsync(MainMapActivity.this);
 
@@ -177,25 +184,27 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             mapViewModel.setPlacesClientLD(placesClient);
         }
 
-        // Initialize the AutocompleteSupportFragment.
-        autocompleteFragment = (AutocompleteSupportFragment)
+        // Initialize the AutocompleteSupportFragment. (used in the places search)
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        //set callback for when place selected
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place placeSelected) {
                 hideSoftKeyboard();
 
                 String placeId =  placeSelected.getId();
-                // Specify the fields to return (in this example all fields are returned).
+                // Specify the fields to return.
                 List<Place.Field> placeFields = Arrays.asList(
                         Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG,Place.Field.ADDRESS,Place.Field.PHONE_NUMBER,
                         Place.Field.OPENING_HOURS,Place.Field.WEBSITE_URI,Place.Field.TYPES,Place.Field.VIEWPORT);
 
-                // Construct a request object, passing the place ID and fields array.
+                // Construct a places request object, passing the place ID and fields array.
                 FetchPlaceRequest request;
                 if (placeId != null){
                     request = FetchPlaceRequest.builder(placeId, placeFields).build();
+                    //fetch place..
                     placesClient.fetchPlace(request).addOnSuccessListener((response) -> newCustomPlaceFound(response)).addOnFailureListener((exception)
                             -> toastAndLog("Place not Found..",LogType.ERROR));
                 }
@@ -214,6 +223,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             if (customPlaceInfo.getMarker() != null)
                 customPlaceInfo.getMarker().remove();
 
+        //set the details for the new place
         customPlaceInfo = new PlaceInfoHolder();
         customPlaceInfo.setId(response.getPlace().getId());
         if (response.getPlace().getRating() != null)
@@ -228,6 +238,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         customPlaceInfo.setViewPort(response.getPlace().getViewport());
         Log.d("gwyd", customPlaceInfo.toString());
 
+        //move camera to new place
         if ( customPlaceInfo.getLatLng() != null)
             updateCustomPlace(customPlaceInfo,defaultZoom,true);
         if (customPlaceInfo.getLatLng() != null)
@@ -239,14 +250,16 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     private void getDeviceLocation() {
         Log.d("gwyd", "getting current location");
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        //fused location provider client used to get device location
+        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
             Task location = fusedLocationProviderClient.getLastLocation();
             location.addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    //found location
+                    //get location from result of async task
                     Location currentLocation = (Location) task.getResult();
                     if (currentLocation != null)
+                        //move camera to the new location and zoom
                         moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), defaultZoom);
                     else{
                         //couldn't find location
@@ -262,13 +275,13 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
-    //If title is null no new marker created
     private void moveCamera(LatLng latLng, float zoom) {
         Log.d("gwyd", "moving camera to : " + latLng.latitude + " " + latLng.longitude);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         hideSoftKeyboard();
     }
     private void updateCustomPlace(PlaceInfoHolder place, float zoom, Boolean updateViewModel){
+        //get latitude and longitude from place. if not available (should be) get center of Viewport
         LatLng coordinates;
         if (place.getLatLng() != null)
             coordinates = place.getLatLng();
@@ -288,23 +301,26 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     private void DrawItemsOnMap(boolean initialFocusOnSessionBounds) {
-        Log.d("gwyd", "drawing items on map");
-
+        Log.d("gwyd", "drawItemsOnMap entered");
+        //clear the map
         mMap.clear();
+        //update the marker for the custom place (if there is one)
         if (customPlaceInfo != null)
             updateCustomPlace(customPlaceInfo,defaultZoom, false);
 
+        //draw recent session marker locations on map if there are any
         if (recentSessions != null ) {
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
+            //foreach session
             for (Session s : recentSessions) {
+                //populate marker details for session
                 LatLng latLon = new LatLng(s.getLat(), s.getLon());
                 MarkerOptions marker = new MarkerOptions();
                 marker.position(latLon);
                 marker.title(s.getLocation());
                 marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 marker.snippet(s.detailsSummaryForMap());
-
+                //add to map
                 mMap.addMarker(marker);
                 //add marker to bonds (for auto zoom and focus)
                 builder.include(marker.getPosition());
@@ -315,14 +331,18 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             LatLng topLeft = new LatLng(bounds.southwest.latitude,bounds.northeast.longitude);
             LatLng bottomRight = new LatLng(bounds.northeast.latitude, bounds.southwest.longitude);
             LatLng bottomLeft = bounds.southwest;
+            //setup rectangle (to see area covered by your sessions)
             PolygonOptions rectangle = new PolygonOptions()
                     .add(topRight)
                     .add(bottomRight)
                     .add(bottomLeft)
                     .add(topLeft);
             polygon = mMap.addPolygon(rectangle);
+            //get data from view model to determine if poly should be shown or not
             polygon.setVisible(mapViewModel.isPollyVisible().getValue());
 
+            //flag to execute on initial focus stuff
+            //don't want camera location to reset every time configuration changes
             if(!initialFocusOnSessionBounds){
                 Log.d("gwyd","initial camera focus done");
                 mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
@@ -345,16 +365,20 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         Log.d("gwyd", "onMapReady Hit");
         mMap = googleMap;
+        //check required permissions granted
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             //hides the zoom to my location button (i've implemented it myself)
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            //enable map compass
             mMap.getUiSettings().setCompassEnabled(true);
+            //turn on camera zoom controls for map
             mMap.getUiSettings().setZoomControlsEnabled(true);
             //setup the custom info window
             mMap.setInfoWindowAdapter(new CustomMapInfoWindowAdapter(MainMapActivity.this));
             //enable on marker click
             mMap.setOnMarkerClickListener(this);
+            //get map type from ViewModel and apply to map
             if (mapViewModel.getMapTypeLD().getValue()!= null)
                 mMap.setMapType(mapViewModel.getMapTypeLD().getValue());
 
@@ -365,17 +389,18 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 getDeviceLocation();
             });
             hideSoftKeyboard();
-            // Do Other On load map stuff
-            //mMap.setPadding(0,10,0,0);
+            //update the map instance in the view model
             mapViewModel.setMapLD(mMap);
         }
     }
     public void loadNavigationView(double lat,double lng){
+        //start implicit intent for maps activity - to navigate to selected marker
         Uri navigation = Uri.parse("google.navigation:q="+lat+","+lng+"");
         Intent navigationIntent = new Intent(Intent.ACTION_VIEW, navigation);
         startActivity(navigationIntent);
     }
     private void  hideSoftKeyboard(){
+        //hides the phones software keyboard
         this.getWindow().setSoftInputMode((WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN));
     }
     private void toastAndLog(String message, LogType logType){
@@ -401,6 +426,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
 
     public void mapsDrawPolygon_Click(View view) {
+        //toggle polygon visible state on map and update View Model
         boolean vis;
         if (polygon != null){
             //toggle polygon visibility
@@ -411,13 +437,14 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             toastAndLog("No Sessions To draw polygon around.", LogType.DEBUG);
 
     }
-    public void mapsExplicitIntent_Click(View view) {
+    public void mapsImplicitIntent_Click(View view) {
         if (selectedLatLong != null)
             loadNavigationView(selectedLatLong.latitude,selectedLatLong.longitude);
         else
             toastAndLog("No Location Selected to Navigate to",LogType.INFO);
     }
     public void mapsChangeType_Click(View view) {
+        //toggle through available map types on icon click
         switch (mMap.getMapType()){
             case GoogleMap.MAP_TYPE_NORMAL:
                 mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
@@ -432,13 +459,14 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 break;
         }
+        //update the view model to store the new map type
         mapViewModel.setMapTypeLD(mMap.getMapType());
     }
 
     //region [OnMarkerClickListener methods]
     @Override
     public boolean onMarkerClick(Marker marker) {
-        //update the selected Location
+        //update the selected Location to be the selected marker
         selectedLatLong = new LatLng(marker.getPosition().latitude, marker.getPosition().longitude);
         return false;
     }
