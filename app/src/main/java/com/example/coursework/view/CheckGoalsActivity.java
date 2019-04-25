@@ -14,15 +14,18 @@ import com.example.coursework.view.adapters.TabsAdapterCheckGoals;
 import static com.example.coursework.view.TrainingActivity.GOAL_TYPE;
 
 public class CheckGoalsActivity extends AppCompatActivity {
+    //region [properties]
     Toolbar toolbar;
     TabLayout tabLayout;
     TabsAdapterCheckGoals tabsAdapter;
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_goals);
 
+        //region [init properties]
         //tabbed layout has it's own toolbar. default activity tool bar removed in manifest
         toolbar = findViewById(R.id.tool_bar_check);
         setSupportActionBar(toolbar);
@@ -33,11 +36,13 @@ public class CheckGoalsActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Annual"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+        //setup tabs with Check goals fragment adapter
         final ViewPager viewPager = findViewById(R.id.view_pager_check);
         tabsAdapter = new TabsAdapterCheckGoals(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(tabsAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            //when tab selected load that fragment
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
@@ -51,6 +56,10 @@ public class CheckGoalsActivity extends AppCompatActivity {
 
             }
         });
+
+        //endregion
+
+        //intent determines weather or not a specific tab should be loaded on create
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra(GOAL_TYPE)) {
@@ -62,6 +71,7 @@ public class CheckGoalsActivity extends AppCompatActivity {
                     tab.select();
 
             }else{
+                //no specific tab required
                 Log.d("gwyd","No Goal Type set");
             }
         }

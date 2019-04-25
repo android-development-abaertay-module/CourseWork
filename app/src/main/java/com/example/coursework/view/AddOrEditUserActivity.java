@@ -15,7 +15,7 @@ import com.example.coursework.viewmodel.AddOrEditUserViewModel;
 import java.util.List;
 
 public class AddOrEditUserActivity extends AppCompatActivity {
-
+    //region [properties]
     public static final String USERNAME = "username";
     public static final String USER_ID = "USER_ID";
 
@@ -23,19 +23,27 @@ public class AddOrEditUserActivity extends AppCompatActivity {
     EditText usernameTxt;
     List<User> allUsers;
     long userID;
+    //endregion
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addoredituser);
-
+        //region [init properties]
         usernameTxt = findViewById(R.id.userNameTxt);
         addOrEditUserViewModel = ViewModelProviders.of(this).get(AddOrEditUserViewModel.class);
+        //endregion
+
+        //region[Observers]
+        //get user list from ViewModel
         addOrEditUserViewModel.updateUserList().observe(this, users -> {
             if(users != null) {
                 allUsers = users;
             }
         });
+        //endregion
 
+        //get add or edit mode details from intent
         Intent intent = getIntent();
         if (intent.hasExtra(USER_ID)){
             setTitle("Edit User");
@@ -48,7 +56,7 @@ public class AddOrEditUserActivity extends AppCompatActivity {
 
     public void addOrEditUserBtn_Click(View view) {
         User user = new User(usernameTxt.getText().toString());
-        //Validate
+        //Validate inputs valid
         if (user.getUserName().equals("")){
             Toast.makeText(this,"Username Required",Toast.LENGTH_LONG).show();
             return;
@@ -60,10 +68,12 @@ public class AddOrEditUserActivity extends AppCompatActivity {
                 return;
             }
         }
+        //return to landing activity
         addOrEditUser();
     }
 
     private void addOrEditUser() {
+        //set result to OK and return
         Intent intent=new Intent();
         intent.putExtra(USERNAME,usernameTxt.getText().toString());
         intent.putExtra(USER_ID,userID);
