@@ -11,20 +11,25 @@ import com.example.coursework.R;
 import com.example.coursework.view.adapters.TabsAdapterSetGoals;
 
 public class SetGoalsActivity extends AppCompatActivity {
+    //region [properties]
     Toolbar toolbar;
     TabLayout tabLayout;
     TabsAdapterSetGoals tabsAdapter;
+
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_goals);
 
-        //tabbed layout has it's own toolbar. default activity tool bar removed in manifest
+        //tabbed layout has it's own toolbar. default activity tool bar removed in manifest.
+        //setup custom toolbar
         toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
         tabLayout = findViewById(R.id.tab_layout);
+        //adding required tabs
         tabLayout.addTab(tabLayout.newTab().setText("Weekly"));
         tabLayout.addTab(tabLayout.newTab().setText("Seasonal"));
         tabLayout.addTab(tabLayout.newTab().setText("Annual"));
@@ -34,9 +39,11 @@ public class SetGoalsActivity extends AppCompatActivity {
         tabsAdapter = new TabsAdapterSetGoals(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(tabsAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        //setup callback for when tab selected
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                //load the selected tab into  the display
                 viewPager.setCurrentItem(tab.getPosition());
             }
             @Override
