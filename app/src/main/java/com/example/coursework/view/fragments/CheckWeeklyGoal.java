@@ -50,6 +50,7 @@ public class CheckWeeklyGoal extends Fragment {
         super.onActivityCreated(savedInstanceState);
         CheckWeeklyGoalViewModel checkWeeklyViewModel = ViewModelProviders.of(this).get(CheckWeeklyGoalViewModel.class);
 
+        //intent passes user details to fragment
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
@@ -70,15 +71,21 @@ public class CheckWeeklyGoal extends Fragment {
 
 
         //region [Register Observers]
+        //get user from ViewModel
         checkWeeklyViewModel.getUserLD().observe(this, userVal -> user = userVal);
 
+
+        //get Weekly goal from ViewModel
         checkWeeklyViewModel.getGoalWeeklyLD().observe(this, goalWeeklyVal -> {
+            //check weekly goal set - update display accordingly
             if (goalWeeklyVal != null){
                 user.setWeeklyGoal(goalWeeklyVal);
+                //is goal achieved? update display accordingly
                 if (user.getWeeklyGoal().getGoalAchieved())
                     isWeeklyGoalAchievedTat.setText(R.string.goal_achieved);
                 else
                     isWeeklyGoalAchievedTat.setText("");
+                //has goal expired? update display accordingly
                 if (user.getWeeklyGoal().getDateExpires().isBefore(OffsetDateTime.now())){
                     //goal has expired...
                     weeklyGoalSummaryTxt.setText(R.string.goal_expired_summary);
@@ -95,27 +102,41 @@ public class CheckWeeklyGoal extends Fragment {
                 weeklyGoalSummaryTxt.setText("No Weekly goal found. \n Set a Goals First");
             }
         });
+
+        //get number of boulder progress achieved from ViewModel
         checkWeeklyViewModel.getNumberBoulderProgressLD().observe(this, numBoulderAchievedVal -> {
+            //check weekly goal set and routes done
             if (numBoulderAchievedVal != null && user.getWeeklyGoal() != null)
+                //calculate if target met and update display
                 noBoulderAchievedPb.setProgress(user.getWeeklyGoal().checkNumberOfRoutesForTypeGoalPercentage(numBoulderAchievedVal,user.getWeeklyGoal().getNumberOfBoulder()));
         });
+
+        //get number of sport progress achieved from ViewModel
         checkWeeklyViewModel.getNumberSportProgressLD().observe(this, numSportAchievedVal -> {
             if (numSportAchievedVal != null && user.getWeeklyGoal() != null)
+                //calculate if target met and update display
                 noSportAchievedPb.setProgress(user.getWeeklyGoal().checkNumberOfRoutesForTypeGoalPercentage(numSportAchievedVal,user.getWeeklyGoal().getNumberOfSport()));
         });
+
+        //get average boulder achieved from ViewModel
         checkWeeklyViewModel.getAverageBoulderGradeLD().observe(this, avgBoulderGradeVal -> {
             if (user.getWeeklyGoal() != null) {
+                //calculate if target met and update display
                 updateView(avgBoulderGradeVal, user.getWeeklyGoal().getAverageBoulderGrade(), "No Boulder Routes Logged", avgBoulderAchievedDisplay);
             }
         });
+
+        //get average sport achieved from ViewModel
         checkWeeklyViewModel.getAverageSportGradeLD().observe(this, avgSportGradeVal -> {
             if (user.getWeeklyGoal() != null) {
+                //calculate if target met and update display
                 updateView(avgSportGradeVal, user.getWeeklyGoal().getAverageSportGrade(), "No Sport Routes Logged", avgSportAchievedDisplay);
             }
         });
         //endregion
     }
 
+    //update display according to if achieved or not
     private void updateView(Grades avgGradeFor_TypeX, Grades targetGradeFor_TypeX, String noRoutesFoundMessage, TextView textViewToUpdate) {
         GoalCheckDTO result = user.getWeeklyGoal().checkAverageGradeForRouteTypeXGoal(avgGradeFor_TypeX, targetGradeFor_TypeX, noRoutesFoundMessage);
         textViewToUpdate.setText(result.getOutput());

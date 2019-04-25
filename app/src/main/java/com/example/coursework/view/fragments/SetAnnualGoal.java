@@ -58,6 +58,7 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SetAnnualGoalViewModel.class);
 
+        //intent passes user into fragment
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
@@ -67,7 +68,7 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
                 mViewModel.getAnnualGoalLD(user.getId());
             }
         }
-
+        //region [initialize properties]
         boulderOSSpinner = Objects.requireNonNull(getView()).findViewById(R.id.annualBoulderOsGoalSpinner);
         boulderOSSpinnerAdapter = new ArrayAdapter<>(getView().getContext(), android.R.layout.simple_list_item_1, Grades.values());
         boulderOSSpinner.setAdapter(boulderOSSpinnerAdapter);
@@ -88,11 +89,16 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         expiresOnTxt = getView().findViewById(R.id.annualExpiresOnTxt);
         resetAnnualGoalBtn = getView().findViewById(R.id.resetAnnualGoalBtn);
         resetAnnualGoalBtn.setOnClickListener(this);
+        //endregion
 
+        //region [Observers]
+        //get user from ViewModel
         mViewModel.getUserDL(user.getId()).observe(this, userVal -> user = userVal);
 
+        //get Annual Goal from ViewModel
         mViewModel.getAnnualGoalLD(user.getId()).observe(this, goalAnnualVal -> {
             user.setAnnualGoal(goalAnnualVal);
+            //check if annual goal set and update display
             if (goalAnnualVal != null) {
                 updateAnnualGoalView(user.getAnnualGoal());
             }else {
@@ -101,8 +107,10 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
                 resetAnnualGoalBtn.setBackgroundColor(Color.RED);
             }
         });
+        //endregion
     }
 
+    //update display to match current annual goal state
     private void updateAnnualGoalView(GoalAnnual goalAnnual) {
         boulderOSSpinner.setSelection(boulderOSSpinnerAdapter.getPosition(goalAnnual.getHighestBoulderOnsight()));
         sportOsSpinner.setSelection(sportOSSpinnerAdapter.getPosition(goalAnnual.getHighestSportOnsight()));
@@ -126,8 +134,8 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         switch (v.getId()){
             case R.id.resetAnnualGoalBtn:
                 Log.d("gwyd","btn clicked");
+                //check user Has a goal
                 if (user.getAnnualGoal() != null){
-                    //user Has a goal
                     //check if goal expired
                     if (user.getAnnualGoal().getDateExpires().isBefore(OffsetDateTime.now())){
                         //goal Expired - Close it and create a new one
@@ -151,6 +159,7 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
                 break;
         }
     }
+    //apply the displayed form values to the new annual goal - update mode
     private void updateAnnualGoalFromForm(){
         Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
@@ -161,6 +170,8 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
         user.getAnnualGoal().setHighestBoulderWorked(bWorked);
         user.getAnnualGoal().setHighestSportWorked(sWorked);
     }
+
+    //apply the displayed form values to the new annual goal - create mode
     private void getNewAnnualGoalFromForm() {
         Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();

@@ -30,6 +30,7 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
 
+    //region [declare properties]
     private SetSeasonalGoalViewModel mViewModel;
     User user;
 
@@ -44,7 +45,7 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
     ArrayAdapter<Grades> sportOSSpinnerAdapter;
     ArrayAdapter<Grades> boulderWorkedSpinnerAdapter;
     ArrayAdapter<Grades> sportWorkedSpinnerAdapter;
-
+    //endregion
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -55,8 +56,11 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        //region [declare properties]
         mViewModel = ViewModelProviders.of(this).get(SetSeasonalGoalViewModel.class);
 
+        //intent passes user to fragment
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
@@ -87,11 +91,16 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         expiresOnTxt = getView().findViewById(R.id.seasonalExpiresOnTxt);
         resetSeasonalGoalBtn = getView().findViewById(R.id.resetSeasonalGoalBtn);
         resetSeasonalGoalBtn.setOnClickListener(this);
+        //endregion
 
+        //region [Observers]
+        //get user from ViewModel
         mViewModel.getUserLD().observe(this, userVal -> user = userVal);
 
+        //get seasonal Goal from ViewModel
         mViewModel.getSeasonalGoalLD(user.getId()).observe(this, goalSeasonalVal -> {
             user.setSeasonalGoal(goalSeasonalVal);
+            //check is seasonal goal set - update display accordingly
             if (user.getSeasonalGoal() != null) {
 
                 updateSeasonalGoalView(user.getSeasonalGoal());
@@ -101,7 +110,9 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
                 resetSeasonalGoalBtn.setBackgroundColor(Color.RED);
             }
         });
+        //endregion
     }
+    //update display to represent seasonal goal
     private void updateSeasonalGoalView(GoalSeasonal goalSeasonal) {
         boulderOSSpinner.setSelection(boulderOSSpinnerAdapter.getPosition(goalSeasonal.getHighestBoulderOnsight()));
         sportOsSpinner.setSelection(sportOSSpinnerAdapter.getPosition(goalSeasonal.getHighestSportOnsight()));
@@ -150,7 +161,7 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
                 break;
         }
     }
-
+    //pull the new seasonal goal from the form - update
     private void updateSeasonalGoalFromForm(){
         Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();
@@ -161,6 +172,8 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
         user.getSeasonalGoal().setHighestBoulderWorked(bWorked);
         user.getSeasonalGoal().setHighestSportWorked(sWorked);
     }
+
+    //pull the new seasonal goal from the form - create
     private void getNewSeasonalGoalFromForm() {
         Grades bOs = (Grades) boulderOSSpinner.getSelectedItem();
         Grades sOs = (Grades) sportOsSpinner.getSelectedItem();

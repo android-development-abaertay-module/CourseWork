@@ -47,6 +47,7 @@ public class CheckSeasonalGoal extends Fragment {
         super.onActivityCreated(savedInstanceState);
         CheckSeasonalGoalViewModel checkSeasonalGoalVM = ViewModelProviders.of(this).get(CheckSeasonalGoalViewModel.class);
 
+        //intent passes user details to fragment
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
@@ -67,15 +68,20 @@ public class CheckSeasonalGoal extends Fragment {
 
 
         //region [Register Observers]
+        //get User details from ViewModel
         checkSeasonalGoalVM.getUserLD().observe(this, userVal -> user = userVal);
 
+        //get Seasonal Goal from ViewModel
         checkSeasonalGoalVM.getGoalSeasonalLD().observe(this, goalSeasonalVal -> {
+            //check seasonal goal set - update display accordingly
             if (goalSeasonalVal != null){
                 user.setSeasonalGoal(goalSeasonalVal);
+                //is goal achieved - update display accordingly
                 if (user.getSeasonalGoal().getGoalAchieved())
                     isSeasonalGoalAchievedTat.setText(R.string.goal_achieved);
                 else
                     isSeasonalGoalAchievedTat.setText("");
+                //is seasonal goal expired - update display accordingly
                 if (user.getSeasonalGoal().getDateExpires().isBefore(OffsetDateTime.now())){
                     //goal has expired...
                     seasonalGoalSummaryTxt.setText(R.string.goal_expired_summary);
@@ -92,25 +98,37 @@ public class CheckSeasonalGoal extends Fragment {
                 seasonalGoalSummaryTxt.setText("No Seasonal Goal found. \n Set a Goals First");
             }
         });
+
+        //get highest Sport onsight achieved by user
         checkSeasonalGoalVM.getHighestSportOnsightLD().observe(this, highestSportOSVal -> {
             if (user.getSeasonalGoal() != null)
+                //check progress and update display
                 updateView(user.getSeasonalGoal().checkGoalAvgGradeTypeX(highestSportOSVal,user.getSeasonalGoal().getHighestSportOnsight(),"No Sport Routes Logged."), highestSportOSDisplay);
         });
+
+        //get highest Boulder onsight achieved by user
         checkSeasonalGoalVM.getHighestBoulderOnsightLD().observe(this, highestBoulderOSVal -> {
             if (user.getSeasonalGoal() != null)
+                //check progress and update display
                 updateView(user.getSeasonalGoal().checkGoalAvgGradeTypeX(highestBoulderOSVal,user.getSeasonalGoal().getHighestBoulderOnsight(),"No Boulder Routes Logged"), highestBoulderOSDisplay);
         });
+
+        //get highest Sport Worked achieved by user
         checkSeasonalGoalVM.getHighestSportWorkedLD().observe(this, highestSportWorkedVal -> {
             if (user.getSeasonalGoal() != null)
+                //check progress and update display
                 updateView(user.getSeasonalGoal().checkGoalAvgGradeTypeX(highestSportWorkedVal,user.getSeasonalGoal().getHighestSportWorked(),"No Sport Routes Logged"), highestSportWorkedDisplay);
         });
+
+        //get highest Boulder Worked achieved by user
         checkSeasonalGoalVM.getHighestBoulderWorkedLD().observe(this, highestBoulderWorkedVal -> {
             if (user.getSeasonalGoal() != null)
+                //check progress and update display
                 updateView(user.getSeasonalGoal().checkGoalAvgGradeTypeX(highestBoulderWorkedVal, user.getSeasonalGoal().getHighestBoulderWorked(),"No Boulder Routes Logged"), highestBoulderWorkedDisplay);
         });
         //endregion
     }
-
+    //method to update display for any part of goal
     private void updateView(GoalCheckDTO result, TextView displayTextView) {
             displayTextView.setText(result.getOutput());
             if (result.getIsAchieved())

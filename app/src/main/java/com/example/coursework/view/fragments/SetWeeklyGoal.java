@@ -30,6 +30,7 @@ import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 
 public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
 
+    //region [properites]
     private SetWeeklyGoalViewModel mViewModel;
     Spinner numSportSpinner;
     Spinner numBoulderSpinner;
@@ -42,6 +43,8 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
     ArrayAdapter<Grades> avgBoulderSpinnerAdapter;
 
     User user;
+    //endregion
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -52,9 +55,10 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
+        //region [initialize]
         mViewModel = ViewModelProviders.of(this).get(SetWeeklyGoalViewModel.class);
 
+        //get user id from intent into fragment
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         if (intent != null){
             if (intent.hasExtra(USER_ID)){
@@ -80,14 +84,17 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         expiresOnTxt = getView().findViewById(R.id.weeklyExpiresOnTxt);
         resetWeeklyGoalBtn = getView().findViewById(R.id.resetWeeklyGoalBtn);
         resetWeeklyGoalBtn.setOnClickListener(this);
+        //endregion
 
+        //region [Observers]
+        //get user from ViewModel
         mViewModel.getUserLD().observe(this, userVal -> user = userVal);
 
-
+        //get Weekly Goal from ViewModel
         mViewModel.getWeeklyGoalLD(user.getId()).observe(this, goalWeeklyVal -> {
             user.setWeeklyGoal(goalWeeklyVal);
+            //check if Weekly Goal set - update display accordingly
             if (user.getWeeklyGoal() != null) {
-
                 updateWeeklyGoalView(user.getWeeklyGoal());
             }else {
                 //no weekly goal found
@@ -95,8 +102,10 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                 resetWeeklyGoalBtn.setBackgroundColor(Color.RED);
             }
         });
+        //endregion
     }
 
+    //update display for weekly goal
     private void updateWeeklyGoalView(GoalWeekly goalWeekly) {
         numSportSpinner.setSelection(((ArrayAdapter<String>)numSportSpinner.getAdapter()).getPosition(goalWeekly.getNumberOfSport() +""));
         numBoulderSpinner.setSelection(((ArrayAdapter<String>)numBoulderSpinner.getAdapter()).getPosition(goalWeekly.getNumberOfBoulder() +""));
@@ -133,7 +142,6 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                         updateWeeklyGoalFromForm();
                         mViewModel.updateGoalWeekly(user.getWeeklyGoal());
                     }
-
                 }else{
                     //user doesn't have a goal - create one
                     getNewWeeklyGoalFromForm();
@@ -143,7 +151,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-
+    //get weekly goal from form - update
     private void updateWeeklyGoalFromForm(){
         int numSport = Integer.parseInt(numSportSpinner.getSelectedItem().toString());
         int numBoulder = Integer.parseInt(numBoulderSpinner.getSelectedItem().toString());
@@ -154,6 +162,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
         user.getWeeklyGoal().setAverageSportGrade(avgSport);
         user.getWeeklyGoal().setAverageBoulderGrade(avgBoulder);
     }
+    //get weekly goal from form - create
     private void getNewWeeklyGoalFromForm() {
         int numSport = Integer.parseInt(numSportSpinner.getSelectedItem().toString());
         int numBoulder = Integer.parseInt(numBoulderSpinner.getSelectedItem().toString());
