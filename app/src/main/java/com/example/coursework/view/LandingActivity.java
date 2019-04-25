@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -133,34 +132,38 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         return true;
     }
     private void createNewUser(@Nullable Intent data) {
-        User user = new User();
-        user.setUserName(data.getStringExtra(USERNAME));
-        //create user, get id then create logbook for user
-        //create user logbook
-        try{
-            user.setId(landingActivityViewModel.getDaoRepository().insertUser(user));
-            //refresh loaded list
-            landingActivityViewModel.updateUsersList();
-        }catch (Exception ex){
-            Toast.makeText(this,"Error Creating User. Please contact support",Toast.LENGTH_SHORT).show();
+        if (data != null){
+            User user = new User();
+            user.setUserName(data.getStringExtra(USERNAME));
+            //create user, get id then create logbook for user
+            //create user logbook
+            try{
+                user.setId(landingActivityViewModel.getDaoRepository().insertUser(user));
+                //refresh loaded list
+                landingActivityViewModel.updateUsersList();
+            }catch (Exception ex){
+                Toast.makeText(this,"Error Creating User. Please contact support",Toast.LENGTH_SHORT).show();
+            }
         }
     }
     private void editUser(@Nullable Intent data) {
-        User user = new User();
-        user.setUserName(data.getStringExtra(USERNAME));
-        //create user, get id then create logbook for user
-        long id = data.getLongExtra(USER_ID,0);
-        if (id == 0){
-            Toast.makeText(this,"error Updating User. Please contact support",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        user.setId(id);
-        try{
-            landingActivityViewModel.getDaoRepository().updateUser(user);
-            //refresh loaded list
-            landingActivityViewModel.updateUsersList();
-        }catch (Exception ex){
-            Toast.makeText(this,"error Updating User. Please contact support",Toast.LENGTH_SHORT).show();
+        if (data != null){
+            User user = new User();
+            user.setUserName(data.getStringExtra(USERNAME));
+            //create user, get id then create logbook for user
+            long id = data.getLongExtra(USER_ID,0);
+            if (id == 0){
+                Toast.makeText(this,"error Updating User. Please contact support",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            user.setId(id);
+            try{
+                landingActivityViewModel.getDaoRepository().updateUser(user);
+                //refresh loaded list
+                landingActivityViewModel.updateUsersList();
+            }catch (Exception ex){
+                Toast.makeText(this,"error Updating User. Please contact support",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
