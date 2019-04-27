@@ -56,7 +56,6 @@ public class CheckGoalsActivity extends AppCompatActivity {
 
             }
         });
-
         //endregion
 
         //intent determines weather or not a specific tab should be loaded on create
@@ -75,5 +74,13 @@ public class CheckGoalsActivity extends AppCompatActivity {
                 Log.d("gwyd","No Goal Type set");
             }
         }
+    }
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        //stop exiting app after navigated here from notification
+        startActivity(new Intent(CheckGoalsActivity.this, MenuActivity.class));
+        finish();
     }
 }
