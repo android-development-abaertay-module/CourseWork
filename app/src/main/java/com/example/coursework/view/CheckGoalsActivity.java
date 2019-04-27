@@ -1,5 +1,6 @@
 package com.example.coursework.view;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -9,8 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.example.coursework.R;
+import com.example.coursework.model.User;
 import com.example.coursework.view.adapters.TabsAdapterCheckGoals;
+import com.example.coursework.viewmodel.CheckGoalsVM.CheckWeeklyGoalViewModel;
+import com.example.coursework.viewmodel.CheckGoalsViewModel;
 
+import java.util.Objects;
+
+import static com.example.coursework.view.AddOrEditUserActivity.USERNAME;
+import static com.example.coursework.view.AddOrEditUserActivity.USER_ID;
 import static com.example.coursework.view.TrainingActivity.GOAL_TYPE;
 
 public class CheckGoalsActivity extends AppCompatActivity {
@@ -18,12 +26,14 @@ public class CheckGoalsActivity extends AppCompatActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     TabsAdapterCheckGoals tabsAdapter;
+    User user;
     //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_goals);
+        CheckGoalsViewModel checkGoalsViewModel = ViewModelProviders.of(this).get(CheckGoalsViewModel.class);
 
         //region [init properties]
         //tabbed layout has it's own toolbar. default activity tool bar removed in manifest
@@ -73,14 +83,24 @@ public class CheckGoalsActivity extends AppCompatActivity {
                 //no specific tab required
                 Log.d("gwyd","No Goal Type set");
             }
+            //get user details for activity
+            if (intent.hasExtra(USER_ID)){
+                user = new User(intent.getStringExtra(USERNAME));
+                user.setId(intent.getLongExtra(USER_ID,0));
+                checkGoalsViewModel.setUserLD(user);
+            }
         }
+        //get user value from view model
+        checkGoalsViewModel.getUserLD().observe(this, userVal -> user = userVal);
     }
     @Override
     public void onBackPressed()
     {
         super.onBackPressed();
         //stop exiting app after navigated here from notification
-        startActivity(new Intent(CheckGoalsActivity.this, MenuActivity.class));
-        finish();
+        Intent intent = new Intent(CheckGoalsActivity.this, MenuActivity.class);
+        intent.putExtra(USER_ID,user.getId() + "");
+        intent.putExtra(USERNAME,user.getUserName());
+        startActivity(intent);
     }
 }

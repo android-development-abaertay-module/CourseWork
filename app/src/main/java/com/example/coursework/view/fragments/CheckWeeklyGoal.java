@@ -17,6 +17,8 @@ import com.example.coursework.R;
 import com.example.coursework.model.User;
 import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.helper.GoalCheckDTO;
+import com.example.coursework.view.CheckGoalsActivity;
+import com.example.coursework.view.MenuActivity;
 import com.example.coursework.viewmodel.CheckGoalsVM.CheckWeeklyGoalViewModel;
 
 import java.time.Duration;
@@ -62,7 +64,9 @@ public class CheckWeeklyGoal extends Fragment {
 
         //region [Declare properties]
         noSportAchievedPb = Objects.requireNonNull(getView()).findViewById(R.id.checkGoalWeeklyNoSportPB);
+        noSportAchievedPb.setProgress(0);
         noBoulderAchievedPb = getView().findViewById(R.id.checkGoalWeeklyNoBoulderPB);
+        noBoulderAchievedPb.setProgress(0);
         avgSportAchievedDisplay = getView().findViewById(R.id.checkGoalWeeklyAvgSportTV);
         avgBoulderAchievedDisplay = getView().findViewById(R.id.checkGoalWeeklyAvgBoulderTV);
         weeklyGoalSummaryTxt = getView().findViewById(R.id.weeklyGoalSummaryTxt);
