@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.coursework.R;
 import com.example.coursework.model.GoalWeekly;
@@ -141,6 +142,7 @@ public class SetWeeklyGoal extends Fragment implements View.OnClickListener {
                         //update current goal
                         updateWeeklyGoalFromForm();
                         mViewModel.updateGoalWeekly(user.getWeeklyGoal());
+                        Toast.makeText(getContext(),"Weekly Goal Updated",Toast.LENGTH_LONG).show();
                     }
                 }else{
                     //user doesn't have a goal - create one

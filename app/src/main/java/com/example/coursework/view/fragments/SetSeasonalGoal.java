@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.coursework.R;
 import com.example.coursework.model.GoalSeasonal;
@@ -149,6 +150,7 @@ public class SetSeasonalGoal extends Fragment implements View.OnClickListener{
                         //update current goal
                         updateSeasonalGoalFromForm();
                         mViewModel.updateGoalSeasonal(user.getSeasonalGoal());
+                        Toast.makeText(getContext(),"Seasonal Goal Updated",Toast.LENGTH_LONG).show();
                     }
 
                 }else{

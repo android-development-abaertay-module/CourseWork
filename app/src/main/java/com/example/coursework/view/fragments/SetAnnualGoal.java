@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.coursework.R;
 import com.example.coursework.model.GoalAnnual;
@@ -147,6 +148,7 @@ public class SetAnnualGoal extends Fragment implements View.OnClickListener{
                         //update current goal
                         updateAnnualGoalFromForm();
                         mViewModel.updateGoalAnnual(user.getAnnualGoal());
+                        Toast.makeText(getContext(),"Annual Goal Updated",Toast.LENGTH_LONG).show();
                     }
 
                 }else{
