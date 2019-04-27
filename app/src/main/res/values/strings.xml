@@ -72,7 +72,7 @@
     <string name="no_recent_sessions_to_display">%s \nNo Recent Sessions to Display</string>
     <string name="days_remaining_for_goal">%s Days Remaining</string>
     <string name="goal_expires_today">Goal Expires Today</string>
-    <string name="goal_expired_summary">Goal Has Expired. Please Set a new Weekly goal</string>
+    <string name="goal_expired_summary">Goal Has Expired. Please Set a new goal</string>
     <string name="no_routes_completed">No Routes Completed</string>
     <string name="recent_routes">%s \nRecent Routes</string>
     <string name="recent_sessions">Recent Sessions</string>

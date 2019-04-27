@@ -24,6 +24,7 @@ import com.example.coursework.model.enums.Grades;
 import com.example.coursework.model.enums.RouteType;
 import com.example.coursework.model.enums.StyleDone;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 //defining tables to use in Room database
 @Database(entities = {
@@ -68,6 +69,7 @@ public abstract class AppDatabase extends RoomDatabase {
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             //callback fired when database opened
             super.onOpen(db);
+            new TestDataAsyncTask(instance).execute();
             Log.d("gwyd","Room database opened successfully");
         }
 
@@ -133,6 +135,78 @@ public abstract class AppDatabase extends RoomDatabase {
             cRouteThree.setId(routeDAO.insert(cRouteThree));
             Log.d("gwyd","initial data setup completed");
             return null;
+        }
+    }
+
+    private static class TestDataAsyncTask extends AsyncTask<Void,Void,Void> {
+
+        private GoalAnnualDAO goalAnnualDAO;
+        private GoalSeasonalDAO goalSeasonalDAO;
+        private GoalWeeklyDAO goalWeeklyDAO;
+        private UserDAO userDAO;
+
+        public TestDataAsyncTask(AppDatabase appDatabase)  {
+            goalAnnualDAO = appDatabase.goalAnnualDAO();
+            goalSeasonalDAO = appDatabase.goalSeasonalDAO();
+            goalWeeklyDAO = appDatabase.goalWeeklyDAO();
+
+            userDAO = appDatabase.userDAO();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            createUserWithExpiredGoals();
+            createUserWithNoGoalsSet();
+            return null;
+        }
+
+        private void createUserWithNoGoalsSet() {
+            //check if test user already created
+            User user = userDAO.getUserByName("TestUserWithNoGoals");
+            if (user == null){
+                //create
+                user = new User("TestUserWithNoGoals");
+                user.setId(userDAO.insert(user));
+                Log.d("gwyd","test user with no  goals created");
+            }else{
+                userDAO.delete(user);
+                user.setId(userDAO.insert(user));
+                Log.d("gwyd","test user with no goals re-created");
+            }
+
+        }
+
+        private void createUserWithExpiredGoals() {
+            //check if test user already created
+            User user = userDAO.getUserByName("TestUserWithExpiredGoals");
+            if (user == null){
+                //create
+                user = new User("TestUserWithExpiredGoals");
+                user.setId(userDAO.insert(user));
+                addExpiredGoals(user);
+                Log.d("gwyd","test user with no  goals created");
+            }else{
+                userDAO.delete(user);
+                user.setId(userDAO.insert(user));
+                addExpiredGoals(user);
+                Log.d("gwyd","test user with no goals re-created");
+
+            }
+        }
+
+        private void addExpiredGoals(User user) {
+            //insert old weekly
+            OffsetDateTime createdOn =  OffsetDateTime.now().minusMonths(2);
+            GoalWeekly gw = new GoalWeekly(user.getId(),15,15,Grades.SIX_A,Grades.FIVE_C,createdOn);
+            gw.setId(goalWeeklyDAO.insert(gw));
+            //insert old seasonal
+            OffsetDateTime seasonalCreatedOn = OffsetDateTime.now().minusMonths(9);
+            GoalSeasonal gs = new GoalSeasonal(user.getId(),Grades.SIX_B,Grades.SIX_B,Grades.SIX_B,Grades.SIX_B,seasonalCreatedOn);
+            gs.setId(goalSeasonalDAO.insert(gs));
+            //insert old annual
+            OffsetDateTime annualCreatedOn = OffsetDateTime.now().minusMonths(15);
+            GoalAnnual ga = new GoalAnnual(user.getId(),Grades.SEVEN_A,Grades.SEVEN_A,Grades.SEVEN_B,Grades.SEVEN_B,annualCreatedOn);
+            gs.setId(goalAnnualDAO.insert(ga));
         }
     }
 }

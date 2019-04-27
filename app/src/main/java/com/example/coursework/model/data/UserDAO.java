@@ -23,7 +23,9 @@ public interface UserDAO {
     @Query("SELECT * FROM User WHERE id ==:userId LIMIT 1")
     LiveData<User> getUserById(long userId);
 
+    @Query("SELECT * FROM User WHERE userName ==:name LIMIT 1")
+    User getUserByName(String name);
+
     @Query("SELECT * FROM User")
     LiveData<List<User>> getAllUsers();
-
 }
