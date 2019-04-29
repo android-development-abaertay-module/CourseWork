@@ -65,6 +65,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private PlaceInfoHolder customPlaceInfo;
     private LatLng selectedLatLong;
     private  Polygon polygon;
+    private boolean isPollyVisible;
 
 
     MainMapActivityViewModel mapViewModel;
@@ -97,7 +98,13 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mapViewModel.getSelectedLatLngLD().observe(this, latLngVal ->{
             selectedLatLong = latLngVal;
         });
-
+        //get is Poly visible from view model
+        mapViewModel.isPollyVisible().observe(this, isPollyVisVal ->{
+            if (isPollyVisVal != null)
+                isPollyVisible = isPollyVisVal;
+            else
+                isPollyVisible = false;
+        });
         //get isInitialCameraMoveComplete from View model (initial camera move performs extra actions)
         mapViewModel.getIsInitCameraMoveComplete().observe(this, isComplete -> isInitialCameraMoveComplete = isComplete);
         //get mediator live from ViewModel - the map mediator holds all the live data related to the map.
@@ -343,7 +350,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                     .add(topLeft);
             polygon = mMap.addPolygon(rectangle);
             //get data from view model to determine if poly should be shown or not
-            polygon.setVisible(mapViewModel.isPollyVisible().getValue());
+            polygon.setVisible(isPollyVisible);
 
             //flag to execute on initial focus stuff
             //don't want camera location to reset every time configuration changes
