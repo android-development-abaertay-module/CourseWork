@@ -14,6 +14,7 @@ import com.example.coursework.model.data.DaoRepository;
 import com.example.coursework.model.helper.MapMediator;
 import com.example.coursework.model.helper.PlaceInfoHolder;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.util.List;
@@ -30,6 +31,15 @@ public class MainMapActivityViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isInitCameraMoveComplete;
     private MutableLiveData<Integer> mapTypeLD;
     private MutableLiveData<Boolean> isPollyVisibleLD;
+    private MutableLiveData<LatLng> selectedLatLngLD;
+
+    public MutableLiveData<LatLng> getSelectedLatLngLD() {
+        return selectedLatLngLD;
+    }
+
+    public void setSelectedLatLngLD(LatLng selectedLatLng) {
+        this.selectedLatLngLD.setValue(selectedLatLng);
+    }
 
     public MutableLiveData<Boolean> isPollyVisible() {
         return isPollyVisibleLD;
@@ -87,6 +97,7 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         userLD = new MutableLiveData<>();
         mapLD = new MutableLiveData<>();
         placesClientLD = new MutableLiveData<>();
+        selectedLatLngLD = new MutableLiveData<>();git
         customPlaceLD = new MutableLiveData<>();
         isInitCameraMoveComplete = new MutableLiveData<>();
         isInitCameraMoveComplete.setValue(false);
