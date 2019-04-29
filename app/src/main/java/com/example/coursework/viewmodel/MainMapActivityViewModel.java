@@ -97,7 +97,7 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         userLD = new MutableLiveData<>();
         mapLD = new MutableLiveData<>();
         placesClientLD = new MutableLiveData<>();
-        selectedLatLngLD = new MutableLiveData<>();git
+        selectedLatLngLD = new MutableLiveData<>();
         customPlaceLD = new MutableLiveData<>();
         isInitCameraMoveComplete = new MutableLiveData<>();
         isInitCameraMoveComplete.setValue(false);
