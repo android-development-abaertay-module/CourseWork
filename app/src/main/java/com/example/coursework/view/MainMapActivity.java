@@ -94,10 +94,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         //region [Register observers]
         //get user from ViewModel
         mapViewModel.getUserLD().observe(this, userVal -> user = userVal);
-        //get selected latLong from ViewModel
-        mapViewModel.getSelectedLatLngLD().observe(this, latLngVal ->{
-            selectedLatLong = latLngVal;
-        });
         //get is Poly visible from view model
         mapViewModel.isPollyVisible().observe(this, isPollyVisVal ->{
             if (isPollyVisVal != null)
@@ -479,7 +475,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     public boolean onMarkerClick(Marker marker) {
         //update the selected Location to be the selected marker
         selectedLatLong = new LatLng(marker.getPosition().latitude, marker.getPosition().longitude);
-        mapViewModel.setSelectedLatLngLD(selectedLatLong);
         return false;
     }
 

@@ -31,15 +31,7 @@ public class MainMapActivityViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isInitCameraMoveComplete;
     private MutableLiveData<Integer> mapTypeLD;
     private MutableLiveData<Boolean> isPollyVisibleLD;
-    private MutableLiveData<LatLng> selectedLatLngLD;
 
-    public MutableLiveData<LatLng> getSelectedLatLngLD() {
-        return selectedLatLngLD;
-    }
-
-    public void setSelectedLatLngLD(LatLng selectedLatLng) {
-        this.selectedLatLngLD.setValue(selectedLatLng);
-    }
 
     public MutableLiveData<Boolean> isPollyVisible() {
         return isPollyVisibleLD;
@@ -97,7 +89,6 @@ public class MainMapActivityViewModel extends AndroidViewModel {
         userLD = new MutableLiveData<>();
         mapLD = new MutableLiveData<>();
         placesClientLD = new MutableLiveData<>();
-        selectedLatLngLD = new MutableLiveData<>();
         customPlaceLD = new MutableLiveData<>();
         isInitCameraMoveComplete = new MutableLiveData<>();
         isInitCameraMoveComplete.setValue(false);
